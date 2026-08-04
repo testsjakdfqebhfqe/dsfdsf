@@ -1,0 +1,5 @@
+- get_users-userid-bank-accounts
+- post_bank-accounts
+- get_bank-accounts-bankaccountid
+- patch_bank-accounts-bankaccountid
+- delete_bank-accounts-bankaccountid

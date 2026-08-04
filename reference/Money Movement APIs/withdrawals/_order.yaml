@@ -1,0 +1,5 @@
+- get_accounts-accountid-funding-redemptions
+- get_users-userid-funding-redemptions
+- post_funding-redemptions
+- get_funding-redemptions
+- get_funding-redemptions-redemptionid

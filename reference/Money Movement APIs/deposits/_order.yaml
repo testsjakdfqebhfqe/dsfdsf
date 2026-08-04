@@ -1,0 +1,10 @@
+- get_accounts-accountid-funding-deposits
+- get_users-userid-funding-deposits
+- get_users-userid-recurring-deposits
+- post_funding-deposits
+- get_funding-deposits
+- get_funding-deposits-depositid
+- patch_funding-deposits-depositid-achsettlement
+- get_funding-recurring-deposits-recurringid
+- patch_funding-recurring-deposits-recurringid
+- delete_funding-recurring-deposits-recurringid
