@@ -2,7 +2,7 @@
   "openapi": "3.0.2",
   "info": {
     "title": "Money Movement APIs",
-    "version": "2026-07-24",
+    "version": "2026-08-04",
     "contact": {
       "email": "producteng@drivewealth.tech"
     }
@@ -603,7 +603,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Retrieving a Linked Bank Account was Successful. ",
+            "description": "Retrieving a Linked Bank Account was Successful.",
             "content": {
               "application/json": {
                 "schema": {
@@ -832,7 +832,7 @@
                       "errorCode": "E032",
                       "message": "Invalid or missing parameters in the request body. Refer to the API documentation for details.",
                       "errorDetails": {
-                        "detail": "Refer supported DTCC Broker list on API documentation. ",
+                        "detail": "Refer supported DTCC Broker list on API documentation.",
                         "field": "brokerCode",
                         "type": "STRING"
                       }
@@ -1673,7 +1673,7 @@
                   "ACATS Transfer with excluded securities": {
                     "value": {
                       "id": "acats_91bd66d1-85bd-49c7-ae1a-aefb9e77a79e",
-                      "source": "FF-12-001",
+                      "source": "-001",
                       "destination": "DWWNE000901",
                       "destinationAccountID": "deb66500-168a-4432-9b1c-05a58e1d563f.1742499753944",
                       "clearingNo": "0123",
@@ -2760,7 +2760,7 @@
                   "ACATS Transfer with excluded securities": {
                     "value": {
                       "id": "acats_91bd66d1-85bd-49c7-ae1a-aefb9e77a79e",
-                      "source": "FF-12-001",
+                      "source": "-001",
                       "destination": "DWWNE000901",
                       "destinationAccountID": "deb66500-168a-4432-9b1c-05a58e1d563f.1742499753944",
                       "clearingNo": "0123",
@@ -4582,7 +4582,7 @@
       },
       "depositID": {
         "type": "string",
-        "example": "CKDQ000001-1671085040913-DMIQY",
+        "example": "-DMIQY",
         "description": "A unique identifier for the Deposit."
       },
       "orderID": {
@@ -4724,21 +4724,8 @@
           "TRUST_SELF",
           "TRUST_ADVISORY",
           "TRUST_RIA_MANAGED",
-          "JOINT_SELF",
-          "JOINT_ADVISORY",
-          "JOINT_RIA_MANAGED",
           "TRUMP_SELF"
-        ],
-        "x-enumAlpha": {
-          "JOINT_SELF": true,
-          "JOINT_ADVISORY": true,
-          "JOINT_RIA_MANAGED": true
-        },
-        "x-enumDescriptions": {
-          "JOINT_SELF": "[🅰️ Alpha]",
-          "JOINT_ADVISORY": "[🅰️ Alpha]",
-          "JOINT_RIA_MANAGED": "[🅰️ Alpha]"
-        }
+        ]
       },
       "accountHolderType": {
         "type": "string",
@@ -4784,21 +4771,8 @@
               "BUSINESS_SELF",
               "BUSINESS_ADVISORY",
               "BUSINESS_RIA_MANAGED",
-              "JOINT_SELF",
-              "JOINT_ADVISORY",
-              "JOINT_RIA_MANAGED",
               "TRUMP_SELF"
-            ],
-            "x-enumAlpha": {
-              "JOINT_SELF": true,
-              "JOINT_ADVISORY": true,
-              "JOINT_RIA_MANAGED": true
-            },
-            "x-enumDescriptions": {
-              "JOINT_SELF": "[🅰️ Alpha]",
-              "JOINT_ADVISORY": "[🅰️ Alpha]",
-              "JOINT_RIA_MANAGED": "[🅰️ Alpha]"
-            }
+            ]
           },
           "description": {
             "type": "string",
@@ -4988,7 +4962,7 @@
         "type": "string",
         "format": "uuid",
         "example": "3fb1e8a9-f7d5-4d90-95e2-43e7326b5636",
-        "description": "A unique ID created by DriveWealth to identify a specific instrument. "
+        "description": "A unique ID created by DriveWealth to identify a specific instrument."
       },
       "rootId": {
         "type": "string",
@@ -5327,7 +5301,7 @@
       },
       "redemptionID": {
         "type": "string",
-        "example": "DWUV000006-1593451797743-R8CC7",
+        "example": "-R8CC7",
         "description": "A unique identifier for the user's account redemption/withdrawal."
       },
       "redemptionStatusObject": {
@@ -5593,7 +5567,7 @@
       },
       "clientFundID": {
         "type": "string",
-        "example": "AAABBB-1222-3344.123456789",
+        "example": "-3344.123456789",
         "description": "A user defined identifier attached to the fund."
       },
       "fundDescription": {
@@ -5650,7 +5624,7 @@
       },
       "clientPortfolioID": {
         "type": "string",
-        "example": "AAABBB-1222-3344.123456789",
+        "example": "-3344.123456789",
         "description": "A user defined identifier attached to the portfolio."
       },
       "portfolioDescription": {
@@ -5967,7 +5941,7 @@
       },
       "withdrawalID": {
         "type": "string",
-        "example": "ZYNN000001-1672169822525-RIUIN",
+        "example": "-RIUIN",
         "description": "The unique identifier of the redemption/withdrawal."
       },
       "withdrawalCategories": {
@@ -6089,7 +6063,7 @@
       "accountNickname": {
         "type": "string",
         "example": "Steve's Robo Advisor Managed Account",
-        "description": "A description or nickname for an account. "
+        "description": "A description or nickname for an account."
       },
       "taxProfileObject": {
         "type": "object",
@@ -7102,7 +7076,7 @@
           "side": {
             "type": "string",
             "example": "B",
-            "description": "In this case, Side distinguishes the type of position. This will always return 'long'(B). ",
+            "description": "In this case, Side distinguishes the type of position. This will always return 'long'(B).",
             "enum": [
               "B"
             ]
@@ -7177,7 +7151,7 @@
           "side": {
             "type": "string",
             "example": "B",
-            "description": "In this case, Side distinguishes the type of position. This will always return 'long'(B). ",
+            "description": "In this case, Side distinguishes the type of position. This will always return 'long'(B).",
             "enum": [
               "B"
             ]
@@ -7252,7 +7226,7 @@
           "side": {
             "type": "string",
             "example": "B",
-            "description": "In this case, Side distinguishes the type of position. This will always return 'long'(B). ",
+            "description": "In this case, Side distinguishes the type of position. This will always return 'long'(B).",
             "enum": [
               "B"
             ]
@@ -7307,7 +7281,7 @@
           "side": {
             "type": "string",
             "example": "B",
-            "description": "In this case, Side distinguishes the type of position. This will always return 'long'(B). ",
+            "description": "In this case, Side distinguishes the type of position. This will always return 'long'(B).",
             "enum": [
               "B"
             ]
@@ -7589,7 +7563,7 @@
           },
           "message": {
             "type": "string",
-            "example": "This transaction resulted in your third Pattern Day Trade.  Note that pending orders (such as limits) may trigger a 4th Pattern Day Trade.  If you have 4 or more day trades in a 5 day period, your account will be designated as a Pattern Day Trader and must maintain equity of at least $25,000.  Failure to do so will put your account on 90-Restriction. You will receive an email notification with more details.",
+            "example": "This transaction resulted in your third Pattern Day Trade. Note that pending orders (such as limits) may trigger a 4th Pattern Day Trade. If you have 4 or more day trades in a 5 day period, your account will be designated as a Pattern Day Trader and must maintain equity of at least $25,000. Failure to do so will put your account on 90-Restriction. You will receive an email notification with more details.",
             "description": "A description of the violation."
           }
         }
@@ -8322,7 +8296,7 @@
               "equityValue": {
                 "type": "number",
                 "example": 12071.5,
-                "description": "The value of the sum of all equities in  the account."
+                "description": "The value of the sum of all equities in the account."
               },
               "cashAvailableForWithdrawal": {
                 "type": "number",
@@ -9863,6 +9837,42 @@
           }
         }
       },
+      "OptionsReEvaluationRequest": {
+        "type": "object",
+        "required": [
+          "userIDs"
+        ],
+        "properties": {
+          "userIDs": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 1000,
+            "items": {
+              "type": "string"
+            },
+            "description": "The Users to re-evaluate. Must contain between 1 and 1000 userIDs.",
+            "example": [
+              "cc07f91b-7ee1-4868-b8fc-823c70a1b932",
+              "a1b2c3d4-5e6f-7a8b-9c0d-1e2f3a4b5c6d"
+            ]
+          }
+        }
+      },
+      "OptionsReEvaluationResponse": {
+        "type": "object",
+        "properties": {
+          "correlationID": {
+            "type": "string",
+            "description": "Unique identifier for this batch, used to correlate the queued re-evaluations in the audit trail.",
+            "example": "3f2504e0-4f89-41d3-9a0c-0305e82c3301"
+          },
+          "usersQueued": {
+            "type": "integer",
+            "description": "The number of Users queued for re-evaluation.",
+            "example": 2
+          }
+        }
+      },
       "BankAccount": {
         "type": "object",
         "properties": {
@@ -9922,19 +9932,19 @@
           "wlpID": {
             "type": "string",
             "example": "TTCC",
-            "description": "The wlpID is a deep backoffice ID that identifies each partner from each other. \n\n *⚠️ Only require to pass if your existing partner before **10/1/22**. ",
+            "description": "The wlpID is a deep backoffice ID that identifies each partner from each other.\n\n *⚠️ Only require to pass if your existing partner before **10/1/22**.",
             "deprecated": true
           },
           "parentIBID": {
             "type": "string",
             "example": "95c98ed5-e29e-4d55-90bf-8898fcf6af85",
-            "description": "The parentIBID is a identifier that identifies a partners different business segments. \n\n *⚠️ Only require to pass if your existing partner before **10/1/22**.",
+            "description": "The parentIBID is a identifier that identifies a partners different business segments.\n\n *⚠️ Only require to pass if your existing partner before **10/1/22**.",
             "deprecated": true
           },
           "walletSettlementProfileID": {
             "type": "string",
             "example": "bank-profile-1",
-            "description": "The walletSettlementProfileID is a identifier that denotes a user's wallet settlement profile. \n\n *⚠️ This is optional and only users for certain partners are eligible."
+            "description": "The walletSettlementProfileID is a identifier that denotes a user's wallet settlement profile.\n\n *⚠️ This is optional and only users for certain partners are eligible."
           },
           "documents": {
             "type": "array",
@@ -9970,6 +9980,9 @@
                 },
                 {
                   "$ref": "#/components/schemas/Margin_Disclosure"
+                },
+                {
+                  "$ref": "#/components/schemas/FPSL_Disclosure"
                 },
                 {
                   "$ref": "#/components/schemas/Custodian_Info"
@@ -10293,6 +10306,28 @@
           }
         }
       },
+      "FPSL_Disclosure": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "FPSL_DISCLOSURE"
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "fpslAgreement"
+            ],
+            "properties": {
+              "fpslAgreement": {
+                "type": "boolean",
+                "example": true,
+                "description": "A User's acceptance of DriveWealth's Fully Paid Securities Lending (FPSL) Agreement."
+              }
+            }
+          }
+        }
+      },
       "Margin_Disclosure_Optional": {
         "type": "object",
         "properties": {
@@ -10432,7 +10467,7 @@
               },
               "physicalStateProvince": {
                 "type": "string",
-                "example": "New Jersey",
+                "example": "NJ",
                 "description": "The institutuion physical state or province."
               },
               "physicalZipPostalCode": {
@@ -10511,7 +10546,7 @@
               },
               "physicalStateProvince": {
                 "type": "string",
-                "example": "New Jersey",
+                "example": "NJ",
                 "description": "The institutuion physical state or province."
               },
               "physicalZipPostalCode": {
@@ -10585,6 +10620,7 @@
               "INVESTOR_PROFILE_INFO",
               "DISCLOSURES",
               "MARGIN_DISCLOSURE",
+              "FPSL_DISCLOSURE",
               "CUSTODIAN_INFO",
               "DIRECTOR_INFO",
               "INSTITUTIONAL_INFO",
@@ -10643,6 +10679,7 @@
               "INVESTOR_PROFILE_INFO",
               "DISCLOSURES",
               "MARGIN_DISCLOSURE",
+              "FPSL_DISCLOSURE",
               "CUSTODIAN_INFO",
               "DIRECTOR_INFO",
               "INSTITUTIONAL_INFO",
@@ -10709,6 +10746,7 @@
               "INVESTOR_PROFILE_INFO",
               "DISCLOSURES",
               "MARGIN_DISCLOSURE",
+              "FPSL_DISCLOSURE",
               "CUSTODIAN_INFO",
               "DIRECTOR_INFO",
               "INSTITUTIONAL_INFO",
@@ -10756,6 +10794,7 @@
               "INVESTOR_PROFILE_INFO",
               "DISCLOSURES",
               "MARGIN_DISCLOSURE",
+              "FPSL_DISCLOSURE",
               "CUSTODIAN_INFO",
               "DIRECTOR_INFO",
               "INSTITUTIONAL_INFO",
@@ -10794,7 +10833,7 @@
               "politicallyExposedNames": {
                 "type": "string",
                 "example": "Nancy Pelosi",
-                "description": "The names of the people whom are political exposes, separated by a comma. \n\n *⚠️ Can be set to 'NULL' if not politically exposed "
+                "description": "The names of the people whom are political exposes, separated by a comma.\n\n *⚠️ Can be set to 'NULL' if not politically exposed"
               },
               "marital": {
                 "$ref": "#/components/schemas/userMaritalStatus"
@@ -10824,6 +10863,7 @@
               "INVESTOR_PROFILE_INFO",
               "DISCLOSURES",
               "MARGIN_DISCLOSURE",
+              "FPSL_DISCLOSURE",
               "CUSTODIAN_INFO",
               "DIRECTOR_INFO",
               "INSTITUTIONAL_INFO",
@@ -10896,7 +10936,7 @@
               "company": {
                 "type": "string",
                 "example": "DriveWealth LLC",
-                "description": "The User's current employer name. \n\n *⚠️ Only required when status equal to EMPLOYED or SELF_EMPLOYED & type is not being provided*"
+                "description": "The User's current employer name.\n\n *⚠️ Only required when status equal to EMPLOYED or SELF_EMPLOYED & type is not being provided*"
               },
               "companyID": {
                 "type": "string",
@@ -10916,7 +10956,7 @@
               "type": {
                 "type": "string",
                 "example": "FINANCE",
-                "description": "The User's current employer type. \n\n *⚠️ Only required when status equal to EMPLOYED or SELF_EMPLOYED  & company is not being provided*",
+                "description": "The User's current employer type.\n\n *⚠️ Only required when status equal to EMPLOYED or SELF_EMPLOYED & company is not being provided*",
                 "enum": [
                   "AGRICULTURE",
                   "MINING",
@@ -10942,7 +10982,7 @@
               "position": {
                 "type": "string",
                 "example": "ENGINEER",
-                "description": " The User's current role at the employment. \n\n *⚠️ Only required when status equal to EMPLOYED or SELF_EMPLOYED & using Drivewealth's Market Data Offering*",
+                "description": " The User's current role at the employment.\n\n *⚠️ Only required when status equal to EMPLOYED or SELF_EMPLOYED & using Drivewealth's Market Data Offering*",
                 "enum": [
                   "ACCOUNTANT",
                   "ACTUARY",
@@ -11077,7 +11117,6 @@
                 "description": "The User's current investment expertise.\n\n *⚠️ Can be defaulted to 'YRS_1_2' for all asset classes, except Options.*",
                 "enum": [
                   "NONE",
-                  "YRS_1_LESS",
                   "YRS_1_2",
                   "YRS_3_5",
                   "YRS_5_10",
@@ -11589,7 +11628,7 @@
               "company": {
                 "type": "string",
                 "example": "DriveWealth LLC",
-                "description": "The User's current employer name. \n\n *⚠️ Only required when status equal to EMPLOYED or SELF_EMPLOYED & type is not being provided*"
+                "description": "The User's current employer name.\n\n *⚠️ Only required when status equal to EMPLOYED or SELF_EMPLOYED & type is not being provided*"
               },
               "companyID": {
                 "type": "string",
@@ -11609,7 +11648,7 @@
               "type": {
                 "type": "string",
                 "example": "FINANCE",
-                "description": "The User's current employer type. \n\n *⚠️ Only required when status equal to EMPLOYED or SELF_EMPLOYED  & company is not being provided*",
+                "description": "The User's current employer type.\n\n *⚠️ Only required when status equal to EMPLOYED or SELF_EMPLOYED & company is not being provided*",
                 "enum": [
                   "AGRICULTURE",
                   "MINING",
@@ -11786,8 +11825,8 @@
                 "enum": [
                   "LOW",
                   "MODERATE",
-                  "SPECULATION",
-                  "HIGH"
+                  "HIGH",
+                  "SPECULATION"
                 ]
               },
               "investmentObjectives": {
@@ -11894,22 +11933,22 @@
               "customerAgreement": {
                 "type": "boolean",
                 "example": true,
-                "description": "The User accepts DriveWealth's Customer Agreement. \n\n*⚠ Only for opening regular brokerage accounts.*"
+                "description": "The User accepts DriveWealth's Customer Agreement.\n\n*⚠ Only for opening regular brokerage accounts.*"
               },
               "iraAgreement": {
                 "type": "boolean",
                 "example": false,
-                "description": "The User accepts DriveWealth's Individual Retirement Account (IRA) Agreement. \n\n*⚠ Only for opening IRA accounts.*"
+                "description": "The User accepts DriveWealth's Individual Retirement Account (IRA) Agreement.\n\n*⚠ Only for opening IRA accounts.*"
               },
               "marginAgreement": {
                 "type": "boolean",
                 "example": false,
-                "description": "The User accepts DriveWealth's Margin Agreement. \n\n*⚠ Only for opening Margin (leveraged) accounts.*"
+                "description": "The User accepts DriveWealth's Margin Agreement.\n\n*⚠ Only for opening Margin (leveraged) accounts.*"
               },
               "cryptoAgreements": {
                 "type": "boolean",
                 "example": false,
-                "description": "The User accepts DriveWealth's Digital Assets Agreement. \n\n*⚠ Only for opening Digital Assets accounts.*"
+                "description": "The User accepts DriveWealth's Digital Assets Agreement.\n\n*⚠ Only for opening Digital Assets accounts.*"
               },
               "marketDataAgreement": {
                 "type": "boolean",
@@ -12506,7 +12545,7 @@
           "networthLiquidRange": {
             "type": "string",
             "example": "$0 - $24,999",
-            "description": "The user's liquid net worth range. The amount of cash or near cash equivalents of the User's net worth. ",
+            "description": "The user's liquid net worth range. The amount of cash or near cash equivalents of the User's net worth.",
             "enum": [
               "Unknown",
               "$0 - $4,999",
@@ -12577,7 +12616,7 @@
           "investmentEquitiesAverageTradeSize": {
             "type": "string",
             "example": "AVG_0_9999",
-            "description": "Average per trade size ",
+            "description": "Average per trade size",
             "enum": [
               "AVG_0_9999",
               "AVG_10000_24999",
@@ -12785,6 +12824,9 @@
                 },
                 {
                   "$ref": "#/components/schemas/Margin_Disclosure_Optional"
+                },
+                {
+                  "$ref": "#/components/schemas/FPSL_Disclosure"
                 },
                 {
                   "$ref": "#/components/schemas/Custodian_Info_Optional"
@@ -16055,7 +16097,7 @@
               },
               "reason": {
                 "type": "string",
-                "example": "0105 Order quantity exceeds quantity available for sale.  Cannot SELL SHORT. null",
+                "example": "0105 Order quantity exceeds quantity available for sale. Cannot SELL SHORT. null",
                 "description": "The reason for the error."
               }
             }
@@ -17237,7 +17279,7 @@
               "Freight Logistics",
               "Mobile Application Software",
               "Book & Magazine Retailers",
-              "Copper Ore  Mining",
+              "Copper Ore Mining",
               "Cafés",
               "Fire",
               "Semiconductor Machinery Manufacturing",
@@ -17629,7 +17671,7 @@
           "pbRatio": {
             "type": "string",
             "example": "1.61196",
-            "description": "The Price-to-Book ratio of the instrument measured USD per share. The Price-to-Bok ratio measures the market valuation of an Instrument relative to its book  value."
+            "description": "The Price-to-Book ratio of the instrument measured USD per share. The Price-to-Bok ratio measures the market valuation of an Instrument relative to its book value."
           },
           "volumeMovingAverage10Day": {
             "type": "number",
@@ -18569,7 +18611,7 @@
             "enum": [
               "UNKNOWN",
               "SECOND_MORTGAGE",
-              "FIRST_MORTGAGE ",
+              "FIRST_MORTGAGE",
               "JUNIOR",
               "MEZZANINE",
               "SENIOR_SUBORDINATED",
@@ -18988,7 +19030,7 @@
             ]
           },
           "operator": {
-            "description": "Filters, operator`= equal to``!= not equal to``< less than``<= less than or equal to``> greater than``>= greater than or equal to``>< in between``() contains` ",
+            "description": "Filters, operator`= equal to``!= not equal to``< less than``<= less than or equal to``> greater than``>= greater than or equal to``>< in between``() contains`",
             "type": "string",
             "enum": [
               "=",
@@ -19071,7 +19113,7 @@
           "compression": {
             "type": "number",
             "example": 9,
-            "description": "The compression value represents the time increments  of the chart data. Refer to the compression table for the value descriptions.",
+            "description": "The compression value represents the time increments of the chart data. Refer to the compression table for the value descriptions.",
             "enum": [
               0,
               1,
@@ -20169,7 +20211,6 @@
         "description": "The investment experience in years.",
         "enum": [
           "NONE",
-          "YRS_1_LESS",
           "YRS_1_2",
           "YRS_3_5",
           "YRS_5_10",
@@ -20329,7 +20370,8 @@
           "OPTIONS",
           "REINVESTMENT",
           "OMNI_OPTIONS",
-          "TERMS"
+          "TERMS",
+          "MARGIN"
         ]
       },
       "notes": {
@@ -20648,7 +20690,11 @@
             }
           },
           "created": {
-            "$ref": "#/components/schemas/created",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/created"
+              }
+            ],
             "description": "The date and time the deposit was created for the user's account."
           },
           "accountID": {
@@ -20719,7 +20765,7 @@
         "type": "object",
         "properties": {
           "id": {
-            "$ref": "#/components/schemas/userID"
+            "$ref": "#/components/schemas/depositID"
           },
           "category": {
             "type": "string",
@@ -20740,7 +20786,11 @@
             "$ref": "#/components/schemas/FundingSeasoningDetails"
           },
           "created": {
-            "$ref": "#/components/schemas/created",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/created"
+              }
+            ],
             "description": "The date and time the deposit was created for the user's account."
           },
           "userDetails": {
@@ -20887,11 +20937,7 @@
         "type": "array",
         "description": "A list of all deposits for the firm.",
         "items": {
-          "oneOf": [
-            {
-              "$ref": "#/components/schemas/DepositListItem"
-            }
-          ]
+          "$ref": "#/components/schemas/DepositListItem"
         }
       },
       "AchSettlementUpdate": {
@@ -22675,6 +22721,9 @@
           "flaggedForACATS": {
             "$ref": "#/components/schemas/flaggedForACATS"
           },
+          "fpslEnrolled": {
+            "$ref": "#/components/schemas/fpslEnrolled"
+          },
           "accountFeatures": {
             "$ref": "#/components/schemas/accountFeaturesResp"
           },
@@ -22880,6 +22929,9 @@
                 "type": "boolean",
                 "example": false,
                 "description": "Indicates whether the account is enrolled in class actions settlement claim filing service. Set to `false` if the client explicitly opts out. If omitted or `null`, the account is treated as enrolled."
+              },
+              "fpslEnrolled": {
+                "$ref": "#/components/schemas/fpslEnrolled"
               },
               "lastActivityDate": {
                 "$ref": "#/components/schemas/lastActivityDate"
@@ -24323,6 +24375,11 @@
           "CASH",
           "CASHLESS"
         ]
+      },
+      "fpslEnrolled": {
+        "type": "boolean",
+        "example": true,
+        "description": "Indicates whether the account is enrolled in Fully Paid Securities Lending (FPSL) program."
       },
       "trustedContact": {
         "type": "object",
