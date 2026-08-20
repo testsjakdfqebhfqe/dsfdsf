@@ -1,6 +1,6 @@
 ---
 api:
   file: openapi.yaml
-  operationId: listPets
+  operationId: api_mailingnewsletters_post
 hidden: false
 ---

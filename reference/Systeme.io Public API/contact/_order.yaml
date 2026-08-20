@@ -1,0 +1,7 @@
+- api_contacts_get_collection
+- post_contact
+- api_contacts_id_get
+- delete_contact
+- api_contacts_id_patch
+- post_contact_tag
+- delete_contact_tag

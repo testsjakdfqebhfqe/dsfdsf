@@ -1,0 +1,5 @@
+- api_automationrules_get_collection
+- api_automationrules_post
+- api_automationrules_id_get
+- api_automationrules_id_delete
+- api_automationrules_id_patch

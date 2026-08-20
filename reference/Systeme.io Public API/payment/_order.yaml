@@ -1,0 +1,17 @@
+- api_paymentcoupons_get_collection
+- api_paymentcoupons_post
+- api_paymentcoupons_id_get
+- api_paymentcoupons_id_put
+- api_paymentcoupons_id_delete
+- api_paymentcoupons_id_patch
+- api_paymentdigital-products_get_collection
+- api_paymentdigital-products_post
+- api_paymentdigital-products_id_get
+- api_paymentdigital-products_id_delete
+- api_paymentdigital-products_id_patch
+- api_paymentprice-plans_get_collection
+- api_paymentprice-plans_post
+- api_paymentprice-plans_id_get
+- api_paymentprice-plans_id_delete
+- api_paymentprice-plans_id_patch
+- api_paymentsubscriptions_get_collection

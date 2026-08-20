@@ -1,0 +1,4 @@
+---
+title: School
+hidden: false
+---

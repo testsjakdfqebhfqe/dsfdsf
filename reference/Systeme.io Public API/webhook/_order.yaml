@@ -1,0 +1,5 @@
+- api_webhooks_get_collection
+- api_webhooks_post
+- api_webhooks_id_get
+- api_webhooks_id_delete
+- api_webhooks_id_patch
