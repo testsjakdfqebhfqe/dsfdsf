@@ -1,4 +1,0 @@
----
-title: Funnels
-hidden: false
----
