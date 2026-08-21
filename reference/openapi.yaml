@@ -199,7 +199,7 @@ components:
       type: apiKey
       in: header
       name: Authorization
-      description: (Get your API key)[https://example.com]
+      description: Get your API key- https://example.com
   parameters:
     AccountIdQuery:
       name: accountid
