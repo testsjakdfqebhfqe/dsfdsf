@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "Control D Public API",
+    "title": "Control D API",
     "description": "",
     "version": "1.0.1"
   },
@@ -6183,7 +6183,7 @@
   "servers": [
     {
       "url": "https://api.controld.com",
-      "description": "CD prod "
+      "description": "CD prod"
     }
   ],
   "security": [
