@@ -1,0 +1,8 @@
+- platform-windows
+- macos-platform
+- linux-platform
+- android-platform
+- ios-platform
+- browsers-platform
+- routers-platform
+- windows-server

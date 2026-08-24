@@ -1,0 +1,44 @@
+---
+title: Industries
+excerpt: >-
+  Control D can be used on a network of any size, and give you advanced
+  capabilities in an Interface that doesn't require reading a 900 page manual,
+  or being “certified”.
+deprecated: false
+hidden: false
+metadata:
+  title: ''
+  description: ''
+  robots: index
+next:
+  description: ''
+---
+At Control D, we understand that effective DNS solutions are not one-size-fits-all. Whether you’re safeguarding a startup or managing public Wi-Fi, our customizable solutions offer robust protection and seamless integration.
+
+## [Small And Midsize Businesses (SMBs)](doc:industry-smbs)
+
+Gain control and visibility over your network, no matter where your team is working. Reduce distractions and enhance security for small and medium-sized businesses without complex setups.
+
+## [Managed Service Providers (MSPs)](doc:industry-msps)
+
+Add DNS protection to your portfolio of client services. Offer global policy enforcement and simplified DNS management with top-down visibility and delegated access control without the burden of ongoing management.
+
+## [Startups](doc:industry-startups)
+
+Embrace a proactive security stance from the get-go. Fast-track staff onboarding and utilize our modern UI to protect your growing business efficiently and cost-effectively.
+
+## [Schools](doc:industry-schools)
+
+Protect students and staff from harmful content while managing online resources effectively. Deploy Control D across the school's devices with ease and align your budget with our per-head pricing model.
+
+## [Non-Profits](doc:industry-non-profits)
+
+Secure your digital footprint quickly and affordably. Enhance your team’s privacy with easy-to-use self-onboarding options. Control D is designed to complement your commitment to the common good.
+
+## [Public Wi-Fi Operators](doc:industry-public-wifi)
+
+Offer secure and liability-free Wi-Fi access to your guests and visitors. Monitor usage patterns and enforce dynamic policies that enhance customer satisfaction and network safety.
+
+## [Airbnb Hosts](doc:industry-airbnb-hosts)
+
+Ensure a safe and hassle-free Wi-Fi experience for your guests while safeguarding your rental from potential legal issues. Prevent unauthorized activities, such as movie piracy, that could lead to DMCA notices and ISP penalties.

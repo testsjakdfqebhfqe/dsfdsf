@@ -1,0 +1,10 @@
+- feature-malware-blocking
+- feature-web-filtering
+- feature-service-filtering
+- feature-custom-filtering
+- feature-modern-protocols
+- feature-analytics
+- feature-data-streaming-siem
+- feature-traffic-redirection
+- feature-multi-tenancy
+- feature-admin-logs

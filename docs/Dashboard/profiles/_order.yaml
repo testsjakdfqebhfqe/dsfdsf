@@ -1,0 +1,13 @@
+- dns-rebind-option
+- ipv6-compatibility-mode
+- disable-dnssec-option
+- ttl-overrides
+- ai-malware-filter
+- safe-search
+- restricted-youtube
+- lock-profile
+- blocked-query-response
+- ecs-custom-subnet
+- dns64
+- shared-profile
+- cname-flattening

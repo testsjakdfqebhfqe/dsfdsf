@@ -1,7 +1,13 @@
 ---
 title: My Requests
-excerpt: Set up My Requests to enable your users to debug their requests.
+excerpt: Set up the welcome page for your API to help users make their first call.
 api_config: my-requests
+deprecated: false
 hidden: true
-icon: icon-key1
+metadata:
+  title: ''
+  description: ''
+  robots: noindex
+next:
+  description: ''
 ---

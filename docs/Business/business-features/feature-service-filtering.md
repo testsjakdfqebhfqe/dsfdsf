@@ -1,0 +1,36 @@
+---
+title: Service Filtering
+excerpt: >-
+  Block access to 400+ different web services, or bypass them to override a
+  Filter.
+deprecated: false
+hidden: false
+link:
+  new_tab: true
+  url: https://controld.com/features/service-filtering
+metadata:
+  title: ''
+  description: ''
+  robots: index
+next:
+  description: ''
+---
+# Overview
+
+Service Blocking is an advanced feature of Control D, enabling users to selectively restrict access to over 400 web apps and services across their network. By empowering users with the discretion to allow or block [specific services](doc:services), Control D enhances control over online activities.
+
+# Problem Solved
+
+In an environment with diverse online applications and services, the ability to control what can be accessed from your network is critical. Service Blocking helps in preventing distractions, conserving bandwidth, and enforcing compliance with organizational policies.
+
+You can also optionally redirect individual services via 100+ proxy locations worldwide. 
+
+# Feature Benefits
+
+* **Expanded Control**: Beyond blocklists, users can tailor their internet experience by specifically allowing or denying particular services.
+* **Custom Configuration**: Offers the flexibility to block different services on different devices or profiles, and even schedule when these blocks are active.
+* **Intuitive Management**: Simplifies the process of managing access to services, whether for productivity, security, or compliance reasons.
+
+# Enabling and Using Service Blocking
+
+Navigate to your Control D dashboard, edit the desired Profile and create a rule for the services you wish to block from the provided list.
