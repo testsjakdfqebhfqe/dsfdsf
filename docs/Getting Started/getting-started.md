@@ -91,14 +91,14 @@ next:
   <div class="mig-banner-preview__container">
     <div class="mig-banner-preview__overlay">
       <h1 class="mig-banner-preview__header">Sale 50% off</h1>
-      <p class="mig-banner-preview__body">Only until this Friday, all clothes are discounted to celebrate the start of summer</p>
+      <p class="mig-banner-preview__body">Only {user.LB} until this Friday, all clothes are discounted to celebrate the start of summer</p>
       <button class="mig-banner-preview__button">Browse sale</button>
     </div>
   </div>
 </div>
 ```
 
-```html
+<HTMLBlock>{`
 <style>
   .mig-banner-preview, .mig-banner-preview * {
     box-sizing: border-box;
@@ -180,6 +180,4 @@ next:
     </div>
   </div>
 </div>
-```
-
-{user.LB}
+`}</HTMLBlock>
