@@ -6183,7 +6183,7 @@
   "servers": [
     {
       "url": "https://api.controld.com",
-      "description": "CD prod"
+      "description": "CD prod "
     }
   ],
   "security": [
