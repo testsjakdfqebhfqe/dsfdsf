@@ -11,3 +11,5 @@ next:
   description: ''
 ---
 <Tea />
+
+<Testglobal />
