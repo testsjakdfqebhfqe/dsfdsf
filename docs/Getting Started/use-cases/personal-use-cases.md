@@ -10,46 +10,84 @@ metadata:
 next:
   description: ''
 ---
-<br />
-
-The following list of use cases is not exhaustive, but should help you understand what use cases would help you benefit from Control D. {user.LB}
+This guide describes the ranking factors used in standard {user.search} ranking configurations.
 
 <Callout icon="📘" theme="info">
-  ### Business Use Cases
+  ### Note
 
-  Are you a business or organization? Check out the [Business Use Cases](https://docs.controld.com/docs/business-use-cases) section.
+  If you're using {user.br} Advanced based ranker (ABR), follow the guide to understand <Anchor target="_blank" href="https://documentation.bloomreach.com/discovery/docs/search-ranking-with-abr">how search ranking works with ABR</Anchor>.
 </Callout>
 
-# Secure Your Home Wi-Fi
+Once a set of products is returned for a search query, {user.br} search intelligence adjusts the order of those products to optimize for higher expected revenue per visit (RPV) for the query. Several factors contribute to the algorithm that optimizes product ranking. A high-level explanation of the various signals is included below.
 
-Internet security isn't reserved for big organizations with large budgets. Keeping your home network secure is equally important, as a device infection can result in anything from minor annoyances to severe financial losses. Blocking access to malicious content can give you some peace of mind that your 70 year old grandma won't click on some link and then Venmo "you" some money because you've allegedly been kidnapped.
+## Ranking signals
 
-**Solution**: Enable the Malware and Phishing filters, and reduce the chances of getting compromised by 90%.
+{user.br} calculates several scores for each product to determine the relative rankings:
 
-# Improve Your Privacy (and browse faster)
+- Product performance score
+- Personalization score
+- Relevance score
 
-When you visit any website, or use any app, there is a tremendous amount of tracking that happens behind the scenes. Your devices end up connecting to dozens or even hundreds of tracking platforms throughout the day, all of which harvest your personal information in order to sell you the next version of a smart toaster you don't need.
+<Callout icon="🌟" theme="default">
+  Performance Score, Personalization Score, and Relevance Score is [powered by](https://www.bloomreach.com/en/products/loomi) {user.lai}
+</Callout>
 
-Then there are ads themselves, all of which are also trackers. In many cases, before a single ad even loads, you end up connecting to over a dozen ad networks, each one setting their own cookies on your device and forwarding the request to the next network until the ad is actually displayed. This leaks your personal information, slows down page load times, and wastes your bandwidth on crap you never asked for.
+These core ranking scores are adjusted with inventory-based signals such as:
 
-**Solution**: Enable the Ads & Trackers filter, and never see 99.9% of ads ever again. On any device.
+- SKU popularity
+- Product Freshness/Recency
 
-# Improve Your Productivity
+{user.br} combines these scores to compute an overall ranking score for each product in the retrieved set of products. The products are sorted in descending order of that score. You can override these ranking scores by setting conditional boost and bury rules in the {user.br} dashboard. This will tweak the order in which products are returned in the results.
 
-Everybody has their own definition of productivity, and for most of us, that definition changes depending on what we’re trying to achieve. There are swathes of the Internet, however, that are specifically designed to capture your attention by triggering a dopamine response.
+<Callout icon="📘" theme="info">
+  ### Note
 
-Is this dope? Literally, yes. But actually, probably not. Social networks, games, dating apps and porn are all culprits.
+  Category ranking uses all the ranking signals except the [Relevance score](https://documentation.bloomreach.com/discovery/docs/search-ranking#relevance-score). All items in a category have equal relevance.
+</Callout>
 
-**Solution**: Block services and apps that waste your time when you're trying to get stuff done. Reward yourself with an hour of doom scrolling when the task is complete.
+### Product performance score
 
-# Parental Controls
+{user.br} uses many signals to compute a performance score for each returned product. The primary signal includes a blend of product views, add to carts, conversions and revenue which the products generate for a given search query. For customers that have Product Collections (or variant groups) in their catalog, {user.br} optimizes ranking of both the Collections as well as their component products/SKUs.
 
-As we all were kids at some point, logic dictates that there are many home networks with children on them. Unlike us adults, kids shouldn't be looking at naked ladies all day, nor gambling their allowances on non-fungible pictures of monkeys. With Control D, you can block access to things you deem undesirable for your little minions. These things can include:
+- How does {user.br} calculate performance scores?<br />{user.br} uses pixels on the site to capture the raw data that drive performance scores. The signals are refreshed on a daily basis to adjust to changing usage patterns on the site.
 
-- Adult content
-- Drug content
-- Crypto / gambling websites
-- Social networks
-- Games
+### Personalization score
 
-The rules you set don't have to be static. You can still allow access to YouTube and Minecraft on the weekends, and block access on weekdays when there is school work to do. An automatic schedule makes this really easy to do.
+<Callout icon="📘" theme="info">
+  ### Note
+
+  This score only applies if you're using [1:1 Personalization](https://documentation.bloomreach.com/discovery/docs/1-1-personalization).
+</Callout>
+
+{user.br} does real-time personalization at a 1:1 level. Each visitor has a unique profile that gets updated in real time based on his/her on-site search, browsing, and purchase behavior. This unique profile is used to compute personalization scores for the retrieved products. For example, if a profile indicates a strong pattern of engaging with men’s products, the men’s products in the retrieved set will receive higher personalization scores and will be ranked higher than women's products.
+
+### Relevance score
+
+The relevance score measures the match of the query to the product. This score is powered by {user.br}'s Semantic Understanding capabilities.
+
+{user.br} computes base relevance using these key factors:
+
+- Extracted product type and attributes from the user's query
+- Weighted text match on product fields
+
+For a query such as “red dress”, the {user.br} system understands that the product intent is "dress" with attribute of color "red". All products of type “dress” and attribute "red" will be given a higher relevance score and will be consequently ranked higher than other products that don't match the product type or attribute. The final relevance score will also include some weightage based on the weighted text match on product fields. Surfacing products that exactly match the user intent creates a better purchase experience and also increases conversion rates across your site. 
+
+Here are a few examples that show {user.br}'s Semantic Understanding capabilities:
+
+![](https://files.readme.io/42bfb06-image2017-9-13_21-58-10.png "image2017-9-13_21-58-10.png")
+
+![](https://files.readme.io/b4d5efd-image2017-9-13_21-59-23.png "image2017-9-13_21-59-23.png")
+
+![](https://files.readme.io/1be8de5-image2017-9-13_22-0-51.png "image2017-9-13_22-0-51.png")
+
+For many queries where it is not possible to clearly extract product type, for example “evening wear” or “chromecast”, the weighted text match score is also factored in. When computing the weighted text match, text relevance takes into account many attributes from the product feed and weighs them differently. By default, product title has the highest weight, followed by attributes and category. Description and other searchable fields like keywords carry the lowest weight.
+
+### SKU popularity
+
+{user.br}'s ranking algorithm takes into account user behavior data not just at the product level but also at the SKU level. This is important because, for many apparel products, the popularity of individual SKUs can vary widely. For instance, extreme sizes like XXS and XXL often lag in sales as compared to S, M, and L. Similarly, certain colors might outsell others. When a product's more popular SKUs sell out, that product will start to convert at a lower rate than other similar products where the popular sizes or colors are available. Therefore, when {user.br} detects that the popular SKUs are out of stock for a product, the system automatically lowers the product's overall ranking, which allows other products to move up. 
+
+### Product freshness/recency
+
+Performance ranking signals are based on past user behavior data captured through the {user.br} pixel.  In order to take advantage of more recent user behavior trends, a decay function is applied to the user behavior signals such as views and conversions. This means that conversion for a product that occurred 2 days ago is weighted more heavily than a conversion that occurred 20 days ago. 
+
+This feature means that the engine quickly reacts to changing trends often seen with changing seasons (e.g. fall products converting better than summer), special days (e.g. Mother's Day), special events (e.g. back to school) and new product launches (e.g. launch of a new Chromecast). This results in a better end user experience and higher conversion rate on your site.
