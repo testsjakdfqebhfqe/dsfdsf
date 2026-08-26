@@ -12,6 +12,14 @@ next:
 ---
 {user.LB}
 
+<Teaglo />
+
+<br />
+
+<Teaglo />
+
+<br />
+
 This guide describes the ranking factors used in standard {user.search} ranking configurations.
 
 <Callout icon="📘" theme="info">
