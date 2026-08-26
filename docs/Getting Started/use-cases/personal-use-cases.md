@@ -12,7 +12,7 @@ next:
 ---
 <br />
 
-The following list of use cases is not exhaustive, but should help you understand what use cases would help you benefit from Control D.
+The following list of use cases is not exhaustive, but should help you understand what use cases would help you benefit from Control D. {user.LB}
 
 <Callout icon="📘" theme="info">
   ### Business Use Cases
