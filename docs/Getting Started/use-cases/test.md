@@ -6,3 +6,9 @@ metadata:
   robots: index
 ---
 {user.LB}
+
+<br />
+
+<Accordion title="{user.LB}" icon="fa-info-circle">
+  {user.LB}
+</Accordion>
