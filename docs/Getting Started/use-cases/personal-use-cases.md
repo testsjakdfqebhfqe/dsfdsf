@@ -10,25 +10,29 @@ metadata:
 next:
   description: ''
 ---
-The following list of use cases is not exhaustive, but should help you understand what use cases would help you benefit from Control D. 
+{user.LB}
 
-> 📘 Business Use Cases
->
-> Are you a business or organization? Check out the [Business Use Cases](https://docs.controld.com/docs/business-use-cases) section.
+The following list of use cases is not exhaustive, but should help you understand what use cases would help you benefit from Control D.
+
+<Callout icon="📘" theme="info">
+  ### Business Use Cases
+
+  Are you a business or organization? Check out the [Business Use Cases](https://docs.controld.com/docs/business-use-cases) section.
+</Callout>
 
 # Secure Your Home Wi-Fi
 
-Internet security isn't reserved for big organizations with large budgets. Keeping your home network secure is equally important, as a device infection can result in anything from minor annoyances to severe financial losses. Blocking access to malicious content can give you some peace of mind that your 70 year old grandma won't click on some link and then Venmo "you" some money because you've allegedly been kidnapped. 
+Internet security isn't reserved for big organizations with large budgets. Keeping your home network secure is equally important, as a device infection can result in anything from minor annoyances to severe financial losses. Blocking access to malicious content can give you some peace of mind that your 70 year old grandma won't click on some link and then Venmo "you" some money because you've allegedly been kidnapped.
 
 **Solution**: Enable the Malware and Phishing filters, and reduce the chances of getting compromised by 90%.
 
 # Improve Your Privacy (and browse faster)
 
-When you visit any website, or use any app, there is a tremendous amount of tracking that happens behind the scenes. Your devices end up connecting to dozens or even hundreds of tracking platforms throughout the day, all of which harvest your personal information in order to sell you the next version of a smart toaster you don't need. 
+When you visit any website, or use any app, there is a tremendous amount of tracking that happens behind the scenes. Your devices end up connecting to dozens or even hundreds of tracking platforms throughout the day, all of which harvest your personal information in order to sell you the next version of a smart toaster you don't need.
 
-Then there are ads themselves, all of which are also trackers. In many cases, before a single ad even loads, you end up connecting to over a dozen ad networks, each one setting their own cookies on your device and forwarding the request to the next network until the ad is actually displayed. This leaks your personal information, slows down page load times, and wastes your bandwidth on crap you never asked for. 
+Then there are ads themselves, all of which are also trackers. In many cases, before a single ad even loads, you end up connecting to over a dozen ad networks, each one setting their own cookies on your device and forwarding the request to the next network until the ad is actually displayed. This leaks your personal information, slows down page load times, and wastes your bandwidth on crap you never asked for.
 
-**Solution**: Enable the Ads & Trackers filter, and never see 99.9% of ads ever again. On any device. 
+**Solution**: Enable the Ads & Trackers filter, and never see 99.9% of ads ever again. On any device.
 
 # Improve Your Productivity
 
@@ -36,16 +40,16 @@ Everybody has their own definition of productivity, and for most of us, that def
 
 Is this dope? Literally, yes. But actually, probably not. Social networks, games, dating apps and porn are all culprits.
 
-**Solution**: Block services and apps that waste your time when you're trying to get stuff done. Reward yourself with an hour of doom scrolling when the task is complete. 
+**Solution**: Block services and apps that waste your time when you're trying to get stuff done. Reward yourself with an hour of doom scrolling when the task is complete.
 
 # Parental Controls
 
 As we all were kids at some point, logic dictates that there are many home networks with children on them. Unlike us adults, kids shouldn't be looking at naked ladies all day, nor gambling their allowances on non-fungible pictures of monkeys. With Control D, you can block access to things you deem undesirable for your little minions. These things can include:
 
-* Adult content
-* Drug content 
-* Crypto / gambling websites
-* Social networks
-* Games 
+- Adult content
+- Drug content
+- Crypto / gambling websites
+- Social networks
+- Games
 
 The rules you set don't have to be static. You can still allow access to YouTube and Minecraft on the weekends, and block access on weekdays when there is school work to do. An automatic schedule makes this really easy to do.
