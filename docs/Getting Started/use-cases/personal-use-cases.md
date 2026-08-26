@@ -10,7 +10,7 @@ metadata:
 next:
   description: ''
 ---
-<br />
+{user.LB}
 
 The following list of use cases is not exhaustive, but should help you understand what use cases would help you benefit from Control D.
 
