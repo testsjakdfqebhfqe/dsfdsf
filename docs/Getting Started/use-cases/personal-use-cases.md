@@ -10,6 +10,8 @@ metadata:
 next:
   description: ''
 ---
+{user.LB}
+
 This guide describes the ranking factors used in standard {user.search} ranking configurations.
 
 <Callout icon="📘" theme="info">
