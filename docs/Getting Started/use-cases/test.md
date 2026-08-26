@@ -13,4 +13,4 @@ metadata:
   {user.LB}
 </Accordion>
 
-[Link](https://)
+[\{user.LB\}](https://example.com)
