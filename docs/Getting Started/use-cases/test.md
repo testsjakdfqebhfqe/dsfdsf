@@ -19,4 +19,4 @@ metadata:
 
 <br />
 
-<Anchor target="_blank" href="https://www.bloomreach.com/en/products/loomi">leverages</Anchor>
+<Anchor target="_blank" href="https://www.bloomreach.com/en/products/loomi">{user.LB}</Anchor>
