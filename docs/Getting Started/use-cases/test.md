@@ -13,4 +13,10 @@ metadata:
   {user.LB}
 </Accordion>
 
-[\{user.LB\}](https://example.com)
+[{user.LB}](https://example.com)
+
+<br />
+
+<br />
+
+<Anchor target="_blank" href="https://www.bloomreach.com/en/products/loomi">leverages</Anchor>
