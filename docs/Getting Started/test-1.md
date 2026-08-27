@@ -5,6 +5,4 @@ hidden: false
 metadata:
   robots: index
 ---
-YT
-
-[Link {user.LB}](https://example.com)
+873a79d2-134e-4a91-bfc5-6504c5c3637d
