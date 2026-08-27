@@ -24,4 +24,4 @@ test
 
 <br />
 
-<a href="https://www.bloomreach.com/en/products/loomi">lala</a>
+<a href="https://www.bloomreach.com/en/products/loomi">lala {user.LB}</a>
