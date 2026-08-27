@@ -9,4 +9,4 @@ metadata:
 
 example
 
-<test target="_blank" href="https://www.bloomreach.com/en/products/loomi">lala {user.lai}</test>
+<a target="_blank" href="https://www.bloomreach.com/en/products/loomi">lala {user.lai}</a>
