@@ -14,4 +14,4 @@ next:
       slug: use-cases
       title: Use Cases
 ---
-{user.lai} {user.lai}
+{user.search} ranking {user.lai} {user.lai}
