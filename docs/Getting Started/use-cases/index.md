@@ -10,6 +10,4 @@ metadata:
 next:
   description: ''
 ---
-<Tea />
-
-<Testglobal />
+813af9ad-1508-4c35-ae8e-56e189b2d27a
