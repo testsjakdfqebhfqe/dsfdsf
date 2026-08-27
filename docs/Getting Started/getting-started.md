@@ -14,4 +14,4 @@ next:
       slug: use-cases
       title: Use Cases
 ---
-{user.search} ranking {user.lai} {user.lai}
+e42d6cc8-ae3b-4b1f-99ab-e9437d1ff18c
