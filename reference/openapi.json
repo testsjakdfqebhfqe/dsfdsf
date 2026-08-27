@@ -10070,22 +10070,14 @@
             "nullable": true
           },
           "bank_code": {
-            "description": "Bank or institution number. test",
+            "description": "Bank or institution number",
             "type": "string",
             "nullable": true,
             "examples": [
-              {
-                "Brasil": 1
-              },
-              {
-                "Canada": 2
-              },
-              {
-                "Hong Kong": 24
-              },
-              {
-                "Mexico": 14
-              }
+              1,
+              2,
+              24,
+              14
             ]
           },
           "beneficiary_details": {
