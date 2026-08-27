@@ -1,0 +1,8 @@
+- get_v2-tenant-tenantid-mobile-devices
+- get_v2-tenant-tenantid-mobile-devices-detail
+- get_v2-tenant-tenantid-mobile-devices-id
+- patch_v2-tenant-tenantid-mobile-devices-id
+- get_v2-tenant-tenantid-mobile-devices-id-detail
+- post_v2-tenant-tenantid-mobile-devices-id-erase
+- get_v2-tenant-tenantid-mobile-devices-id-paired-devices
+- post_v2-tenant-tenantid-mobile-devices-id-unmanage

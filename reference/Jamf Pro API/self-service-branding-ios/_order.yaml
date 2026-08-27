@@ -1,0 +1,5 @@
+- get_v1-tenant-tenantid-self-service-branding-ios
+- post_v1-tenant-tenantid-self-service-branding-ios
+- get_v1-tenant-tenantid-self-service-branding-ios-id
+- put_v1-tenant-tenantid-self-service-branding-ios-id
+- delete_v1-tenant-tenantid-self-service-branding-ios-id

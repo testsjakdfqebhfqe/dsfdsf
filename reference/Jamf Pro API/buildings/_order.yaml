@@ -1,0 +1,10 @@
+- get_v1-tenant-tenantid-buildings
+- post_v1-tenant-tenantid-buildings
+- post_v1-tenant-tenantid-buildings-delete-multiple
+- post_v1-tenant-tenantid-buildings-export
+- get_v1-tenant-tenantid-buildings-id
+- put_v1-tenant-tenantid-buildings-id
+- delete_v1-tenant-tenantid-buildings-id
+- get_v1-tenant-tenantid-buildings-id-history
+- post_v1-tenant-tenantid-buildings-id-history
+- post_v1-tenant-tenantid-buildings-id-history-export

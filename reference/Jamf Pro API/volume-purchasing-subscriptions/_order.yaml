@@ -1,0 +1,7 @@
+- get_v1-tenant-tenantid-volume-purchasing-subscriptions
+- post_v1-tenant-tenantid-volume-purchasing-subscriptions
+- get_v1-tenant-tenantid-volume-purchasing-subscriptions-id
+- put_v1-tenant-tenantid-volume-purchasing-subscriptions-id
+- delete_v1-tenant-tenantid-volume-purchasing-subscriptions-id
+- get_v1-tenant-tenantid-volume-purchasing-subscriptions-id-history
+- post_v1-tenant-tenantid-volume-purchasing-subscriptions-id-history

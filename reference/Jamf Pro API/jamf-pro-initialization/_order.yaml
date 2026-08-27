@@ -1,0 +1,3 @@
+- post_v1-tenant-tenantid-system-initialize
+- post_v1-tenant-tenantid-system-initialize-database-connection
+- post_v1-tenant-tenantid-system-platform-initialize

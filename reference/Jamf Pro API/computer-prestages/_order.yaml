@@ -1,0 +1,10 @@
+- get_v2-tenant-tenantid-computer-prestages-scope
+- get_v2-tenant-tenantid-computer-prestages-id-scope
+- put_v2-tenant-tenantid-computer-prestages-id-scope
+- post_v2-tenant-tenantid-computer-prestages-id-scope
+- post_v2-tenant-tenantid-computer-prestages-id-scope-delete-multiple
+- get_v3-tenant-tenantid-computer-prestages
+- post_v3-tenant-tenantid-computer-prestages
+- get_v3-tenant-tenantid-computer-prestages-id
+- put_v3-tenant-tenantid-computer-prestages-id
+- delete_v3-tenant-tenantid-computer-prestages-id

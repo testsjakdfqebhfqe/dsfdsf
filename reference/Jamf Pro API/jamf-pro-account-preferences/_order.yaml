@@ -1,0 +1,4 @@
+- get_v2-tenant-tenantid-account-preferences
+- patch_v2-tenant-tenantid-account-preferences
+- get_v3-tenant-tenantid-account-preferences
+- patch_v3-tenant-tenantid-account-preferences

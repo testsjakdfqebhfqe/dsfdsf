@@ -1,0 +1,5 @@
+- get_v1-tenant-tenantid-jamf-remote-assist-session
+- get_v1-tenant-tenantid-jamf-remote-assist-session-id
+- get_v2-tenant-tenantid-jamf-remote-assist-session
+- post_v2-tenant-tenantid-jamf-remote-assist-session-export
+- get_v2-tenant-tenantid-jamf-remote-assist-session-id

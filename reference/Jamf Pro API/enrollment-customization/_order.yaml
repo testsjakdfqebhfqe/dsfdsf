@@ -1,0 +1,10 @@
+- get_v2-tenant-tenantid-enrollment-customizations
+- post_v2-tenant-tenantid-enrollment-customizations
+- post_v2-tenant-tenantid-enrollment-customizations-images
+- get_v2-tenant-tenantid-enrollment-customizations-images-id
+- get_v2-tenant-tenantid-enrollment-customizations-id
+- put_v2-tenant-tenantid-enrollment-customizations-id
+- delete_v2-tenant-tenantid-enrollment-customizations-id
+- get_v2-tenant-tenantid-enrollment-customizations-id-history
+- post_v2-tenant-tenantid-enrollment-customizations-id-history
+- get_v2-tenant-tenantid-enrollment-customizations-id-prestages

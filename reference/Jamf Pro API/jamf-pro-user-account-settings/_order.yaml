@@ -1,0 +1,4 @@
+- get_v1-tenant-tenantid-user-preferences-settings-keyid
+- get_v1-tenant-tenantid-user-preferences-keyid
+- put_v1-tenant-tenantid-user-preferences-keyid
+- delete_v1-tenant-tenantid-user-preferences-keyid

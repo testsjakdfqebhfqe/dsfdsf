@@ -1,0 +1,5 @@
+- put_v1-tenant-tenantid-activation-code
+- get_v1-tenant-tenantid-activation-code-history
+- post_v1-tenant-tenantid-activation-code-history
+- post_v1-tenant-tenantid-activation-code-history-export
+- patch_v1-tenant-tenantid-activation-code-organization-name

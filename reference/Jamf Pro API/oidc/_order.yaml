@@ -1,0 +1,6 @@
+- get_v1-tenant-tenantid-oidc-direct-idp-login-url
+- post_v1-tenant-tenantid-oidc-dispatch
+- post_v1-tenant-tenantid-oidc-generate-certificate
+- get_v1-tenant-tenantid-oidc-public-features
+- get_v1-tenant-tenantid-oidc-public-key
+- post_v2-tenant-tenantid-oidc-dispatch

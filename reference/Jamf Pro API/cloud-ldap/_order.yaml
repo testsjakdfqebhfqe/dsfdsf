@@ -1,0 +1,12 @@
+- post_v1-tenant-tenantid-ldap-keystore-verify
+- post_v2-tenant-tenantid-cloud-ldaps
+- get_v2-tenant-tenantid-cloud-ldaps-defaults-provider-mappings
+- get_v2-tenant-tenantid-cloud-ldaps-defaults-provider-server-configuration
+- get_v2-tenant-tenantid-cloud-ldaps-id
+- put_v2-tenant-tenantid-cloud-ldaps-id
+- delete_v2-tenant-tenantid-cloud-ldaps-id
+- get_v2-tenant-tenantid-cloud-ldaps-id-connection-bind
+- get_v2-tenant-tenantid-cloud-ldaps-id-connection-search
+- get_v2-tenant-tenantid-cloud-ldaps-id-connection-status
+- get_v2-tenant-tenantid-cloud-ldaps-id-mappings
+- put_v2-tenant-tenantid-cloud-ldaps-id-mappings

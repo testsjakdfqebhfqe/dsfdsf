@@ -1,4 +1,0 @@
----
-title: Receivables
-hidden: false
----

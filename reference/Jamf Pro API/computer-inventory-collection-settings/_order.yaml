@@ -1,0 +1,10 @@
+- get_v1-tenant-tenantid-computer-inventory-collection-settings
+- patch_v1-tenant-tenantid-computer-inventory-collection-settings
+- post_v1-tenant-tenantid-computer-inventory-collection-settings-custom-path
+- >-
+  delete_v1-tenant-tenantid-computer-inventory-collection-settings-custom-path-id
+- get_v2-tenant-tenantid-computer-inventory-collection-settings
+- patch_v2-tenant-tenantid-computer-inventory-collection-settings
+- post_v2-tenant-tenantid-computer-inventory-collection-settings-custom-path
+- >-
+  delete_v2-tenant-tenantid-computer-inventory-collection-settings-custom-path-id

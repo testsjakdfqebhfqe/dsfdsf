@@ -1,0 +1,17 @@
+- post_v1-tenant-tenantid-enrollment-customization-parse-markdown
+- get_v1-tenant-tenantid-enrollment-customization-id-all
+- get_v1-tenant-tenantid-enrollment-customization-id-all-panel-id
+- delete_v1-tenant-tenantid-enrollment-customization-id-all-panel-id
+- post_v1-tenant-tenantid-enrollment-customization-id-ldap
+- get_v1-tenant-tenantid-enrollment-customization-id-ldap-panel-id
+- put_v1-tenant-tenantid-enrollment-customization-id-ldap-panel-id
+- delete_v1-tenant-tenantid-enrollment-customization-id-ldap-panel-id
+- post_v1-tenant-tenantid-enrollment-customization-id-sso
+- get_v1-tenant-tenantid-enrollment-customization-id-sso-panel-id
+- put_v1-tenant-tenantid-enrollment-customization-id-sso-panel-id
+- delete_v1-tenant-tenantid-enrollment-customization-id-sso-panel-id
+- post_v1-tenant-tenantid-enrollment-customization-id-text
+- get_v1-tenant-tenantid-enrollment-customization-id-text-panel-id
+- put_v1-tenant-tenantid-enrollment-customization-id-text-panel-id
+- delete_v1-tenant-tenantid-enrollment-customization-id-text-panel-id
+- get_v1-tenant-tenantid-enrollment-customization-id-text-panel-id-markdown

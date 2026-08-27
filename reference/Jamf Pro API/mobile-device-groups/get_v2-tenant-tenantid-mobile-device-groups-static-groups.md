@@ -1,0 +1,6 @@
+---
+api:
+  file: openapi.json
+  operationId: get_v2-tenant-tenantid-mobile-device-groups-static-groups
+hidden: false
+---

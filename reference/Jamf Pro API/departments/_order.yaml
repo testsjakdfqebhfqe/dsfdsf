@@ -1,0 +1,8 @@
+- get_v1-tenant-tenantid-departments
+- post_v1-tenant-tenantid-departments
+- post_v1-tenant-tenantid-departments-delete-multiple
+- get_v1-tenant-tenantid-departments-id
+- put_v1-tenant-tenantid-departments-id
+- delete_v1-tenant-tenantid-departments-id
+- get_v1-tenant-tenantid-departments-id-history
+- post_v1-tenant-tenantid-departments-id-history

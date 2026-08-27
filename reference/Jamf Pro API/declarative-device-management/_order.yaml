@@ -1,0 +1,4 @@
+- get_v1-tenant-tenantid-ddm-clientmanagementid-status-items
+- get_v1-tenant-tenantid-ddm-clientmanagementid-status-items-key
+- post_v1-tenant-tenantid-ddm-clientmanagementid-sync
+- get_v1-tenant-tenantid-dss-declarations-declarationid

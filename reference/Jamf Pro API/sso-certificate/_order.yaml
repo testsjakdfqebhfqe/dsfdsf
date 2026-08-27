@@ -1,0 +1,6 @@
+- get_v2-tenant-tenantid-sso-cert
+- put_v2-tenant-tenantid-sso-cert
+- post_v2-tenant-tenantid-sso-cert
+- delete_v2-tenant-tenantid-sso-cert
+- get_v2-tenant-tenantid-sso-cert-download
+- post_v2-tenant-tenantid-sso-cert-parse

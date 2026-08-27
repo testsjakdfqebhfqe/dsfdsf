@@ -1,0 +1,6 @@
+- get_v1-tenant-tenantid-pki-certificate-authority-active
+- get_v1-tenant-tenantid-pki-certificate-authority-active-der
+- get_v1-tenant-tenantid-pki-certificate-authority-active-pem
+- get_v1-tenant-tenantid-pki-certificate-authority-id
+- get_v1-tenant-tenantid-pki-certificate-authority-id-der
+- get_v1-tenant-tenantid-pki-certificate-authority-id-pem

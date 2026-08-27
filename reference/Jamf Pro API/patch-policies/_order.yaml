@@ -1,0 +1,5 @@
+- get_v2-tenant-tenantid-patch-policies
+- get_v2-tenant-tenantid-patch-policies-policy-details
+- get_v2-tenant-tenantid-patch-policies-id-dashboard
+- post_v2-tenant-tenantid-patch-policies-id-dashboard
+- delete_v2-tenant-tenantid-patch-policies-id-dashboard

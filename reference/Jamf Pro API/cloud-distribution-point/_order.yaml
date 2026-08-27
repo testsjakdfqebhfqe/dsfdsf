@@ -1,0 +1,11 @@
+- get_v1-tenant-tenantid-cloud-distribution-point
+- post_v1-tenant-tenantid-cloud-distribution-point
+- delete_v1-tenant-tenantid-cloud-distribution-point
+- patch_v1-tenant-tenantid-cloud-distribution-point
+- post_v1-tenant-tenantid-cloud-distribution-point-fail-upload-id
+- get_v1-tenant-tenantid-cloud-distribution-point-files
+- get_v1-tenant-tenantid-cloud-distribution-point-history
+- post_v1-tenant-tenantid-cloud-distribution-point-history
+- post_v1-tenant-tenantid-cloud-distribution-point-refresh-inventory
+- get_v1-tenant-tenantid-cloud-distribution-point-test-connection
+- get_v1-tenant-tenantid-cloud-distribution-point-upload-capability

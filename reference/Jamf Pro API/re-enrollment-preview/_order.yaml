@@ -1,0 +1,5 @@
+- get_v1-tenant-tenantid-reenrollment
+- put_v1-tenant-tenantid-reenrollment
+- get_v1-tenant-tenantid-reenrollment-history
+- post_v1-tenant-tenantid-reenrollment-history
+- post_v1-tenant-tenantid-reenrollment-history-export

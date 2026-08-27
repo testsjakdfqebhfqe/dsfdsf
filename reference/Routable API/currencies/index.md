@@ -1,4 +1,0 @@
----
-title: Currencies
-hidden: false
----

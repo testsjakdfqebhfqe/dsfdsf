@@ -1,4 +1,0 @@
----
-title: Settings
-hidden: false
----
