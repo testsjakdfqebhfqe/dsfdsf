@@ -10,3 +10,7 @@ metadata:
 example
 
 <a target="_blank" href="https://www.bloomreach.com/en/products/loomi">lala {user.lai}</a>
+
+<br />
+
+<a target="_blank" href="https://www.bloomreach.com/en/products/loomi">lala {user.lai}</a>
