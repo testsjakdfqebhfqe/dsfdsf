@@ -20,4 +20,4 @@ test
 
 <br />
 
-<a href="https://example.com">test</a>
+<a href="https://www.bloomreach.com/en/products/loomi">test</a>
