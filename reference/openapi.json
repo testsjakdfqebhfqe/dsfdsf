@@ -11800,7 +11800,13 @@
           },
           "bank_code": {
             "description": "Bank or institution number.",
-            "type": "string"
+            "type": "string",
+            "examples": [
+              1,
+              2,
+              24,
+              14
+            ]
           },
           "beneficiary_details": {
             "description": "Extra beneficiary data.",
