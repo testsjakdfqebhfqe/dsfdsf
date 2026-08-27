@@ -6,3 +6,7 @@ metadata:
   robots: index
 ---
 873a79d2-134e-4a91-bfc5-6504c5c3637d
+
+<br />
+
+<Anchor target="_blank" href="https://example.com">Link {user.LB}</Anchor>
