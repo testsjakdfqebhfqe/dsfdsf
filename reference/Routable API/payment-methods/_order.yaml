@@ -1,0 +1,7 @@
+- list-payment-methods
+- create-payment-method
+- retrieve-payment-method
+- update-payment-method
+- archive-payment-method
+- unarchive-payment-method
+- validate-payment-method
