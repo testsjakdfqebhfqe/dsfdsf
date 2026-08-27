@@ -5,26 +5,4 @@ hidden: false
 metadata:
   robots: index
 ---
-<a href="https://www.bloomreach.com/en/products/loomi">test {user.lai}</a>
-
-example
-
-<a target="_blank" href="https://www.bloomreach.com/en/products/loomi">lala {user.lai}</a>
-
-<br />
-
-<a target="_blank" href="https://www.bloomreach.com/en/products/loomi">lala {user.lai}</a>
-
-<br />
-
-<br />
-
-<br />
-
-<a target="_blank" href="https://www.bloomreach.com/en/products/loomi">leverages {user.lai}</a>
-
-<br />
-
-<Anchor target="_blank" href="https://example.com">leverages {user.lai}</Anchor>
-
-<br />
+7e1c81f7-d298-4adf-9c7d-fbfcce22e794
