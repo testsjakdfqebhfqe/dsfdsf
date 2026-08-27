@@ -5,8 +5,4 @@ hidden: false
 metadata:
   robots: index
 ---
-873a79d2-134e-4a91-bfc5-6504c5c3637d
-
-<br />
-
-<Anchor target="_blank" href="https://example.com">Link {user.LB}</Anchor>
+c8bc80c9-d95b-43ce-95aa-d2b061ce81f4
