@@ -1,4 +1,0 @@
----
-title: devices
-hidden: false
----

@@ -1,8 +1,0 @@
-- get_v1-tenant-tenantid-onboarding
-- put_v1-tenant-tenantid-onboarding
-- get_v1-tenant-tenantid-onboarding-eligible-apps
-- get_v1-tenant-tenantid-onboarding-eligible-configuration-profiles
-- get_v1-tenant-tenantid-onboarding-eligible-policies
-- get_v1-tenant-tenantid-onboarding-history
-- post_v1-tenant-tenantid-onboarding-history
-- post_v1-tenant-tenantid-onboarding-history-export

@@ -1,9 +1,0 @@
-- get_v1-tenant-tenantid-distribution-points
-- post_v1-tenant-tenantid-distribution-points
-- post_v1-tenant-tenantid-distribution-points-delete-multiple
-- get_v1-tenant-tenantid-distribution-points-id
-- put_v1-tenant-tenantid-distribution-points-id
-- delete_v1-tenant-tenantid-distribution-points-id
-- patch_v1-tenant-tenantid-distribution-points-id
-- get_v1-tenant-tenantid-distribution-points-id-history
-- post_v1-tenant-tenantid-distribution-points-id-history

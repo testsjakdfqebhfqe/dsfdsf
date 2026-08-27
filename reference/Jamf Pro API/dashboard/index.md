@@ -1,4 +1,0 @@
----
-title: dashboard
-hidden: false
----

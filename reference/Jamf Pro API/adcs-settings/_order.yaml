@@ -1,9 +1,0 @@
-- post_v1-tenant-tenantid-pki-adcs-settings
-- post_v1-tenant-tenantid-pki-adcs-settings-validate-certificate
-- post_v1-tenant-tenantid-pki-adcs-settings-validate-client-certificate
-- get_v1-tenant-tenantid-pki-adcs-settings-id
-- delete_v1-tenant-tenantid-pki-adcs-settings-id
-- patch_v1-tenant-tenantid-pki-adcs-settings-id
-- get_v1-tenant-tenantid-pki-adcs-settings-id-dependencies
-- get_v1-tenant-tenantid-pki-adcs-settings-id-history
-- post_v1-tenant-tenantid-pki-adcs-settings-id-history

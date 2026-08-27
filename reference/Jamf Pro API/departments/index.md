@@ -1,4 +1,0 @@
----
-title: departments
-hidden: false
----

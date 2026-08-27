@@ -1,4 +1,0 @@
----
-title: scripts
-hidden: false
----

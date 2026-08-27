@@ -1,4 +1,0 @@
----
-title: branding
-hidden: false
----
