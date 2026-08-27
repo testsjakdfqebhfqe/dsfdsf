@@ -10074,10 +10074,10 @@
             "type": "string",
             "nullable": true,
             "examples": [
-              1,
-              2,
-              24,
-              14
+              "1",
+              "2",
+              "24",
+              "14"
             ]
           },
           "beneficiary_details": {
