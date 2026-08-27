@@ -11799,8 +11799,8 @@
             "description": "Bank or institution number.",
             "type": "string",
             "examples": [
-              "test",
-              "test2"
+              1,
+              2
             ]
           },
           "beneficiary_details": {
