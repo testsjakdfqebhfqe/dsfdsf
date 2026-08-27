@@ -10070,11 +10070,22 @@
             "nullable": true
           },
           "bank_code": {
-            "description": "Bank or institution number.",
+            "description": "Bank or institution number. test",
             "type": "string",
             "nullable": true,
             "examples": [
-              "test"
+              {
+                "Brasil": 1
+              },
+              {
+                "Canada": 2
+              },
+              {
+                "Hong Kong": 24
+              },
+              {
+                "Mexico": 14
+              }
             ]
           },
           "beneficiary_details": {
@@ -11797,11 +11808,7 @@
           },
           "bank_code": {
             "description": "Bank or institution number.",
-            "type": "string",
-            "examples": [
-              1,
-              2
-            ]
+            "type": "string"
           },
           "beneficiary_details": {
             "description": "Extra beneficiary data.",
