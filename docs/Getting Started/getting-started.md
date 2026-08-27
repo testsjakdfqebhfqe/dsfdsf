@@ -24,4 +24,4 @@ test
 
 <br />
 
-<a target="_blank" href="https://www.bloomreach.com/en/products/loomi">lala \{user.lai\}</a>
+<Anchor target="_blank" href="https://www.bloomreach.com/en/products/loomi">lala {user.lai}</Anchor>
