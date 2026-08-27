@@ -10,6 +10,4 @@ metadata:
 next:
   description: ''
 ---
-test
-
-<Anchor target="_blank" href="https://example.com">Link {user.LB}</Anchor>
+db1226c3-a4bc-49b8-8695-dc9cd9266bde
