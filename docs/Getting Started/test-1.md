@@ -5,4 +5,6 @@ hidden: false
 metadata:
   robots: index
 ---
-256be05e-f534-4a49-9554-a4a7a1592f6d
+<a href="https://www.bloomreach.com/en/products/loomi">test {user.lai}</a>
+
+example
