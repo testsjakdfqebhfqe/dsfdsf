@@ -10,4 +10,6 @@ metadata:
 next:
   description: ''
 ---
-<br />
+test
+
+<Anchor target="_blank" href="https://example.com">Link {user.LB}</Anchor>
