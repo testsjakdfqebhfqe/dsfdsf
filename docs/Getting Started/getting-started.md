@@ -15,3 +15,9 @@ next:
       title: Use Cases
 ---
 <Anchor target="_blank" href="https://www.bloomreach.com/en/products/loomi">leverages&#x20;</Anchor>
+
+<br />
+
+<br />
+
+<Anchor target="_blank" href="https://www.bloomreach.com/en/products/loomi">test {user.lai}</Anchor>
