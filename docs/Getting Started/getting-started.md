@@ -14,10 +14,4 @@ next:
       slug: use-cases
       title: Use Cases
 ---
-<Anchor target="_blank" href="https://www.bloomreach.com/en/products/loomi">leverages&#x20;</Anchor>
-
-<br />
-
-<br />
-
-<Anchor target="_blank" href="https://www.bloomreach.com/en/products/loomi">test {user.lai}</Anchor>
+bb9da0c3-a07d-4643-95da-25d74de52ecc
