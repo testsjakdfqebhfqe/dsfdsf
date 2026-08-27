@@ -24,7 +24,3 @@ example
 <a target="_blank" href="https://www.bloomreach.com/en/products/loomi">leverages {user.lai}</a>
 
 <br />
-
-<br />
-
-<Anchor target="_blank" href="https://example.com">leverages {user.lai}</Anchor>
