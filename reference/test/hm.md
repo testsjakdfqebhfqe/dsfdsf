@@ -1,5 +1,5 @@
 ---
-title: hm
+title: example
 deprecated: false
 hidden: false
 metadata:
