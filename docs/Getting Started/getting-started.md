@@ -82,7 +82,8 @@ next:
 </div>
 
 <p>{user.lai}</p>
-<span>{user.lai}</span>
+
+<div><span>{user.lai}</span></div>
 
 <br />
 
