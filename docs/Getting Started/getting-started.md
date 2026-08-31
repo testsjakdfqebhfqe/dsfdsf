@@ -85,6 +85,8 @@ next:
 
 <h1>{user.lai}</h1>
 
+<button class="mig-slot-preview__button">Browse winterwear {user.lai}</button>
+
 <div><span>{user.lai}</span></div>
 
 <br />
