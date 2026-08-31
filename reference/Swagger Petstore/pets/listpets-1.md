@@ -1,6 +1,6 @@
 ---
 api:
   file: openapi.json
-  operationId: createpetstest
+  operationId: listPets
 hidden: false
 ---

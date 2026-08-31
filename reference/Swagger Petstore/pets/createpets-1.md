@@ -1,6 +1,6 @@
 ---
 api:
   file: openapi.json
-  operationId: get_pets
+  operationId: createPets
 hidden: false
 ---
