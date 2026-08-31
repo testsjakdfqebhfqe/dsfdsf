@@ -14,14 +14,4 @@ next:
       title: Use Cases
       type: basic
 ---
-test
-
-<br />
-
-<br />
-
-<a href="https://www.bloomreach.com/en/products/loomi">test</a>
-
-<br />
-
-<Anchor target="_blank" href="https://www.bloomreach.com/en/products/loomi">lala {user.lai}</Anchor>
+f4c0dace-def5-4d6e-a5e9-b20067222231
