@@ -19,3 +19,5 @@ This is a custom page.
 </Callout>
 
 <Test header="Getting Started with Custom Components" />
+
+<ExampleComponent header="Getting Started with Custom Components" />
