@@ -14,89 +14,70 @@ next:
       title: Use Cases
       type: basic
 ---
-```html Banner HTML
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Summer Sale</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background: #F0F0F0;
-            font-family: 'Arial', sans-serif;
-        }
-        .ad-container {
-            width: 568px;
-            height: 328px;
-            background-image: url('https://images.pexels.com/photos/996329/pexels-photo-996329.jpeg?auto=compress&cs=tinysrgb&w=568&h=328&fit=crop');
-            background-size: cover;
-            background-position: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            align-items: center;
-            padding: 50px 40px;
-            text-align: center;
-            position: relative;
-        }
-        .content-overlay {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 40px 30px;
-            border-radius: 12px;
-            backdrop-filter: blur(10px);
-        }
-        .header {
-            color: #000000ff;
-            font-size: 48px;
-            font-weight: bold;
-            margin-bottom: 20px;
-            line-height: 1.2;
-        }
-        .body-text {
-            color: #000000ff;
-            font-size: 18px;
-            line-height: 1.5;
-            margin-bottom: 30px;
-            max-width: 300px;
-        }
-        .cta-button {
-            background-color: transparent;
-            color: #000000ff;
-            border: 2px solid #000000ff;
-            padding: 15px 35px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: all 0.3s;
-        }
-        .cta-button:hover {
-            background-color: #000000ff;
-            color: #FFFFFF;
-        }
-        .cta-button:active {
-            transform: scale(0.98);
-        }
-    </style>
-</head>
-<body>
-    <div class="ad-container">
-        <div class="content-overlay">
-            <h1 class="header">Sale 50% off</h1>
-            <p class="body-text">Only until this Friday, all clothes are discounted to celebrate the start of summer</p>
-            <button class="cta-button">Browse sale</button>
-        </div>
-    </div>
-</body>
-</html>
+```html
+<style>
+  .mig-slot-preview, .mig-slot-preview * {
+    box-sizing: border-box;
+  }
+  .mig-slot-preview {
+    width: 100%;
+    max-width: 410px;
+    min-height: 568px;
+    margin: 0 auto;
+    background: #F0F0F0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 12px;
+  }
+  .mig-slot-preview__container {
+    width: 328px;
+    min-height: 568px;
+    background-image: url('https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExbXh1YXdieHlwOGxtdjNtbmZ4YWcxZGd1OGRreWFmczF2aTkyOGE2bCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3HpSslnzl7mKx0Yzhi/giphy.gif');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 50px;
+    text-align: center;
+    position: relative;
+  }
+  .mig-slot-preview__header {
+    font-family: Georgia, serif;
+    font-size: 64px;
+    font-weight: bold;
+    color: #000000;
+    margin: 0 0 20px;
+    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8);
+  }
+  .mig-slot-preview__button {
+    color: #000000;
+    border: 2px solid #000000;
+    padding: 18px 40px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.3s;
+    backdrop-filter: blur(5px);
+    background: rgba(255, 255, 255, 0.8);
+  }
+  .mig-slot-preview__button:hover {
+    background-color: #000000;
+    color: #FFFFFF;
+    transform: translateY(-2px);
+  }
+  .mig-slot-preview__button:active {
+    transform: translateY(0);
+  }
+</style>
+<div class="mig-slot-preview">
+  <div class="mig-slot-preview__container">
+    <h1 class="mig-slot-preview__header">50% off</h1>
+    <button class="mig-slot-preview__button">Browse winterwear</button>
+  </div>
+</div>
 ```
