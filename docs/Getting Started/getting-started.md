@@ -14,7 +14,6 @@ next:
       title: Use Cases
       type: basic
 ---
-```html
 <style>
   .mig-slot-preview, .mig-slot-preview * {
     box-sizing: border-box;
@@ -80,4 +79,3 @@ next:
     <button class="mig-slot-preview__button">Browse winterwear</button>
   </div>
 </div>
-```
