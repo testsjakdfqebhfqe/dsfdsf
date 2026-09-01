@@ -27,7 +27,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "How many items to return at one time (max 100)",
+            "description": "How many items to return at one time (max 100) <Glossary>test-oas-desc</Glossary>",
             "required": false,
             "schema": {
               "type": "integer",
@@ -64,8 +64,7 @@
               }
             }
           }
-        },
-        "description": "<Glossary>test-oas-desc</Glossary>"
+        }
       },
       "post": {
         "summary": "Create a pet",
