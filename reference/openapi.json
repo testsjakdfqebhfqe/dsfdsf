@@ -21,7 +21,7 @@
         "summary": "List all pets",
         "operationId": "listPets",
         "tags": [
-          "pets"
+          "pets1"
         ],
         "parameters": [
           {
