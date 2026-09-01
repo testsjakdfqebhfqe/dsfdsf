@@ -64,7 +64,8 @@
               }
             }
           }
-        }
+        },
+        "description": "<Glossary>test-oas-desc</Glossary>"
       },
       "post": {
         "summary": "Create a pet",
