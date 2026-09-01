@@ -64,8 +64,7 @@
               }
             }
           }
-        },
-        "x-internal": true
+        }
       },
       "post": {
         "summary": "Create a pet",
