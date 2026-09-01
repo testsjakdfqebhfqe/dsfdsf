@@ -89,8 +89,8 @@ next:
 
 <div><span>{user.lai}</span></div>
 
-<Anchor target="_blank" href="https://example.com">Link \{user.LB\}</Anchor>
+<Anchor target="_blank" href="https://example.com">Link {user.LB}</Anchor>
 
-<br />
+test
 
 {user.lai}
