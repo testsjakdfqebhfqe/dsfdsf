@@ -33,6 +33,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "limit2",
+            "in": "query",
+            "description": "How many items to return at one time (max 100) <<glossary:test-oas-desc>>",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
           }
         ],
         "responses": {
