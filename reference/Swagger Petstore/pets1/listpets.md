@@ -2,5 +2,7 @@
 api:
   file: openapi.json
   operationId: listPets
-hidden: false
+hidden: true
+link:
+  new_tab: false
 ---
