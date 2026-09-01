@@ -89,7 +89,7 @@ next:
 
 <div><span>{user.lai}</span></div>
 
-<br />
+<Anchor target="_blank" href="https://example.com">Link \{user.LB\}</Anchor>
 
 <br />
 
