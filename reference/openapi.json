@@ -70,7 +70,7 @@
         "summary": "Create a pet",
         "operationId": "createPets",
         "tags": [
-          "la la la"
+          "la la la test"
         ],
         "responses": {
           "201": {
