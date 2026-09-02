@@ -351,7 +351,10 @@
                                                     "minLength": 1,
                                                     "maxLength": 255,
                                                     "pattern": ".*",
-                                                    "description": "Identifier of the entity. This is the Identifier that the producer uses.\n"
+                                                    "description": "Identifier of the entity. This is the Identifier that the producer uses.\n",
+                                                    "examples": [
+                                                      "sr:match:1"
+                                                    ]
                                                   }
                                                 },
                                                 "required": [
