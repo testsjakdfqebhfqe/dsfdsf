@@ -1,0 +1,1245 @@
+openapi: 3.0.0
+x-stoplight:
+  id: fkvzqqpxw96e9
+info:
+  version: 1.0.0
+  title: Airbase Guided Procurement External API
+  description: >-
+    ## Guided Procurement API
+
+
+    The Guided Procurement API provides endpoints to retrieve information about
+    GP requests and milestones, as well as to approve or deny milestones.
+
+
+    ### Authentication
+
+
+    An access token can be generated from the Airbase web app by going to
+    **Settings > Connections > Tokens & Webhooks**.
+
+
+    Notes:
+
+
+    - All the datetime fields are presented in ISO format means that the date
+    and time values are formatted according to the ISO 8601 standard.
+servers:
+  - url: https://api.airbase.io
+paths:
+  /v1/intake/{intake_id}/:
+    get:
+      tags:
+        - Guided Procurement Request
+      summary: Guided Procurement Request Details
+      description: >-
+        This endpoint provides primary information about the guided procurement
+        request and its milestones.
+
+        Note:
+
+
+        - The `milestone` data is structured as a 2D array that depicts the
+        hierarchy of milestones from the top level to the bottom level.
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+            example: Token {{access_token}}
+          examples:
+            default:
+              value: Token {{access_token}}
+        - name: intake_id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 85056f14-dbc1-40ad-bb65-b43637f26d7a
+          examples:
+            default:
+              value: 85056f14-dbc1-40ad-bb65-b43637f26d7a
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailIntakeRequest'
+              examples:
+                default:
+                  value:
+                    id: 85056f14-dbc1-40ad-bb65-b43637f26d7a
+                    created_date: '2023-04-11T10:21:38.891440'
+                    request_workflow_type: INTAKE
+                    spend_mode: purchase order
+                    status: created
+                    primary_category: Software Subscription
+                    secondary_category: Marketing tools
+                    requested_amount: 123400
+                    requested_amount_currency: USD
+                    request_url: >-
+                      https://dashboard.airbase.io/requests/intake-requests/created/1234/summary/
+                    vendor:
+                      name: GitHub
+                      description: >-
+                        GitHub provides code hosting services that allow
+                        developers to build software for open-source and private
+                        projects in organizations.
+                      website: github.com
+                      vendor_type: existing_vendor
+                    requester:
+                      first_name: John
+                      last_name: Doe
+                      email: john.doe@example.io
+                    milestones:
+                      - - id: 4a7c3244-db10-4bfd-b45a-5c5e4091d6a9
+                          created_date: '2023-04-11T10:21:40.815000'
+                          name: Department Approval
+                          status: created
+                      - - id: 594ddf38-e358-4ead-829a-ca3986e3930b
+                          created_date: '2023-04-11T10:21:39.418673'
+                          name: Legal Review
+                          status: created
+                        - id: 83ca521e-1ee1-43c4-9c3f-d0a8c83d88cf
+                          created_date: '2023-04-11T10:21:39.952990'
+                          name: IT Approval
+                          status: created
+                        - id: ece32f52-932a-40ab-8159-b075dd3c36cf
+                          created_date: '2023-04-11T10:21:40.381401'
+                          name: Software and Services Procurement Approval
+                          status: created
+                      - - id: db7ffc8c-6302-4624-a4aa-76f9aeb2ed09
+                          created_date: '2023-04-11T10:21:39.109791'
+                          name: Finance & Accounting Approval
+                          status: created
+                    request_files:
+                      - name: sample_file_name.pdf
+                        upload: https://airbase..com/company_XXXXXX/XXXXXXXX
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+      servers:
+        - url: https://api.airbase.io
+      x-stoplight:
+        id: 6goz0s2rn0sco
+  /v1/intake/{intake_id}/upload_file/:
+    post:
+      summary: Upload File To Guided Procurement Request
+      description: >-
+        This endpoint allows users to upload files to a guided procurement
+        request.
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+            example: Token {{access_token}}
+          examples:
+            default:
+              value: Token {{access_token}}
+        - name: intake_id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 85056f14-dbc1-40ad-bb65-b43637f26d7a
+          examples:
+            default:
+              value: 85056f14-dbc1-40ad-bb65-b43637f26d7a
+      tags:
+        - Guided Procurement Request
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RequestFile'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestFileResponse'
+              examples:
+                default:
+                  value:
+                    status: success
+                    message: File uploaded successfully
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestFileResponse'
+              examples:
+                default:
+                  value:
+                    status: failed
+                    message: Failed to upload file due to an internal error
+          description: ''
+      x-stoplight:
+        id: gty1mlqx6dbj6
+  /v1/milestone/{milestone_id}/:
+    get:
+      tags:
+        - Guided Procurement Milestone
+      summary: Milestone Details
+      description: >-
+        This endpoint provides details about a specific milestone in a guided
+        procurement request.
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+            example: Token {{access_token}}
+          examples:
+            default:
+              value: Token {{access_token}}
+        - name: milestone_id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 83ca521e-1ee1-43c4-9c3f-d0a8c83d88cf
+          examples:
+            default:
+              value: 83ca521e-1ee1-43c4-9c3f-d0a8c83d88cf
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailMilestone'
+              examples:
+                example-0:
+                  summary: Milestone Details
+                  value:
+                    id: 4a7c3244-db10-4bfd-b45a-5c5e4091d6a9
+                    created_date: '2023-04-11T10:21:40.815000'
+                    name: Department Approval
+                    status: created
+                    request:
+                      id: 85056f14-dbc1-40ad-bb65-b43637f26d7a
+                      created_date: '2023-04-11T10:21:38.891440'
+                      spend_mode: purchase order
+                      status: created
+                      primary_category: Software Subscription
+                      secondary_category: Marketing tools
+                      requested_amount: 123400
+                      requested_amount_currency: USD
+                      request_url: >-
+                        https://dashboard.airbase.io/requests/intake-requests/created/1234/summary/
+                      vendor:
+                        name: GitHub
+                        description: >-
+                          GitHub provides code hosting services that allow
+                          developers to build software for open-source and
+                          private projects in organizations.
+                        website: github.com
+                        vendor_type: existing_vendor
+                      requester:
+                        first_name: John
+                        last_name: Doe
+                        email: john.doe@example.io
+                    pending_on:
+                      type: individual
+                      details:
+                        status: pending
+                        last_notified_time: 1681208615
+                        approver:
+                          first_name: John
+                          last_name: Doe
+                          email: john.doe@example.io
+                    approval_chain:
+                      - type: individual
+                        details:
+                          status: pending
+                          last_notified_time: 1681208615
+                          approver:
+                            first_name: John
+                            last_name: Doe
+                            email: john.doe@example.io
+                    milestone_data:
+                      - name: TEST SECTION
+                        description: null
+                        elements:
+                          - type: TEXT
+                            label: Email
+                            user_input: john.doe@example.io
+                            is_standard: true
+                            field_id: null
+                          - type: URL
+                            label: URL
+                            user_input: https://google.com
+                            is_standard: false
+                            field_id: 52f4957e-74fe-401a-8a85-5ee0a10f097a
+                          - type: RADIO_SELECT
+                            label: gender
+                            user_input: male
+                            is_standard: false
+                            field_id: ea76aa94-6a64-4938-99a7-67b95a987c03
+                    integration_data:
+                      integration_type: JIRA
+                      integration_enabled: false
+                      files:
+                        - name: sample_file_name.pdf
+                          upload: https://airbase..com/company_XXXXXX/XXXXXXXX
+                example-1:
+                  summary: Milestone Details (with attachments)
+                  value:
+                    id: 594ddf38-e358-4ead-829a-ca3986e3930b
+                    created_date: '2023-04-11T10:21:39.418673'
+                    name: Legal Review
+                    status: created
+                    request:
+                      id: 85056f14-dbc1-40ad-bb65-b43637f26d7a
+                      created_date: '2023-04-11T10:21:38.891440'
+                      spend_mode: purchase order
+                      status: created
+                      primary_category: Software Subscription
+                      secondary_category: Marketing tools
+                      requested_amount: 123400
+                      requested_amount_currency: USD
+                      vendor:
+                        name: GitHub
+                        description: >-
+                          GitHub provides code hosting services that allow
+                          developers to build software for open-source and
+                          private projects in organizations.
+                        website: github.com
+                        vendor_type: existing_vendor
+                      requester:
+                        first_name: John
+                        last_name: Doe
+                        email: john.doe@example.io
+                    pending_on: null
+                    approval_chain:
+                      - type: group
+                        details:
+                          members:
+                            - first_name: Shawan
+                              last_name: Doe
+                              email: shawn.doe@example.io
+                            - first_name: Alex
+                              last_name: Doe
+                              email: alex.doe@example.io
+                            - first_name: Doe
+                              last_name: Doe
+                              email: doe.doe@example.io
+                          last_notified_user: {}
+                          last_approved_user: {}
+                          last_notified_time: null
+                          status: pending
+                      - type: individual
+                        details:
+                          status: pending
+                          last_notified_time: null
+                          approver:
+                            first_name: Chat
+                            last_name: Doe
+                            email: chat.doe@example.io
+                    milestone_data:
+                      - name: >-
+                          Additional Vendor details required for the Legal
+                          approval
+                        description: >-
+                          This information will help the legal team’s
+                          contracting process with the vendor. For any questions
+                          or clarifications, please reach out directly to your
+                          legal team.
+                        elements:
+                          - type: RADIO_SELECT
+                            label: >-
+                              Is this the first time the legal team is being
+                              involved for this vendor?
+                            user_input: 'Yes'
+                            is_standard: false
+                            field_id: 6aeebab5-22de-4cc8-a1af-229271c64846
+                          - type: RADIO_SELECT
+                            label: Did the vendor provide a drafted contract?
+                            user_input: ' No'
+                            is_standard: false
+                            field_id: 37e18c02-07a8-4b94-b39b-cb95bce2ed9b
+                          - type: RADIO_SELECT
+                            label: Does the contract contain break fees or penalties?
+                            user_input: 'Yes'
+                            is_standard: false
+                            field_id: 741cef74-90f7-49a5-9a7b-f507b90d61eb
+                          - type: DATE
+                            label: Tentative Contract Start Date
+                            user_input: '2023-04-11T00:00:00'
+                            is_standard: true
+                            field_id: null
+                          - type: LIST_SELECT
+                            label: Duration of the Contract
+                            user_input: 2 Years
+                            is_standard: true
+                            field_id: null
+                          - type: ATTACHMENT
+                            label: Draft Contract and NDA (Optional)
+                            files:
+                              - name: Screenshot from 2023-04-06 01-10-01.png
+                                url: >-
+                                  https://staging-airbase.s3.amazonaws.com/company_80f53c/workflow_1152/element_caa9f864-9f0c-495f-a5d2-d91af6d5083c/3fba722e-520a-4591-894e-b5b40fcc90c6/Screenshot_from_2023-04-06_01-10-01.png?AWSAccessKeyId=AKIAICH75DSDU4U5TJGQ&Signature=kVfrx7Mk0vq7qnJVbq9%2Buil39LM%3D&Expires=1681513087
+                              - name: Screenshot from 2023-04-06 01-09-17.png
+                                url: >-
+                                  https://staging-airbase.s3.amazonaws.com/company_80f53c/workflow_1152/element_caa9f864-9f0c-495f-a5d2-d91af6d5083c/2696656b-e831-44d6-9bb3-ec2b1d051ec5/Screenshot_from_2023-04-06_01-09-17.png?AWSAccessKeyId=AKIAICH75DSDU4U5TJGQ&Signature=V1f59SrxoUcWHTuWlNmQplOo4c4%3D&Expires=1681513087
+                              - name: Screenshot from 2023-04-05 12-43-49.png
+                                url: >-
+                                  https://staging-airbase.s3.amazonaws.com/company_80f53c/workflow_1152/element_caa9f864-9f0c-495f-a5d2-d91af6d5083c/0499bb75-f275-42bb-9b05-564134d539fd/Screenshot_from_2023-04-05_12-43-49.png?AWSAccessKeyId=AKIAICH75DSDU4U5TJGQ&Signature=fuSuEYdctSGs8y5%2BUk5xFuDYIEc%3D&Expires=1681513087
+                            is_standard: true
+                            field_id: null
+                          - type: LIST_SELECT
+                            label: Urgency of legal review
+                            user_input: null
+                            is_standard: false
+                            field_id: 894e4936-0cdf-4a62-b18a-b1b61554be49
+                          - type: RADIO_SELECT
+                            label: >-
+                              Please acknowledge you have submitted the ticket
+                              for the Legal review.
+                            user_input: I Acknowledge
+                            is_standard: true
+                            field_id: null
+                example-2:
+                  summary: Milestone Details (with person)
+                  value:
+                    id: 83ca521e-1ee1-43c4-9c3f-d0a8c83d88cf
+                    created_date: '2023-04-11T10:21:39.952990'
+                    name: IT Approval
+                    status: created
+                    request:
+                      id: 85056f14-dbc1-40ad-bb65-b43637f26d7a
+                      created_date: '2023-04-11T10:21:38.891440'
+                      spend_mode: purchase order
+                      status: created
+                      primary_category: Software Subscription
+                      secondary_category: Marketing tools
+                      requested_amount: 123400
+                      requested_amount_currency: USD
+                      vendor:
+                        name: GitHub
+                        description: >-
+                          GitHub provides code hosting services that allow
+                          developers to build software for open-source and
+                          private projects in organizations.
+                        website: github.com
+                        vendor_type: existing_vendor
+                      requester:
+                        first_name: John
+                        last_name: Doe
+                        email: john.doe@example.io
+                    pending_on: null
+                    approval_chain:
+                      - type: group
+                        details:
+                          members:
+                            - first_name: Bela
+                              last_name: Doe
+                              email: bela.doe@example.io
+                            - first_name: Doe
+                              last_name: Doe
+                              email: doe.doe@example.io
+                          last_notified_user: {}
+                          last_approved_user: {}
+                          last_notified_time: null
+                          status: pending
+                    milestone_data:
+                      - name: IT Review
+                        description: >-
+                          This information will help the IT team perform proper
+                          software or hardware maintenance. For any questions or
+                          clarifications, please reach out directly to the IT
+                          team.
+                        elements:
+                          - type: TEXT
+                            label: Name of the Application or Service
+                            user_input: null
+                            is_standard: false
+                            field_id: b25d8944-77aa-4a4d-8b90-1604e492eeb6
+                          - type: TEXT
+                            label: Description of the Application or Service
+                            user_input: null
+                            is_standard: false
+                            field_id: d9a449a2-e4eb-473e-8e16-a126778601d8
+                          - type: TEXT
+                            label: How will this tool will be used?
+                            user_input: null
+                            is_standard: false
+                            field_id: aec8e1c5-6008-48c7-8b56-c43c844cbeef
+                          - type: TEXT
+                            label: >-
+                              What tool was previously being used and why is a
+                              new one needed?
+                            user_input: null
+                            is_standard: false
+                            field_id: 514db8e4-5e2c-45b4-90c1-a03da5b6f8ad
+                          - type: MULTI_SELECT
+                            label: Which departments will be using this tool?
+                            user_input: Marketing, Product
+                            is_standard: false
+                            field_id: 4042d6ce-9222-44e8-891d-e9701ed591b4
+                          - type: RADIO_SELECT
+                            label: >-
+                              Does the tool support Single Assertion Markup
+                              Language (SAML) authentication (e.g. SSO via
+                              Okta)?
+                            user_input: 'Yes'
+                            is_standard: false
+                            field_id: 1e77a3e1-73b8-4deb-817c-7275b66a3930
+                          - type: PERSON
+                            label: Primary Business Owner
+                            user_input:
+                              first_name: Ack
+                              last_name: Doe
+                              email: ack.doe@example.io
+                            is_standard: false
+                            field_id: e9840cf4-9a13-4b9a-96cb-69e52ce7ebdb
+                          - type: PERSON
+                            label: Secondary Business Owner
+                            user_input:
+                              first_name: Ash
+                              last_name: Doe
+                              email: ash.doe@example.com
+                            is_standard: false
+                            field_id: c1e498fb-60ab-4f94-aff8-e129da6a2317
+                          - type: RADIO_SELECT
+                            label: >-
+                              Has the vendor completed the Vendor Assessment
+                              Form?
+                            user_input: 'Yes'
+                            is_standard: false
+                            field_id: c62df0d0-b3a1-443c-895d-309d3b6ef574
+                          - type: URL
+                            label: Link to Completed Vendor Assessment Form
+                            user_input: null
+                            is_standard: false
+                            field_id: f387f7f9-4855-4304-b02e-9167c5fc5927
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+      servers:
+        - url: https://api.airbase.io
+      x-stoplight:
+        id: 19kv5xfi8444h
+  /v1/milestone/{milestone_id}/approve/:
+    patch:
+      tags:
+        - Guided Procurement Milestone
+      summary: Approve Milestone
+      description: >-
+        This endpoint allows an approver to approve a specific milestone in a
+        guided procurement request.
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+            example: Token {{access_token}}
+          examples:
+            default:
+              value: Token {{access_token}}
+        - name: milestone_id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 4a7c3244-db10-4bfd-b45a-5c5e4091d6a9
+          examples:
+            default:
+              value: 4a7c3244-db10-4bfd-b45a-5c5e4091d6a9
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MilestoneApproveDenyRequest'
+            examples:
+              default:
+                value:
+                  approver_email: john.doe@example.io
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MilestoneApproveDenyResponse'
+              examples:
+                default:
+                  value:
+                    status: success
+                    message: >-
+                      Approved milestone_id:
+                      4a7c3244-db10-4bfd-b45a-5c5e4091d6a9
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+      servers:
+        - url: https://api.airbase.io
+      x-stoplight:
+        id: bz5x3ebn07f3z
+  /v1/milestone/{milestone_id}/deny/:
+    patch:
+      tags:
+        - Guided Procurement Milestone
+      summary: Deny Milestone
+      description: >-
+        This endpoint allows an approver to deny a specific milestone in a
+        guided procurement request.
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+            example: Token {{access_token}}
+          examples:
+            default:
+              value: Token {{access_token}}
+        - name: milestone_id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 594ddf38-e358-4ead-829a-ca3986e3930b
+          examples:
+            default:
+              value: 594ddf38-e358-4ead-829a-ca3986e3930b
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MilestoneApproveDenyRequest'
+            examples:
+              default:
+                value:
+                  approver_email: chat.doe@example.io
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MilestoneApproveDenyResponse'
+              examples:
+                default:
+                  value:
+                    status: success
+                    message: 'Denied milestone_id: 594ddf38-e358-4ead-829a-ca3986e3930b'
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+      servers:
+        - url: https://api.airbase.io
+      x-stoplight:
+        id: k4ssfej7w02j1
+components:
+  schemas:
+    DetailIntakeRequest:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        created_date:
+          type: string
+          format: date-time
+          readOnly: true
+        request_workflow_type:
+          $ref: '#/components/schemas/MilestoneWorkflowType'
+        spend_mode:
+          $ref: '#/components/schemas/SpendModeEnum'
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+        primary_category:
+          type: string
+          readOnly: true
+        secondary_category:
+          type: string
+          readOnly: true
+        request_url:
+          type: string
+          readOnly: true
+        requested_amount:
+          type: number
+          format: double
+          readOnly: true
+        requested_amount_currency:
+          type: string
+          description: ISO 4217 code. Example `USD, GBP`
+          readOnly: true
+        vendor:
+          readOnly: true
+          allOf:
+            - $ref: '#/components/schemas/VendorData'
+        description:
+          type: string
+          readOnly: true
+        requester:
+          readOnly: true
+          allOf:
+            - $ref: '#/components/schemas/BaseUser'
+        custom_sections:
+          readOnly: true
+          allOf:
+            - $ref: '#/components/schemas/CustomSection'
+        milestones:
+          type: array
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/BasicMilestone'
+        request_files:
+          type: array
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/FileStructure'
+      required:
+        - id
+        - created_date
+        - spend_mode
+        - status
+        - primary_category
+        - secondary_category
+        - requested_amount
+        - requested_amount_currency
+        - request_url
+        - vendor
+        - description
+        - requester
+        - custom_sections
+        - milestones
+        - request_files
+      x-stoplight:
+        id: dthr4cko3ov4w
+    MilestoneWorkflowType:
+      type: string
+      enum:
+        - INTAKE
+        - RENEWAL
+        - VENDOR_APPROVAL
+        - CUSTOM
+      x-stoplight:
+        id: f74nf53c8am72
+    SpendModeEnum:
+      type: string
+      enum:
+        - one-time virtual card
+        - recurring virtual card
+        - purchase order
+      description: |-
+        * `one-time virtual card` - one-time virtual card
+        * `recurring virtual card` - recurring virtual card
+        * `purchase order` - purchase order
+      x-stoplight:
+        id: tve5v2xuevgxs
+    StatusEnum:
+      type: string
+      enum:
+        - draft
+        - created
+        - accepted
+        - rejected
+        - archived
+      x-stoplight:
+        id: z6afcscirmdm5
+    VendorData:
+      type: object
+      properties:
+        name:
+          type: string
+          readOnly: true
+        description:
+          type: string
+          readOnly: true
+        website:
+          type: string
+          format: uri
+          readOnly: true
+        vendor_type:
+          $ref: '#/components/schemas/VendorTypeEnum'
+      required:
+        - name
+        - description
+        - website
+        - vendor_type
+      x-stoplight:
+        id: h13eibxqy1203
+    VendorTypeEnum:
+      type: string
+      enum:
+        - new_vendor
+        - existing_vendor
+      description: |-
+        * `new_vendor` - NEW
+        * `existing_vendor` - EXISTING
+      x-stoplight:
+        id: 3fk7zbfmo48t7
+    BaseUser:
+      type: object
+      properties:
+        first_name:
+          type: string
+          readOnly: true
+        last_name:
+          type: string
+          readOnly: true
+        email:
+          type: string
+          readOnly: true
+      required:
+        - first_name
+        - last_name
+        - email
+      x-stoplight:
+        id: ob3gbjdu3lc7t
+    CustomSection:
+      type: object
+      properties:
+        name:
+          type: string
+          readOnly: true
+        description:
+          type: string
+          readOnly: true
+        elements:
+          type: array
+          items:
+            $ref: '#/components/schemas/Element'
+      required:
+        - name
+        - description
+        - elements
+      x-stoplight:
+        id: qbxkjcl1c1n2w
+    Element:
+      type: object
+      properties:
+        type:
+          type: string
+          readOnly: true
+        label:
+          type: string
+          readOnly: true
+        user_input:
+          type: string
+          readOnly: true
+        is_standard:
+          type: boolean
+          description: >-
+            Indicates whether the element is a built-in (standard) Airbase
+            element or a custom user-defined element.
+          readOnly: true
+        field_id:
+          type: string
+          description: >-
+            If `is_standard` is `true`, this will be `null`. Otherwise, it
+            contains the UUID of the custom element.
+          readOnly: true
+      required:
+        - type
+        - label
+        - user_input
+        - is_standard
+        - field_id
+      x-stoplight:
+        id: h1815nwkt7ev9
+    BasicMilestone:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        created_date:
+          type: string
+          format: date-time
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/BasicMilestoneStatusEnum'
+      required:
+        - id
+        - created_date
+        - name
+        - status
+      x-stoplight:
+        id: wa68ksvbrk56c
+    BasicMilestoneStatusEnum:
+      type: string
+      enum:
+        - initialized
+        - created
+        - accepted
+        - rejected
+        - skipped
+      description: |-
+        * `initialized` - initialized
+        * `created` - created
+        * `accepted` - accepted
+        * `rejected` - rejected
+        * `skipped` - skipped
+      x-stoplight:
+        id: q4egw1z6nxyre
+    FileStructure:
+      type: object
+      properties:
+        name:
+          type: string
+          readOnly: true
+        upload:
+          type: string
+          format: uri
+          readOnly: true
+      required:
+        - name
+        - upload
+      x-stoplight:
+        id: 6h4zsm0eu0pgd
+    DetailMilestone:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        created_date:
+          type: string
+          format: date-time
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/StatusF3bEnum'
+        request:
+          $ref: '#/components/schemas/BasicIntakeRequest'
+        pending_on:
+          readOnly: true
+          allOf:
+            - $ref: '#/components/schemas/PendingOnData'
+        approval_chain:
+          type: array
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/ApprovalChainData'
+        milestone_data:
+          type: array
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/CustomSection'
+        integration_data:
+          readOnly: true
+          allOf:
+            - $ref: '#/components/schemas/IntegrationData'
+        integration_enabled:
+          type: boolean
+          readOnly: true
+      required:
+        - id
+        - created_date
+        - name
+        - status
+        - request
+        - pending_on
+        - approval_chain
+        - milestone_data
+        - integration_data
+        - integration_enabled
+      x-stoplight:
+        id: r259zowcbgeb9
+    StatusF3bEnum:
+      type: string
+      enum:
+        - initialized
+        - created
+        - accepted
+        - rejected
+        - skipped
+      description: |-
+        * `initialized` - initialized
+        * `created` - created
+        * `accepted` - accepted
+        * `rejected` - rejected
+        * `skipped` - skipped
+      x-stoplight:
+        id: l9ipl0hatsn2e
+    BasicIntakeRequest:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        created_date:
+          type: string
+          format: date-time
+          readOnly: true
+        request_workflow_type:
+          $ref: '#/components/schemas/RequestWorkflowTypeEnum'
+        spend_mode:
+          $ref: '#/components/schemas/SpendModeEnum'
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+        primary_category:
+          type: string
+          readOnly: true
+        secondary_category:
+          type: string
+          readOnly: true
+        request_url:
+          type: string
+          readOnly: true
+        requested_amount:
+          type: number
+          format: double
+          readOnly: true
+        requested_amount_currency:
+          type: string
+          readOnly: true
+        vendor:
+          readOnly: true
+          allOf:
+            - $ref: '#/components/schemas/VendorData'
+        description:
+          type: string
+          readOnly: true
+        requester:
+          readOnly: true
+          allOf:
+            - $ref: '#/components/schemas/BaseUser'
+      required:
+        - id
+        - created_date
+        - request_workflow_type
+        - spend_mode
+        - status
+        - primary_category
+        - secondary_category
+        - request_url
+        - requested_amount
+        - requested_amount_currency
+        - vendor
+        - description
+        - requester
+      x-stoplight:
+        id: yjakimae2illp
+    RequestWorkflowTypeEnum:
+      type: string
+      enum:
+        - INTAKE
+        - RENEWAL
+        - VENDOR_APPROVAL
+        - CUSTOM
+      description: |-
+        * `INTAKE` - INTAKE
+        * `RENEWAL` - RENEWAL
+        * `VENDOR_APPROVAL` - VENDOR_APPROVAL
+        * `CUSTOM` - CUSTOM
+      x-stoplight:
+        id: yuw24ujdap2ng
+    PendingOnData:
+      oneOf:
+        - $ref: '#/components/schemas/IntakeBaseIndividualApprover'
+        - $ref: '#/components/schemas/IntakeBaseApprovalGroup'
+      discriminator:
+        propertyName: pending_on
+        mapping:
+          IntakeBaseIndividualApprover: '#/components/schemas/IntakeBaseIndividualApprover'
+          IntakeBaseApprovalGroup: '#/components/schemas/IntakeBaseApprovalGroup'
+      x-stoplight:
+        id: l7e0t6moo7tgj
+    IntakeBaseIndividualApprover:
+      type: object
+      properties:
+        type:
+          type: string
+          readOnly: true
+          default: individual
+        details:
+          $ref: '#/components/schemas/ApproverDetailed'
+      required:
+        - type
+        - details
+      x-stoplight:
+        id: tu3sdxoyko2e6
+    ApproverDetailed:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/ApprovalStatusEnum'
+        last_notified_time:
+          type: string
+          format: date-time
+          readOnly: true
+        approver:
+          readOnly: true
+          allOf:
+            - $ref: '#/components/schemas/BaseUser'
+      required:
+        - status
+        - last_notified_time
+        - approver
+      x-stoplight:
+        id: 3ch5w13ie6cu0
+    ApprovalStatusEnum:
+      type: string
+      enum:
+        - created
+        - approved
+        - denied
+        - archived
+        - deleted
+        - sent_back
+      description: |-
+        * `created` - created
+        * `approved` - approved
+        * `denied` - denied
+        * `archived` - archived
+        * `deleted` - deleted
+        * `sent_back` - sent_back
+      x-stoplight:
+        id: xsfll5d6v1ae7
+    IntakeBaseApprovalGroup:
+      type: object
+      properties:
+        type:
+          type: string
+          readOnly: true
+          default: individual
+        details:
+          $ref: '#/components/schemas/ApproverGroupDetailed'
+      required:
+        - type
+        - details
+      x-stoplight:
+        id: pkev6r8veko0a
+    ApproverGroupDetailed:
+      type: object
+      properties:
+        members:
+          type: array
+          items:
+            $ref: '#/components/schemas/BaseUser'
+        last_notified_user:
+          readOnly: true
+          allOf:
+            - $ref: '#/components/schemas/BaseUser'
+        last_approved_user:
+          readOnly: true
+          allOf:
+            - $ref: '#/components/schemas/BaseUser'
+        last_notified_time:
+          type: string
+          format: date-time
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/ApprovalStatusEnum'
+      required:
+        - members
+        - last_notified_user
+        - last_approved_user
+        - last_notified_time
+        - status
+      x-stoplight:
+        id: obqgfba8p8pk9
+    ApprovalChainData:
+      oneOf:
+        - $ref: '#/components/schemas/IntakeBaseIndividualApprover'
+        - $ref: '#/components/schemas/IntakeBaseApprovalGroup'
+      discriminator:
+        propertyName: approval_chain
+        mapping:
+          IntakeBaseIndividualApprover: '#/components/schemas/IntakeBaseIndividualApprover'
+          IntakeBaseApprovalGroup: '#/components/schemas/IntakeBaseApprovalGroup'
+      x-stoplight:
+        id: d1gcdnemiarde
+    IntegrationData:
+      type: object
+      properties:
+        integration_type:
+          $ref: '#/components/schemas/IntegrationTypeEnum'
+        files:
+          $ref: '#/components/schemas/FileStructure'
+      required:
+        - integration_type
+        - files
+      x-stoplight:
+        id: k5i1su5okmqs5
+    IntegrationTypeEnum:
+      type: string
+      enum:
+        - JIRA
+        - IRONCLAD
+        - ASANA
+        - DOCUSIGN
+      description: |-
+        * `JIRA` - Jira
+        * `IRONCLAD` - Ironclad
+        * `ASANA` - Asana
+        * `DOCUSIGN` - DocuSign
+      x-stoplight:
+        id: whablxkx8m2dg
+    MilestoneApproveDenyRequest:
+      type: object
+      properties:
+        approver_email:
+          type: string
+      x-stoplight:
+        id: 6mp73jsmi5umv
+    MilestoneApproveDenyResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          readOnly: true
+        message:
+          type: string
+          readOnly: true
+      x-stoplight:
+        id: p74ffextk4ntc
+    RequestFile:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 1024
+        upload:
+          type: string
+          format: binary
+        document_type:
+          $ref: '#/components/schemas/GpRequestDocumentType'
+      required:
+        - name
+      x-stoplight:
+        id: qxxv4j09852xs
+    GpRequestDocumentType:
+      type: string
+      enum:
+        - order_form
+        - soc_document
+        - sow_document
+        - null
+      x-stoplight:
+        id: 7zbto50xiw411
+    RequestFileResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+      x-stoplight:
+        id: 9t5hnt4jabe50

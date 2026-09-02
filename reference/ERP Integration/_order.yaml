@@ -1,0 +1,12 @@
+- sync-session
+- accounts
+- currencies
+- subsidiaries
+- vendors
+- employees
+- tags
+- ledger-entries
+- prepayment-entries
+- custom-fields
+- legacy-custom-fields
+- custom-field-options

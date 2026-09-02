@@ -1,0 +1,6 @@
+- list-employees
+- create-employee
+- retrieve-employee
+- update-employee
+- delete-employee
+- bulk-upsert-employees

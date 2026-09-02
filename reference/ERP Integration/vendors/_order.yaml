@@ -1,0 +1,6 @@
+- list-vendors
+- create-vendor
+- retrieve-vendor
+- update-vendor
+- delete-vendor
+- bulk-upsert-vendors
