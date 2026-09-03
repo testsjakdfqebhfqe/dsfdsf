@@ -2,6 +2,7 @@
 title: test
 deprecated: false
 hidden: false
+icon: 😀
 link:
   new_tab: false
   url: >-
