@@ -1,0 +1,11 @@
+---
+title: test
+deprecated: false
+hidden: false
+link:
+  new_tab: false
+  url: >-
+    https://testolehent.readme.io/apis-ajkf/reference/post_product-partner-id-sport-event-id-odds
+metadata:
+  robots: index
+---
