@@ -1,12 +1,12 @@
 ---
-title: test
+title: Go to API Reference
 deprecated: false
 hidden: false
-icon: 😀
+icon: 🐣
 link:
   new_tab: true
   url: >-
-    https://testolehent.readme.io/apis-ajkf/reference/post_product-partner-id-sport-event-id-odds
+    https://docs.developer.rabobank.com/payments/reference/business-creditcard-insights#/
 metadata:
   robots: index
 ---
