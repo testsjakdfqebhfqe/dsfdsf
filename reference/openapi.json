@@ -47,7 +47,7 @@
       "get": {
         "responses": {
           "200": {
-            "description": "Response type",
+            "description": "Response type test",
             "content": {
               "application/json": {
                 "schema": {
