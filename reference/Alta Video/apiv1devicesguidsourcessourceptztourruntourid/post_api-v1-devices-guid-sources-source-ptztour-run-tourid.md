@@ -1,0 +1,6 @@
+---
+api:
+  file: openapi.json
+  operationId: post_api-v1-devices-guid-sources-source-ptztour-run-tourid
+hidden: false
+---

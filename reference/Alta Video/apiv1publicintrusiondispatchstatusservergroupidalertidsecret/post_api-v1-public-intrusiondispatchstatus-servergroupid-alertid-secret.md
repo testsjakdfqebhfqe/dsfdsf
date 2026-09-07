@@ -1,0 +1,6 @@
+---
+api:
+  file: openapi.json
+  operationId: post_api-v1-public-intrusiondispatchstatus-servergroupid-alertid-secret
+hidden: false
+---
