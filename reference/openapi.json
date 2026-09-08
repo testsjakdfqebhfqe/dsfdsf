@@ -6070,7 +6070,6 @@
                     "data": "example",
                     "call_value": 1000000000,
                     "call_token_value": 1000000000,
-                    "token_id": 1,
                     "visible": false
                   }
                 }
