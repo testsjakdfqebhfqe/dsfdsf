@@ -14,7 +14,7 @@ This page covers the actions a user can take specifically on an unsecured person
 
 <SupermartBrandingInfo />
 
-## The loan dashboard
+## The loan dashboard 
 
 The loan dashboard is the first screen a user will see after logging into the NatWest Boxed white label app, and contains a summary of their unsecured personal loan. The user can also [make an extra payment](https://docs.nwboxed.com/natwest-boxed-docs/docs/white-label-lending-user-journeys#make-an-extra-payment) from this screen.
 
