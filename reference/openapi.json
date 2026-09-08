@@ -6101,7 +6101,8 @@
                   "token_id": {
                     "type": "integer",
                     "description": "TRC-10 Token ID。",
-                    "format": "int64"
+                    "format": "int64",
+                    "example": 1
                   },
                   "visible": {
                     "type": "boolean",
