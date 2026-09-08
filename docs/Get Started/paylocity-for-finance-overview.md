@@ -75,7 +75,9 @@ The user needs to contact NatWest Boxed to change the bank account their repayme
 
 1. The user selects the menu icon&#x20;
 
+
    <Image src="https://files.readme.io/c39652f2ab5770e8de15ea5d428ddeb5bf51188c18eed6275c758f09b08bbc0c-image.png" alt="menu icon" width="15px" />
+
 
    &#x20;in the top-left of the screen, then selects **Repayment details**.
 2. The user selects **Contact us** to get in touch with the NatWest Boxed support team.
@@ -102,7 +104,9 @@ To make an extra payment:
    1. The **Make extra payment** button on the loan dashboard
    2. The menu icon&#x20;
 
+
       <Image src="https://files.readme.io/c39652f2ab5770e8de15ea5d428ddeb5bf51188c18eed6275c758f09b08bbc0c-image.png" alt="menu icon" width="15px" />
+
 
       &#x20;in the top-left of the screen, and then selects **Make extra payment**
 
@@ -140,7 +144,9 @@ To request an early settlement quote:
 
 1. The user selects the menu icon&#x20;
 
+
    <Image src="https://files.readme.io/c39652f2ab5770e8de15ea5d428ddeb5bf51188c18eed6275c758f09b08bbc0c-image.png" alt="menu icon" width="15px" />
+
 
    &#x20;in the top-left of the screen, and then selects **Request early settlement.**
 2. The following screen provides additional information about the process. The user selects **Request early settlement quote**.
@@ -177,7 +183,9 @@ To withdraw from their loan agreement:
 
 1. The user selects the menu icon&#x20;
 
+
    <Image src="https://files.readme.io/c39652f2ab5770e8de15ea5d428ddeb5bf51188c18eed6275c758f09b08bbc0c-image.png" alt="menu icon" width="15px" />
+
 
    &#x20;in the top-left of the screen, then selects **Loan withdrawal**.
 2. The user selects **Withdraw your loan**.
@@ -190,7 +198,7 @@ If the user doesn’t make the extra payment, the loan term will continue as nor
 
 Account statements are generated annually on the date of the original loan disbursement and covers the previous 365 days. NatWest Boxed sends the user an email when a new annual statement is available.
 
-Annual statements are regulatorily compliant and give a full summary of the past year’s activity on the loan, including:
+Annual statements are regulatorily compliant and give a full summary of the past year’s activity on the loan, including: test
 
 * Opening balance
 * Closing balance
@@ -208,12 +216,16 @@ To view their statement:
 
 1. The user selects the menu icon&#x20;
 
+
    <Image src="https://files.readme.io/c39652f2ab5770e8de15ea5d428ddeb5bf51188c18eed6275c758f09b08bbc0c-image.png" alt="menu icon" width="15px" />
+
 
    &#x20;in the top-left of the screen, then selects **Annual statements**.
 2. The statements screen shows a list of all the available annual statements. The user selects the download icon&#x20;
 
+
    <Image src="https://files.readme.io/e8681c15b2a96eed2d905cf53d227c66e361ab086b4c49aedb1fc330243aab57-image.png" alt="download icon" width="15px" />
+
 
    &#x20;to view a specific statement.
 3. The statement is downloaded to the user’s device as a PDF.
