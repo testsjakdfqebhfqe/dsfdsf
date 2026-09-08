@@ -1,7 +1,0 @@
----
-api:
-  file: openapi.json
-  operationId: >-
-    delete_api-v1-sensorsourcecameras-sensor-source-id-server-group-id-device-id-device-source-id
-hidden: false
----
