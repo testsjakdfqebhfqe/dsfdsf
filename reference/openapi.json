@@ -6060,6 +6060,20 @@
         "requestBody": {
           "content": {
             "application/json": {
+              "examples": {
+                "Result": {
+                  "value": {
+                    "owner_address": "TG3XXyExBkPp9nzdajDZsozEu4BkaSJozs",
+                    "contract_address": "TG3XXyExBkPp9nzdajDZsozEu4BkaSJozs",
+                    "function_selector": "transfer(address,uint256)",
+                    "parameter": "000000000000000000000000a614f803b6fd780986a42c78ec9c7f77e6ded13c",
+                    "data": "000000000000000000000000a614f803b6fd780986a42c78ec9c7f77e6ded13c",
+                    "call_value": 1000000000,
+                    "call_token_value": 1000000000,
+                    "token_id": 1
+                  }
+                }
+              },
               "schema": {
                 "type": "object",
                 "properties": {
