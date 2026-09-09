@@ -1,0 +1,15 @@
+- publisherconfspubdeleteaccount
+- publisherconfspubdeleteaccountkey
+- publisherconfspubdeleteaccountkeyvalue
+- publisherconfspubgetaccount
+- publisherconfspubputaccount
+- publisherconfspubpostaccount
+- publisherconfspubdeactivateaccount
+- publisherconfspubgetaccountkey
+- publisherconfspubputaccountkey
+- publisherconfspubpostaccountkey
+- publisherconfspubdeactivateaccountkey
+- publisherconfspubgetaccountkeyvalue
+- publisherconfspubputaccountkeyvalue
+- publisherconfspubpostaccountkeyvalue
+- publisherconfspubdeactivateaccountkeyvalue
