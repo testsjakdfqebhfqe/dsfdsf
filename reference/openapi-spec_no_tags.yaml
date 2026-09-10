@@ -7,9 +7,14 @@ info:
   version: 1.0.0
 servers:
   - url: https://api.example.com/v1
+tags:
+  - name: Tasks
+    description: Operations related to creating, managing, and assigning tasks
 paths:
   /tasks:
     get:
+      tags:
+        - Tasks
       summary: List all tasks
       operationId: listTasks
       parameters:
@@ -33,6 +38,8 @@ paths:
                 items:
                   $ref: '#/components/schemas/Task'
     post:
+      tags:
+        - Tasks
       summary: Create a new task
       operationId: createTask
       requestBody:
@@ -52,6 +59,8 @@ paths:
           description: Invalid input
   /tasks/{taskId}:
     get:
+      tags:
+        - Tasks
       summary: Get a task by ID
       operationId: getTaskById
       parameters:
@@ -70,6 +79,8 @@ paths:
         '404':
           description: Task not found
     put:
+      tags:
+        - Tasks
       summary: Update an existing task
       operationId: updateTask
       parameters:
@@ -94,6 +105,8 @@ paths:
         '404':
           description: Task not found
     delete:
+      tags:
+        - Tasks
       summary: Delete a task
       operationId: deleteTask
       parameters:
@@ -109,6 +122,8 @@ paths:
           description: Task not found
   /users/{userId}/tasks:
     get:
+      tags:
+        - Tasks
       summary: List tasks assigned to a specific user
       operationId: listUserTasks
       parameters:
@@ -172,3 +187,5 @@ components:
       required:
         - title
         - status
+x-readme:
+  apply-tag-changes: true
