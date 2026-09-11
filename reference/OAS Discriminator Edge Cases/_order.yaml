@@ -1,0 +1,8 @@
+- discriminator-mapping-bugs
+- discriminator-nesting-bugs
+- discriminator-inline-schema-bugs
+- discriminator-performance
+- discriminator-enum-bugs
+- polymorphism-rendering-bugs
+- polymorphism-enum-bugs
+- polymorphism-state-bugs
