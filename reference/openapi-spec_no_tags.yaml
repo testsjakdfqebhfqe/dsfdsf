@@ -143,6 +143,14 @@ paths:
                   $ref: '#/components/schemas/Task'
         '404':
           description: User not found
+  /new-endpoint:
+    get:
+      operationId: ''
+      responses:
+        '200':
+          description: ''
+      parameters: []
+      summary: test
 components:
   schemas:
     Task:
