@@ -1,0 +1,44 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "repro",
+    "description": "test",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/transactions": {
+      "get": {
+        "operationId": "listTransactions",
+        "parameters": [
+          {
+            "name": "created_from",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "examples": {
+              "date-and-time": {
+                "value": "2021-01-01T12:00:00"
+              }
+            }
+          },
+          {
+            "name": "created_until",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "examples": {
+              "$ref": "#/paths/~1transactions/get/parameters/0/examples"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Transaction list"
+          }
+        }
+      }
+    }
+  }
+}
