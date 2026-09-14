@@ -1,4 +1,0 @@
----
-title: /transactions
-hidden: false
----
