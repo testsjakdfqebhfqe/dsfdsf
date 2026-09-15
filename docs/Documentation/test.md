@@ -6,3 +6,5 @@ metadata:
   robots: index
 ---
 {user.lai}
+
+<span>{user.lai}</span>
