@@ -7,4 +7,4 @@ metadata:
 ---
 {user.lai}
 
-<span>{user.lai}</span>
+<div><span>{user.lai}</span></div>
