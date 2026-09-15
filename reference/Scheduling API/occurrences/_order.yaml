@@ -1,0 +1,10 @@
+- get_wep-companies-companyid-scheduling-schedules-scheduleid-occurrences
+- get_wep-companies-companyid-scheduling-occurrences-occurrenceid
+- patch_wep-companies-companyid-scheduling-occurrences-occurrenceid
+- post_wep-companies-companyid-scheduling-occurrences-occurrenceid-cancel
+- post_wep-companies-companyid-scheduling-occurrences-occurrenceid-restore
+- post_wep-companies-companyid-scheduling-occurrences-occurrenceid-assignments
+- >-
+  patch_wep-companies-companyid-scheduling-occurrences-occurrenceid-assignments-assignmentid
+- >-
+  delete_wep-companies-companyid-scheduling-occurrences-occurrenceid-assignments-assignmentid

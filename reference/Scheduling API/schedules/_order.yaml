@@ -1,0 +1,11 @@
+- get_wep-companies-companyid-scheduling-schedules
+- post_wep-companies-companyid-scheduling-schedules
+- get_wep-companies-companyid-scheduling-schedules-scheduleid
+- patch_wep-companies-companyid-scheduling-schedules-scheduleid
+- delete_wep-companies-companyid-scheduling-schedules-scheduleid
+- post_wep-companies-companyid-scheduling-schedules-scheduleid-publish
+- post_wep-companies-companyid-scheduling-schedules-scheduleid-end
+- post_wep-companies-companyid-scheduling-schedules-scheduleid-duplicate
+- >-
+  get_wep-companies-companyid-scheduling-schedules-scheduleid-occurrences-preview
+- post_wep-companies-companyid-scheduling-schedules-occurrences-preview
