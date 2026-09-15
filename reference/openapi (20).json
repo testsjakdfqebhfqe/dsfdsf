@@ -1660,6 +1660,7 @@
             "name": "searchby",
             "in": "query",
             "required": true,
+            "example": "agreementnumber",
             "schema": {
               "type": "string",
               "enum": [
