@@ -1,5 +1,5 @@
 ---
-title: test
+title: test test
 deprecated: true
 hidden: false
 link:
