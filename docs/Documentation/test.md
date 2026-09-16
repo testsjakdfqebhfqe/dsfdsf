@@ -1,7 +1,9 @@
 ---
 title: test
-deprecated: false
+deprecated: true
 hidden: false
+link:
+  new_tab: false
 metadata:
   robots: index
 ---
