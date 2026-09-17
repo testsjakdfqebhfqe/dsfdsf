@@ -152,7 +152,12 @@
             "format": "int64"
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "enum": [
+              "dog",
+              "cat",
+              "bird"
+            ]
           },
           "tag": {
             "type": "string"
