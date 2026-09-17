@@ -1,7 +1,0 @@
-- get_wep-companies-companyid-scheduling-schedules-scheduleid-conflicts
-- post_wep-companies-companyid-scheduling-schedules-conflict-resolutions
-- get_wep-companies-companyid-scheduling-schedules-conflict-resolutions
-- >-
-  post_wep-companies-companyid-scheduling-schedules-conflict-resolutions-conflictresolutionid-switch
-- >-
-  delete_wep-companies-companyid-scheduling-schedules-conflict-resolutions-conflictresolutionid
