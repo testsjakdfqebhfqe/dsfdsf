@@ -1,0 +1,75 @@
+---
+name: Ca
+---
+export const Callout = ({
+  children,
+  title,
+  type = 'info',
+  icon,
+}) => {
+  const calloutTypes = {
+    info: {
+      className: 'callout_info',
+      icon: '📘',
+    },
+    error: {
+      className: 'callout_error',
+      icon: '🚨',
+    },
+    warning: {
+      className: 'callout_warning',
+      icon: '⚠️',
+    },
+    success: {
+      className: 'callout_success',
+      icon: '✅',
+    },
+  };
+
+  const config = calloutTypes[type] ?? calloutTypes.info;
+  const calloutIcon = icon ?? config.icon;
+
+  const id = title
+    ?.toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, '')
+    .replace(/\s+/g, '-');
+
+  return (
+    <div className="readme-tailwind">
+      <blockquote
+        className={`callout ${config.className}`}
+        theme={calloutIcon}
+      >
+        <span className="callout-icon">
+          {calloutIcon}
+        </span>
+
+        {title && (
+          <h3 className="heading heading-3 header-scroll">
+            <div
+              className="heading-anchor anchor waypoint"
+              id={id}
+            />
+
+            <div className="heading-text">
+              {title}
+            </div>
+
+            <a
+              aria-label={`Skip link to ${title}`}
+              className="heading-anchor-icon fa fa-regular fa-anchor"
+              href={`#${id}`}
+            />
+          </h3>
+        )}
+
+        {children}
+      </blockquote>
+    </div>
+  );
+};
+
+<Callout type="error" title="testв">
+  test
+</Callout>
