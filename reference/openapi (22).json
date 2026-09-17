@@ -7,9 +7,6 @@
       "name": "MIT"
     }
   },
-  "x-readme": {
-    "apply-endpoint-order": true
-  },
   "servers": [
     {
       "url": "http://petstore.swagger.io/v1"
@@ -23,6 +20,15 @@
         "tags": [
           "pets"
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Pet"
+              }
+            }
+          }
+        },
         "responses": {
           "201": {
             "description": "Null response"
