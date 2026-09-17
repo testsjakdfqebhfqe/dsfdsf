@@ -70,6 +70,6 @@ metadata:
 <div class="mig-slot-preview">
   <div class="mig-slot-preview__container">
     <h1 class="mig-slot-preview__header">50% off</h1>
-    <button class="mig-slot-preview__button">Browse winterwear</button>
+    <button class="mig-slot-preview__button">Browse winterwear {user.lai} </button>
   </div>
 </div>
