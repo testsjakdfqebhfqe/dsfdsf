@@ -7,6 +7,9 @@
       "name": "MIT"
     }
   },
+  "x-readme": {
+    "apply-endpoint-order": true
+  },
   "servers": [
     {
       "url": "http://petstore.swagger.io/v1"
