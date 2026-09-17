@@ -9,4 +9,4 @@ metadata:
 ---
 {user.lai}
 
-<div>{user.lai}</div>
+<div><span>{user.lai}</span></div>
