@@ -7,3 +7,8 @@ link:
 metadata:
   robots: index
 ---
+<Callout icon="📘" theme="error">
+  ### test
+
+  test
+</Callout>
