@@ -1,6 +1,6 @@
 ---
-title: Recipe Title
-description: Recipe Description
+title: test
+description: ''
 hidden: true
 recipe:
   color: '#018FF4'
