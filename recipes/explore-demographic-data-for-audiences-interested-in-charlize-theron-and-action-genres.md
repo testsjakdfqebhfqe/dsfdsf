@@ -1,7 +1,6 @@
 ---
 title: >-
   explore-demographic-data-for-audiences-interested-in-charlize-theron-and-action-genres
-description: Recipe Description
 hidden: true
 recipe:
   color: '#018FF4'
