@@ -5,8 +5,10 @@ hidden: true
 metadata:
   robots: index
 ---
+<Testiks />
+
 <br />
 
-<Callout type="error" title="testв">
+<Callout>
   test
 </Callout>
