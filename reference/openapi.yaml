@@ -57,7 +57,9 @@ paths:
     post:
       summary: Autenticação API
       deprecated: false
-      description: <Test />
+      description: >-
+        <Tabs>   <Tab title="Tab 1">     test   </Tab>    <Tab title="Tab
+        2">     test   </Tab> </Tabs>
       tags:
         - Auth
         - autenticacao
