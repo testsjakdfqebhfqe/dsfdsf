@@ -42,7 +42,7 @@ curl --request GET \
 
 <!-- curl@3-4 -->
 
-Use `filter.location.query` to set the overall search area and `filter.exclude.location.query` to cut out a specific sub-area. Both accept named location strings.
+
 
 # Add signal to personalize within the area
 
