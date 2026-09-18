@@ -12,3 +12,5 @@ metadata:
 
   test
 </Callout>
+
+<Test />
