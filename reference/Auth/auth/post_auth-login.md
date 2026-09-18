@@ -6,3 +6,4 @@ hidden: false
 link:
   new_tab: false
 ---
+<Test />
