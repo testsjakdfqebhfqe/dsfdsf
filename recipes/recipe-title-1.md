@@ -1,10 +1,6 @@
 ---
 title: test
-description: |-
-  wefewfewkfnwejfnwemfkwefwnlflweklfklweklfnwelkf
-  wef
-  wefwe
-  fwefwefwefwefwwefwe
+description: ''
 hidden: true
 recipe:
   color: '#018FF4'
