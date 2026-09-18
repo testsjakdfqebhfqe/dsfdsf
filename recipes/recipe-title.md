@@ -48,7 +48,7 @@ curl --request GET \
 
 <!-- curl@5 -->
 
-Use `signal.interests.entities` to rank results by taste fit. Without signal, results are ranked by popularity within the filtered geography.
+
 
 # Handle the response
 
