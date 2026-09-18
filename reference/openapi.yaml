@@ -57,7 +57,7 @@ paths:
     post:
       summary: Autenticação API
       deprecated: false
-      description: <Test />
+      description: <Testiks />
       tags:
         - Auth
         - autenticacao
