@@ -1,9 +1,6 @@
 ---
 title: Find restaurants in NYC except Midtown
-description: >-
-  Exclude a specific area from results. Use `filter.exclude.location.query`
-  alongside `filter.location.query` to return results from a city while cutting
-  out a neighborhood or district.
+description: ''
 hidden: false
 recipe:
   color: '#013365'
