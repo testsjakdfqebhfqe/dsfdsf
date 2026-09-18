@@ -57,9 +57,7 @@ paths:
     post:
       summary: Autenticação API
       deprecated: false
-      description: >-
-        <Tabs>   <Tab title="Tab 1">     test   </Tab>    <Tab title="Tab
-        2">     test   </Tab> </Tabs>
+      description: <Accordion title="test" icon="fa-info-circle">   test </Accordion>
       tags:
         - Auth
         - autenticacao
@@ -162,7 +160,6 @@ components:
             ws_endpoint:
               type: string
               example: wss://hgraphql.hotcred.com.br/v1/graphql
-  responses: {}
   securitySchemes:
     ApiKeyAuth1:
       type: apiKey
