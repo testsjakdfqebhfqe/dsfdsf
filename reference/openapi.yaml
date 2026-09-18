@@ -57,7 +57,7 @@ paths:
     post:
       summary: Autenticação API
       deprecated: false
-      description: <Accordion title="test" icon="fa-info-circle">   test </Accordion>
+      description: <Test />
       tags:
         - Auth
         - autenticacao
