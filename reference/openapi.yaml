@@ -160,6 +160,7 @@ components:
             ws_endpoint:
               type: string
               example: wss://hgraphql.hotcred.com.br/v1/graphql
+  responses: {}
   securitySchemes:
     ApiKeyAuth1:
       type: apiKey
