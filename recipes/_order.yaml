@@ -7,7 +7,8 @@
 - recommend-places-using-an-audience-segment-as-signal
 - get-restaurant-recommendations-from-transaction-history
 - get-recommendations-based-on-multiple-past-destinations
-- recommendations-for-restaurants-similar-to-a-given-place-in-a-specific-location
+- >-
+  recommendations-for-restaurants-similar-to-a-given-place-in-a-specific-location
 - recommendations-for-popular-brands-inside-paris-center-based-on-wkt-shape
 - find-restaurants-in-nyc-except-midtown
 - get-the-top-restaurants-per-city-across-multiple-markets
@@ -15,10 +16,12 @@
 - recommend-movies-using-weighted-tag-signals
 - get-the-taste-tags-that-describe-an-entitys-audience
 - compare-two-brands-audiences
-- explore-demographic-data-for-audiences-interested-in-charlize-theron-and-action-genres
+- >-
+  explore-demographic-data-for-audiences-interested-in-charlize-theron-and-action-genres
 - create-a-heatmap-based-on-a-wkt-point-for-the-brand-muji-in-nyc
 - heatmap-for-brand-jacquemus-inside-manhattan-based-on-wkt-shape
 - get-trending-artists-this-week
 - resolve-a-spotify-id-to-a-qloo-entity
 - find-restaurants-in-paris-based-on-brooklyn-dining-history
 - recommend-hotels-based-on-retail-purchase-history
+- recipe-title-1
