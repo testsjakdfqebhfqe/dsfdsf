@@ -1,6 +1,6 @@
 ---
 api:
   file: openapi.yaml
-  operationId: createPets
+  operationId: post_auth-login
 hidden: false
 ---
