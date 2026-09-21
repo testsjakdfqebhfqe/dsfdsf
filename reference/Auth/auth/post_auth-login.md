@@ -2,7 +2,7 @@
 api:
   file: openapi.yaml
   operationId: post_auth-login
-hidden: false
+hidden: true
 link:
   new_tab: false
 ---
