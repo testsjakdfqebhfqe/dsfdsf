@@ -13,4 +13,4 @@ metadata:
   test
 </Callout>
 
-[Link](doc:test)
+[Link](doc:ts2)
