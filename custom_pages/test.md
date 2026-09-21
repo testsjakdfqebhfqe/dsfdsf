@@ -1,6 +1,6 @@
 ---
 title: test
 fullscreen: false
-hidden: true
+hidden: false
 ---
 test
