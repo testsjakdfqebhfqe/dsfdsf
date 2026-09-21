@@ -12,3 +12,5 @@ metadata:
 <Callout>
   test
 </Callout>
+
+[Link](doc:test)
