@@ -61,6 +61,9 @@
     "securitySchemes": {
       "OAuth2": {
         "type": "oauth2",
+        "x-readme": {
+          "proxy-enabled": false
+        },
         "flows": {
           "authorizationCode": {
             "authorizationUrl": "https://localhost:4443/oauth/authorize",
