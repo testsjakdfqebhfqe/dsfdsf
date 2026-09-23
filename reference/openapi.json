@@ -1,0 +1,80 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "OAuth2 debug API",
+    "version": "1.0.0",
+    "description": "Local mock mirroring the customer's OAuth2 security scheme."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:4000"
+    }
+  ],
+  "paths": {
+    "/api/me": {
+      "post": {
+        "operationId": "createItem",
+        "summary": "Write-scoped endpoint",
+        "security": [
+          {
+            "OAuth2": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "403": {
+            "description": "Missing scope"
+          }
+        }
+      }
+    },
+    "/api/public": {
+      "get": {
+        "operationId": "getPublic",
+        "summary": "No auth",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "OAuth2": {
+        "type": "oauth2",
+        "flows": {
+          "authorizationCode": {
+            "authorizationUrl": "http://localhost:4000/oauth/authorize",
+            "tokenUrl": "http://localhost:4000/oauth/token",
+            "refreshUrl": "http://localhost:4000/oauth/token",
+            "scopes": {
+              "openid": "OpenID Connect scope",
+              "profile": "Read your basic profile",
+              "api.read": "Read data from the API",
+              "api.write": "Write data to the API"
+            }
+          }
+        }
+      }
+    }
+  }
+}
