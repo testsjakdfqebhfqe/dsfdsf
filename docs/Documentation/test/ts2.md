@@ -5,4 +5,4 @@ hidden: false
 metadata:
   robots: index
 ---
-<Testiks />
+<Glossary>testiks1234</Glossary>
