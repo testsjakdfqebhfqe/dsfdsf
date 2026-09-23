@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:4000"
+      "url": "https://localhost:4443"
     }
   ],
   "paths": {
@@ -63,9 +63,15 @@
         "type": "oauth2",
         "flows": {
           "authorizationCode": {
-            "authorizationUrl": "http://localhost:4000/oauth/authorize",
-            "tokenUrl": "http://localhost:4000/oauth/token",
-            "scopes": {}
+            "authorizationUrl": "https://localhost:4443/oauth/authorize",
+            "tokenUrl": "https://localhost:4443/oauth/token",
+            "refreshUrl": "https://localhost:4443/oauth/token",
+            "scopes": {
+              "openid": "OpenID Connect scope",
+              "profile": "Read your basic profile",
+              "api.read": "Read data from the API",
+              "api.write": "Write data to the API"
+            }
           }
         }
       }
