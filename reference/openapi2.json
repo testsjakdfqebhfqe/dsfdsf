@@ -67,33 +67,6 @@
             }
           }
         }
-      },
-      "post": {
-        "summary": "ClientCredentials",
-        "operationId": "createPets",
-        "tags": [
-          "pets"
-        ],
-        "security": [
-          {
-            "OAuth2ClientCredentials": []
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Null response"
-          },
-          "default": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
       }
     }
   },
@@ -104,15 +77,6 @@
         "flows": {
           "authorizationCode": {
             "authorizationUrl": "https://08cc-185-70-55-26.ngrok-free.app/oauth/authorize",
-            "tokenUrl": "https://08cc-185-70-55-26.ngrok-free.app/oauth/token",
-            "scopes": {}
-          }
-        }
-      },
-      "OAuth2ClientCredentials": {
-        "type": "oauth2",
-        "flows": {
-          "clientCredentials": {
             "tokenUrl": "https://08cc-185-70-55-26.ngrok-free.app/oauth/token",
             "scopes": {}
           }
