@@ -7,7 +7,16 @@
   },
   "servers": [
     {
-      "url": "https://6956-185-70-55-26.ngrok-free.app"
+      "url": "https://08cc-185-70-55-26.ngrok-free.app"
+    }
+  ],
+  "security": [
+    {
+      "OAuth2": [
+        "openid",
+        "profile",
+        "api.read"
+      ]
     }
   ],
   "x-readme": {
@@ -17,12 +26,71 @@
   },
   "paths": {
     "/api/me": {
+      "get": {
+        "operationId": "getMe",
+        "summary": "Whoami — echoes the token and the headers it arrived with",
+        "security": [
+          {
+            "OAuth2": [
+              "api.read"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/items": {
+      "get": {
+        "operationId": "listItems",
+        "summary": "A protected collection",
+        "security": [
+          {
+            "OAuth2": [
+              "api.read"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
       "post": {
         "operationId": "createItem",
         "summary": "Write-scoped endpoint",
         "security": [
           {
-            "OAuth2": []
+            "OAuth2": [
+              "api.write"
+            ]
           }
         ],
         "requestBody": {
@@ -66,11 +134,63 @@
     "securitySchemes": {
       "OAuth2": {
         "type": "oauth2",
+        "x-readme": {
+          "oauth-options": {
+            "useInsecureClientAuthentication": true
+          }
+        },
         "flows": {
           "authorizationCode": {
-            "authorizationUrl": "https://6956-185-70-55-26.ngrok-free.app/oauth/authorize",
-            "tokenUrl": "https://6956-185-70-55-26.ngrok-free.app/oauth/token",
-            "refreshUrl": "https://6956-185-70-55-26.ngrok-free.app/oauth/token",
+            "authorizationUrl": "https://08cc-185-70-55-26.ngrok-free.app/oauth/authorize",
+            "tokenUrl": "https://08cc-185-70-55-26.ngrok-free.app/oauth/token",
+            "refreshUrl": "https://08cc-185-70-55-26.ngrok-free.app/oauth/token",
+            "scopes": {
+              "openid": "OpenID Connect scope",
+              "profile": "Read your basic profile",
+              "api.read": "Read data from the API",
+              "api.write": "Write data to the API"
+            },
+            "x-readme": {
+              "oauth-options": {
+                "useInsecureClientAuthentication": true
+              }
+            }
+          }
+        }
+      },
+      "OAuth2ClientCredentials": {
+        "type": "oauth2",
+        "flows": {
+          "clientCredentials": {
+            "tokenUrl": "https://08cc-185-70-55-26.ngrok-free.app/oauth/token",
+            "scopes": {
+              "openid": "OpenID Connect scope",
+              "profile": "Read your basic profile",
+              "api.read": "Read data from the API",
+              "api.write": "Write data to the API"
+            }
+          }
+        }
+      },
+      "OAuth2Implicit": {
+        "type": "oauth2",
+        "flows": {
+          "implicit": {
+            "authorizationUrl": "https://08cc-185-70-55-26.ngrok-free.app/oauth/authorize",
+            "scopes": {
+              "openid": "OpenID Connect scope",
+              "profile": "Read your basic profile",
+              "api.read": "Read data from the API",
+              "api.write": "Write data to the API"
+            }
+          }
+        }
+      },
+      "OAuth2Password": {
+        "type": "oauth2",
+        "flows": {
+          "password": {
+            "tokenUrl": "https://08cc-185-70-55-26.ngrok-free.app/oauth/token",
             "scopes": {
               "openid": "OpenID Connect scope",
               "profile": "Read your basic profile",
