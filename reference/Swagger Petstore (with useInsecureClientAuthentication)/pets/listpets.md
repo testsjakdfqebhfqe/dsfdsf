@@ -4,3 +4,4 @@ api:
   operationId: listPets
 hidden: false
 ---
+[Link](ref:example)
