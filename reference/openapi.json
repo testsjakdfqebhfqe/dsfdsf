@@ -7,11 +7,6 @@
       "name": "MIT"
     }
   },
-  "x-readme": {
-    "oauth-options": {
-      "useInsecureClientAuthentication": true
-    }
-  },
   "servers": [
     {
       "url": "https://43b1-185-115-5-158.ngrok-free.app"
@@ -21,11 +16,6 @@
     "/pets": {
       "get": {
         "summary": "authorizationCode",
-        "x-readme": {
-          "oauth-options": {
-            "useInsecureClientAuthentication": true
-          }
-        },
         "operationId": "listPets",
         "tags": [
           "pets"
@@ -81,14 +71,14 @@
     }
   },
   "components": {
+    "x-readme": {
+      "oauth-options": {
+        "useInsecureClientAuthentication": true
+      }
+    },
     "securitySchemes": {
       "OAuth2": {
         "type": "oauth2",
-        "x-readme": {
-          "oauth-options": {
-            "useInsecureClientAuthentication": true
-          }
-        },
         "flows": {
           "authorizationCode": {
             "authorizationUrl": "https://43b1-185-115-5-158.ngrok-free.app/oauth/authorize",
