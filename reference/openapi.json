@@ -7,6 +7,11 @@
       "name": "MIT"
     }
   },
+  "x-readme": {
+    "oauth-options": {
+      "useInsecureClientAuthentication": true
+    }
+  },
   "servers": [
     {
       "url": "https://43b1-185-115-5-158.ngrok-free.app"
@@ -71,11 +76,6 @@
     }
   },
   "components": {
-    "x-readme": {
-      "oauth-options": {
-        "useInsecureClientAuthentication": true
-      }
-    },
     "securitySchemes": {
       "OAuth2": {
         "type": "oauth2",
