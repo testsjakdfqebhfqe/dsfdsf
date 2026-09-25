@@ -27,7 +27,7 @@
         "summary": "Whoami — echoes the token and the headers it arrived with",
         "security": [
           {
-            "OAuth2": [
+            "OAuth2ClientCredentials": [
               "api.read"
             ]
           }
