@@ -10,6 +10,11 @@
       "url": "https://6956-185-70-55-26.ngrok-free.app"
     }
   ],
+  "x-readme": {
+    "oauth-options": {
+      "useInsecureClientAuthentication": true
+    }
+  },
   "paths": {
     "/api/me": {
       "post": {
