@@ -12,11 +12,7 @@
   ],
   "security": [
     {
-      "OAuth2": [
-        "openid",
-        "profile",
-        "api.read"
-      ]
+      "OAuth2ClientCredentials": []
     }
   ],
   "x-readme": {
