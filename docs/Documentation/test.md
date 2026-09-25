@@ -1,5 +1,5 @@
 ---
-title: example
+title: examplefsd
 deprecated: true
 hidden: false
 link:
