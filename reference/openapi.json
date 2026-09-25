@@ -143,13 +143,7 @@
           "authorizationCode": {
             "authorizationUrl": "https://08cc-185-70-55-26.ngrok-free.app/oauth/authorize",
             "tokenUrl": "https://08cc-185-70-55-26.ngrok-free.app/oauth/token",
-            "refreshUrl": "https://08cc-185-70-55-26.ngrok-free.app/oauth/token",
-            "scopes": {
-              "openid": "OpenID Connect scope",
-              "profile": "Read your basic profile",
-              "api.read": "Read data from the API",
-              "api.write": "Write data to the API"
-            },
+            "scopes": {},
             "x-readme": {
               "oauth-options": {
                 "useInsecureClientAuthentication": true
