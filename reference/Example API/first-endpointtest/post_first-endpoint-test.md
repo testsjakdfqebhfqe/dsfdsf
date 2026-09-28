@@ -1,6 +1,6 @@
 ---
 api:
   file: openapi.json
-  operationId: listPets
+  operationId: post_first-endpoint-test
 hidden: false
 ---

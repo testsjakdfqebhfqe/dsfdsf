@@ -1,132 +1,84 @@
 {
-  "openapi": "3.0.0",
+  "openapi": "3.0.3",
   "info": {
-    "version": "1.0.0",
-    "title": "Swagger Petstore (with useInsecureClientAuthentication)",
-    "license": {
-      "name": "MIT"
-    }
+    "title": "Example API",
+    "version": "1.0.0"
   },
-  "x-readme": {
-    "oauth-options": {
-      "useInsecureClientAuthentication": true
-    }
-  },
-  "servers": [
-    {
-      "url": "https://43b1-185-115-5-158.ngrok-free.app"
-    }
-  ],
   "paths": {
-    "/pets": {
-      "get": {
-        "summary": "authorizationCode",
-        "operationId": "listPets",
-        "tags": [
-          "pets"
-        ],
-        "security": [
-          {
-            "OAuth2": []
-          }
-        ],
+    "/first-endpoint/{test}": {
+      "post": {
         "parameters": [
           {
-            "name": "limit",
-            "in": "query",
-            "description": "How many items to return at one time (max 100)",
-            "required": false,
+            "name": "test",
+            "in": "path",
+            "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int32"
+              "type": "string"
             }
           }
         ],
-        "responses": {
-          "200": {
-            "description": "A paged array of pets",
-            "headers": {
-              "x-next": {
-                "description": "A link to the next page of responses",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Pets"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "test": {
+                    "allOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "testik": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    ]
+                  }
                 }
               }
             }
           }
-        }
-      }
-    }
-  },
-  "components": {
-    "securitySchemes": {
-      "OAuth2": {
-        "type": "oauth2",
-        "flows": {
-          "authorizationCode": {
-            "authorizationUrl": "https://43b1-185-115-5-158.ngrok-free.app/oauth/authorize",
-            "tokenUrl": "https://43b1-185-115-5-158.ngrok-free.app/oauth/token",
-            "scopes": {}
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         }
       }
     },
-    "schemas": {
-      "Pet": {
-        "type": "object",
-        "required": [
-          "id",
-          "name"
-        ],
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "name": {
-            "type": "string"
-          },
-          "tag": {
-            "type": "string"
+    "/second-endpoint/{hm}": {
+      "post": {
+        "parameters": [
+          {
+            "name": "hm",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
           }
-        }
-      },
-      "Pets": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/Pet"
-        }
-      },
-      "Error": {
-        "type": "object",
-        "required": [
-          "code",
-          "message"
         ],
-        "properties": {
-          "code": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string"
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "test2": {
+                    "$ref": "#/paths/~1first-endpoint~1{test}/post/requestBody/content/application~1json/schema/properties/test"
+                  },
+                  "test3": {
+                    "$ref": "#/paths/~1first-endpoint~1{test}/post/requestBody/content/application~1json/schema/properties/test/allOf/0/properties/testik"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         }
       }
