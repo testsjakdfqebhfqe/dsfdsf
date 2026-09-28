@@ -1,0 +1,565 @@
+openapi: 3.1.0
+info:
+  title: OAS 3.1 Mixed Test Fixture
+  version: 1.0.0
+  description: >
+    Comprehensive fixture for testing request body rendering, multipart forms,
+    webhooks, deeply nested objects, arrays, polymorphism and primitive types.
+servers:
+  - url: https://api.example.com/v1
+paths:
+  /upload:
+    post:
+      operationId: uploadFiles
+      summary: Multipart file upload
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/MultipartUploadRequest'
+            encoding:
+              metadata:
+                contentType: application/json
+              files:
+                contentType: application/octet-stream
+      responses:
+        '201':
+          description: Upload completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UploadResponse'
+  /webhook/test:
+    post:
+      operationId: testWebhook
+      summary: Test webhook endpoint
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookPayload'
+      responses:
+        '202':
+          description: Webhook accepted
+  /deep:
+    post:
+      operationId: createDeepResource
+      summary: Deeply nested request
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeeplyNestedRequest'
+      responses:
+        '200':
+          description: Resource created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeepResponse'
+  /all-types:
+    post:
+      operationId: testAllTypes
+      summary: Request containing all supported data types
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AllTypesRequest'
+      responses:
+        '200':
+          description: All types accepted
+  /polymorphic:
+    post:
+      operationId: testPolymorphism
+      summary: Polymorphic request
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/CardPayment'
+                - $ref: '#/components/schemas/BankPayment'
+              discriminator:
+                propertyName: paymentType
+      responses:
+        '200':
+          description: Payment processed
+webhooks:
+  userCreated:
+    post:
+      operationId: userCreatedWebhook
+      summary: User created webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreatedWebhook'
+      responses:
+        '200':
+          description: Webhook processed
+  paymentUpdated:
+    post:
+      operationId: paymentUpdatedWebhook
+      summary: Payment updated webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentUpdatedWebhook'
+      responses:
+        '200':
+          description: Webhook processed
+components:
+  schemas:
+    MultipartUploadRequest:
+      type: object
+      required:
+        - title
+        - metadata
+        - files
+      properties:
+        title:
+          type: string
+          example: Product assets
+        description:
+          type: string
+        metadata:
+          type: object
+          properties:
+            source:
+              type: string
+            tags:
+              type: array
+              items:
+                type: string
+            settings:
+              type: object
+              properties:
+                public:
+                  type: boolean
+                retentionDays:
+                  type: integer
+                  minimum: 1
+        files:
+          type: array
+          items:
+            type: string
+            format: binary
+    UploadResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        files:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              size:
+                type: integer
+                format: int64
+              url:
+                type: string
+                format: uri
+    WebhookPayload:
+      type: object
+      required:
+        - event
+        - id
+        - timestamp
+        - data
+      properties:
+        event:
+          type: string
+          enum:
+            - created
+            - updated
+            - deleted
+        id:
+          type: string
+          format: uuid
+        timestamp:
+          type: string
+          format: date-time
+        data:
+          type: object
+          properties:
+            user:
+              $ref: '#/components/schemas/User'
+            changes:
+              type: array
+              items:
+                type: object
+                properties:
+                  field:
+                    type: string
+                  oldValue:
+                    nullable: true
+                  newValue:
+                    nullable: true
+    DeeplyNestedRequest:
+      type: object
+      required:
+        - account
+      properties:
+        account:
+          type: object
+          required:
+            - profile
+          properties:
+            profile:
+              type: object
+              required:
+                - identity
+              properties:
+                identity:
+                  type: object
+                  properties:
+                    name:
+                      type: object
+                      properties:
+                        first:
+                          type: string
+                        middle:
+                          type:
+                            - string
+                            - 'null'
+                        last:
+                          type: string
+                    contact:
+                      type: object
+                      properties:
+                        email:
+                          type: string
+                          format: email
+                        phone:
+                          type: string
+                        addresses:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              type:
+                                type: string
+                                enum:
+                                  - home
+                                  - work
+                                  - billing
+                              country:
+                                type: string
+                              city:
+                                type: string
+                              coordinates:
+                                type: object
+                                properties:
+                                  latitude:
+                                    type: number
+                                    format: double
+                                  longitude:
+                                    type: number
+                                    format: double
+                preferences:
+                  type: object
+                  properties:
+                    notifications:
+                      type: object
+                      properties:
+                        email:
+                          type: boolean
+                        sms:
+                          type: boolean
+                        push:
+                          type: boolean
+                    languages:
+                      type: array
+                      items:
+                        type: string
+                    theme:
+                      type: string
+                      enum:
+                        - light
+                        - dark
+                        - system
+    AllTypesRequest:
+      type: object
+      properties:
+        stringValue:
+          type: string
+        nullableString:
+          type:
+            - string
+            - 'null'
+        integerValue:
+          type: integer
+        int32Value:
+          type: integer
+          format: int32
+        int64Value:
+          type: integer
+          format: int64
+        numberValue:
+          type: number
+        floatValue:
+          type: number
+          format: float
+        doubleValue:
+          type: number
+          format: double
+        booleanValue:
+          type: boolean
+        nullValue:
+          type: 'null'
+        dateValue:
+          type: string
+          format: date
+        dateTimeValue:
+          type: string
+          format: date-time
+        timeValue:
+          type: string
+          format: time
+        emailValue:
+          type: string
+          format: email
+        uriValue:
+          type: string
+          format: uri
+        uuidValue:
+          type: string
+          format: uuid
+        hostnameValue:
+          type: string
+          format: hostname
+        ipv4Value:
+          type: string
+          format: ipv4
+        ipv6Value:
+          type: string
+          format: ipv6
+        passwordValue:
+          type: string
+          format: password
+        binaryValue:
+          type: string
+          format: binary
+        byteValue:
+          type: string
+          format: byte
+        enumValue:
+          type: string
+          enum:
+            - first
+            - second
+            - third
+        constValue:
+          const: fixed-value
+        arrayValue:
+          type: array
+          items:
+            type: string
+        arrayOfObjects:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+        nestedArray:
+          type: array
+          items:
+            type: array
+            items:
+              type: array
+              items:
+                type: number
+        objectValue:
+          type: object
+          additionalProperties: true
+        dictionaryValue:
+          type: object
+          additionalProperties:
+            type: string
+        nullableObject:
+          type:
+            - object
+            - 'null'
+          properties:
+            value:
+              type: string
+        mixedArray:
+          type: array
+          prefixItems:
+            - type: string
+            - type: integer
+            - type: boolean
+          items: false
+        conditionalValue:
+          oneOf:
+            - type: string
+            - type: integer
+        anyValue:
+          anyOf:
+            - type: string
+            - type: number
+            - type: boolean
+        notString:
+          not:
+            type: string
+    User:
+      type: object
+      required:
+        - id
+        - email
+      properties:
+        id:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
+        name:
+          type: string
+        roles:
+          type: array
+          items:
+            type: string
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+    UserCreatedWebhook:
+      type: object
+      required:
+        - id
+        - event
+        - user
+      properties:
+        id:
+          type: string
+          format: uuid
+        event:
+          type: string
+          const: user.created
+        occurredAt:
+          type: string
+          format: date-time
+        user:
+          $ref: '#/components/schemas/User'
+        source:
+          type: object
+          properties:
+            service:
+              type: string
+            version:
+              type: string
+    PaymentUpdatedWebhook:
+      type: object
+      properties:
+        event:
+          type: string
+          const: payment.updated
+        payment:
+          $ref: '#/components/schemas/Payment'
+        previous:
+          type:
+            - object
+            - 'null'
+          properties:
+            status:
+              type: string
+            amount:
+              type: number
+        metadata:
+          type: object
+          additionalProperties: true
+    Payment:
+      type: object
+      required:
+        - id
+        - amount
+        - currency
+      properties:
+        id:
+          type: string
+          format: uuid
+        amount:
+          type: number
+          minimum: 0
+        currency:
+          type: string
+          minLength: 3
+          maxLength: 3
+        status:
+          type: string
+          enum:
+            - pending
+            - completed
+            - failed
+            - refunded
+    CardPayment:
+      type: object
+      required:
+        - paymentType
+        - card
+      properties:
+        paymentType:
+          type: string
+          const: card
+        amount:
+          type: number
+        card:
+          type: object
+          required:
+            - number
+            - expiry
+          properties:
+            number:
+              type: string
+            expiry:
+              type: string
+            cvv:
+              type: string
+    BankPayment:
+      type: object
+      required:
+        - paymentType
+        - bank
+      properties:
+        paymentType:
+          type: string
+          const: bank
+        amount:
+          type: number
+        bank:
+          type: object
+          required:
+            - accountNumber
+          properties:
+            accountNumber:
+              type: string
+            routingNumber:
+              type: string
+    DeepResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        created:
+          type: string
+          format: date-time
+        resource:
+          $ref: '#/components/schemas/DeeplyNestedRequest'
