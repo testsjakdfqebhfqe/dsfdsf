@@ -1,0 +1,1227 @@
+openapi: 3.0.1
+info:
+  title: Get all contacts
+  version: v4
+servers:
+  - description: >-
+      Get all the contacts filtered by user and alias, taxonomy, id or currency
+      (all optional).
+    url: https://api.bitso.com
+tags:
+  - description: Search withdrawal contacts.
+    name: Contacts
+paths:
+  /api/v4/consumer-contacts:
+    get:
+      description: >-
+        Get all the contacts filtered by user and alias, taxonomy, id or
+        currency (all optional).
+      operationId: searchContactsPaged
+      parameters:
+        - description: Filter by contact alias.
+          example: Jane's wallet
+          in: query
+          name: alias
+          required: false
+          schema:
+            type: string
+        - description: Filter by contact identifier.
+          example: 12345
+          in: query
+          name: id
+          required: false
+          schema:
+            type: integer
+            format: int64
+        - description: Filter by settlement asset.
+          example: mxn
+          in: query
+          name: asset
+          required: false
+          schema:
+            type: string
+        - description: Filter by network.
+          example: spei
+          in: query
+          name: network
+          required: false
+          schema:
+            type: string
+        - description: Filter by protocol.
+          example: clabe
+          in: query
+          name: protocol
+          required: false
+          schema:
+            type: string
+        - description: Filter by integration.
+          example: praxis
+          in: query
+          name: integration
+          required: false
+          schema:
+            type: string
+        - description: Filter by currency.
+          example: mxn
+          in: query
+          name: currency
+          required: false
+          schema:
+            type: string
+        - description: Opaque cursor for the next page.
+          in: query
+          name: page_token
+          required: false
+          schema:
+            type: string
+        - description: Maximum number of contacts per page.
+          example: 20
+          in: query
+          name: page_size
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 20
+            maximum: 100
+            minimum: 1
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactsSearchPagedResponse'
+          description: Matching contacts, paginated.
+        '400':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: >-
+                      #/components/schemas/SearchContactsPagedBadRequestErrorResponse
+                  - $ref: '#/components/schemas/BadRequestErrorResponse'
+          description: The page_token is invalid.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedErrorResponse'
+          description: Container error schema for authorization errors.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenErrorResponse'
+          description: Container error schema for forbidden errors.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundErrorResponse'
+          description: Container error schema for not found errors.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsErrorResponse'
+          description: Container error schema for rate-limiting errors.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalErrorResponse'
+          description: Container error schema for internal errors.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableErrorResponse'
+          description: Container error schema for service unavailable errors.
+      summary: Get all contacts
+      tags:
+        - Contacts
+  /api/v4/consumer-contacts/:
+    get:
+      description: >-
+        Get all the contacts filtered by user and alias, taxonomy, id or
+        currency (all optional).
+      operationId: searchContactsPaged-1
+      parameters:
+        - description: Filter by contact alias.
+          example: Jane's wallet
+          in: query
+          name: alias
+          required: false
+          schema:
+            type: string
+        - description: Filter by contact identifier.
+          example: 12345
+          in: query
+          name: id
+          required: false
+          schema:
+            type: integer
+            format: int64
+        - description: Filter by settlement asset.
+          example: mxn
+          in: query
+          name: asset
+          required: false
+          schema:
+            type: string
+        - description: Filter by network.
+          example: spei
+          in: query
+          name: network
+          required: false
+          schema:
+            type: string
+        - description: Filter by protocol.
+          example: clabe
+          in: query
+          name: protocol
+          required: false
+          schema:
+            type: string
+        - description: Filter by integration.
+          example: praxis
+          in: query
+          name: integration
+          required: false
+          schema:
+            type: string
+        - description: Filter by currency.
+          example: mxn
+          in: query
+          name: currency
+          required: false
+          schema:
+            type: string
+        - description: Opaque cursor for the next page.
+          in: query
+          name: page_token
+          required: false
+          schema:
+            type: string
+        - description: Maximum number of contacts per page.
+          example: 20
+          in: query
+          name: page_size
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 20
+            maximum: 100
+            minimum: 1
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactsSearchPagedResponse'
+          description: Matching contacts, paginated.
+        '400':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: >-
+                      #/components/schemas/SearchContactsPagedBadRequestErrorResponse
+                  - $ref: '#/components/schemas/BadRequestErrorResponse'
+          description: The page_token is invalid.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedErrorResponse'
+          description: Container error schema for authorization errors.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenErrorResponse'
+          description: Container error schema for forbidden errors.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundErrorResponse'
+          description: Container error schema for not found errors.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsErrorResponse'
+          description: Container error schema for rate-limiting errors.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalErrorResponse'
+          description: Container error schema for internal errors.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableErrorResponse'
+          description: Container error schema for service unavailable errors.
+      summary: Get all contacts
+      tags:
+        - Contacts
+  /v4/consumer-contacts:
+    get:
+      description: >-
+        Get all the contacts filtered by user and alias, taxonomy, id or
+        currency (all optional).
+      operationId: searchContactsPaged-2
+      parameters:
+        - description: Filter by contact alias.
+          example: Jane's wallet
+          in: query
+          name: alias
+          required: false
+          schema:
+            type: string
+        - description: Filter by contact identifier.
+          example: 12345
+          in: query
+          name: id
+          required: false
+          schema:
+            type: integer
+            format: int64
+        - description: Filter by settlement asset.
+          example: mxn
+          in: query
+          name: asset
+          required: false
+          schema:
+            type: string
+        - description: Filter by network.
+          example: spei
+          in: query
+          name: network
+          required: false
+          schema:
+            type: string
+        - description: Filter by protocol.
+          example: clabe
+          in: query
+          name: protocol
+          required: false
+          schema:
+            type: string
+        - description: Filter by integration.
+          example: praxis
+          in: query
+          name: integration
+          required: false
+          schema:
+            type: string
+        - description: Filter by currency.
+          example: mxn
+          in: query
+          name: currency
+          required: false
+          schema:
+            type: string
+        - description: Opaque cursor for the next page.
+          in: query
+          name: page_token
+          required: false
+          schema:
+            type: string
+        - description: Maximum number of contacts per page.
+          example: 20
+          in: query
+          name: page_size
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 20
+            maximum: 100
+            minimum: 1
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactsSearchPagedResponse'
+          description: Matching contacts, paginated.
+        '400':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: >-
+                      #/components/schemas/SearchContactsPagedBadRequestErrorResponse
+                  - $ref: '#/components/schemas/BadRequestErrorResponse'
+          description: The page_token is invalid.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedErrorResponse'
+          description: Container error schema for authorization errors.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenErrorResponse'
+          description: Container error schema for forbidden errors.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundErrorResponse'
+          description: Container error schema for not found errors.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsErrorResponse'
+          description: Container error schema for rate-limiting errors.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalErrorResponse'
+          description: Container error schema for internal errors.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableErrorResponse'
+          description: Container error schema for service unavailable errors.
+      summary: Get all contacts
+      tags:
+        - Contacts
+  /v4/consumer-contacts/:
+    get:
+      description: >-
+        Get all the contacts filtered by user and alias, taxonomy, id or
+        currency (all optional).
+      operationId: searchContactsPaged-3
+      parameters:
+        - description: Filter by contact alias.
+          example: Jane's wallet
+          in: query
+          name: alias
+          required: false
+          schema:
+            type: string
+        - description: Filter by contact identifier.
+          example: 12345
+          in: query
+          name: id
+          required: false
+          schema:
+            type: integer
+            format: int64
+        - description: Filter by settlement asset.
+          example: mxn
+          in: query
+          name: asset
+          required: false
+          schema:
+            type: string
+        - description: Filter by network.
+          example: spei
+          in: query
+          name: network
+          required: false
+          schema:
+            type: string
+        - description: Filter by protocol.
+          example: clabe
+          in: query
+          name: protocol
+          required: false
+          schema:
+            type: string
+        - description: Filter by integration.
+          example: praxis
+          in: query
+          name: integration
+          required: false
+          schema:
+            type: string
+        - description: Filter by currency.
+          example: mxn
+          in: query
+          name: currency
+          required: false
+          schema:
+            type: string
+        - description: Opaque cursor for the next page.
+          in: query
+          name: page_token
+          required: false
+          schema:
+            type: string
+        - description: Maximum number of contacts per page.
+          example: 20
+          in: query
+          name: page_size
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 20
+            maximum: 100
+            minimum: 1
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactsSearchPagedResponse'
+          description: Matching contacts, paginated.
+        '400':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: >-
+                      #/components/schemas/SearchContactsPagedBadRequestErrorResponse
+                  - $ref: '#/components/schemas/BadRequestErrorResponse'
+          description: The page_token is invalid.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedErrorResponse'
+          description: Container error schema for authorization errors.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenErrorResponse'
+          description: Container error schema for forbidden errors.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundErrorResponse'
+          description: Container error schema for not found errors.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsErrorResponse'
+          description: Container error schema for rate-limiting errors.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalErrorResponse'
+          description: Container error schema for internal errors.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableErrorResponse'
+          description: Container error schema for service unavailable errors.
+      summary: Get all contacts
+      tags:
+        - Contacts
+components:
+  schemas:
+    ApiKeyDisabledError:
+      description: >-
+        Disabled API key error schema. Indicates the API key used to sign the
+        request is disabled.
+      properties:
+        code:
+          type: string
+          default: api_key_disabled
+          description: Error code.
+          example: api_key_disabled
+        message:
+          type: string
+          default: The API key used to sign the request is disabled.
+          description: Error message.
+          example: The API key used to sign the request is disabled.
+    ApiKeyInvalidFormatError:
+      description: >-
+        Invalid API format key error schema. Indicates the API key used to sign
+        the request has an invalid format.
+      properties:
+        code:
+          type: string
+          default: api_key_invalid_format
+          description: Error code.
+          example: api_key_invalid_format
+        message:
+          type: string
+          default: >-
+            The API key used to sign the request has an invalid format. The API
+            key should contain only letters and numbers, and its length must be
+            10.
+          description: Error message.
+          example: >-
+            The API key used to sign the request has an invalid format. The API
+            key should contain only letters and numbers, and its length must be
+            10.
+    ApiKeyNotFoundError:
+      description: >-
+        Invalid API key not found error schema. Indicates the API key used to
+        sign the request was not found.
+      properties:
+        code:
+          type: string
+          default: api_key_not_found
+          description: Error code.
+          example: api_key_not_found
+        message:
+          type: string
+          default: The API key used to sign the request was not found.
+          description: Error message.
+          example: The API key used to sign the request was not found.
+    BadRequestErrorResponse:
+      description: Container error schema for bad request errors.
+      properties:
+        errors:
+          type: array
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/InvalidFieldError'
+              - $ref: '#/components/schemas/UnparseableInputError'
+              - $ref: '#/components/schemas/MissingParameterError'
+            description: Bad request error schema.
+          minItems: 1
+          uniqueItems: true
+    Beneficiary:
+      type: object
+      description: Beneficiary of a travel-rule-covered transaction.
+      example:
+        name: Jane Doe
+        type: NATURAL
+      properties:
+        name:
+          type: string
+          description: Name of the beneficiary.
+          example: Jane Doe
+        type:
+          $ref: '#/components/schemas/BeneficiaryType'
+          description: Whether the beneficiary is a natural person or a legal entity.
+          example: NATURAL
+    BeneficiaryType:
+      type: string
+      description: >-
+        Whether the beneficiary is an individual person or a company or other
+        legal entity.
+      enum:
+        - NATURAL
+        - LEGAL
+    Compliance:
+      type: object
+      description: >-
+        Compliance declarations attached to the contact's destination. Only the
+        fields relevant to the applicable compliance regimes are present.
+      example:
+        travel_rule:
+          vasp:
+            name: Example VASP
+            did: did:example:123456
+          beneficiary:
+            name: Jane Doe
+            type: NATURAL
+      properties:
+        travel_rule:
+          $ref: '#/components/schemas/TravelRule'
+          description: >-
+            Travel-rule declaration, present when the contact is subject to
+            travel-rule reporting.
+    ComplianceType:
+      type: string
+      description: Compliance regime that applies to a contact's destination.
+      enum:
+        - TRAVEL_RULE
+    Contact:
+      type: object
+      description: A saved withdrawal destination for the authenticated user.
+      example:
+        id: 12345
+        alias: Jane's wallet
+        taxonomy:
+          network: spei
+          asset: mxn
+          protocol: clabe
+          integration: praxis
+          currency: mxn
+        details:
+          - name: CLABE
+            key: clabe
+            value: '012345678901234567'
+            flags: []
+        created_at: '2026-02-26T14:00:00Z'
+        compliant:
+          - TRAVEL_RULE
+        compliance:
+          travel_rule:
+            vasp:
+              name: Example VASP
+              did: did:example:123456
+            beneficiary:
+              name: Jane Doe
+              type: NATURAL
+        flags:
+          - FREQUENT
+      properties:
+        alias:
+          type: string
+          description: User-assigned name for the contact.
+          example: Jane's wallet
+        compliance:
+          $ref: '#/components/schemas/Compliance'
+          description: >-
+            Compliance declarations attached to this contact's destination,
+            present when compliant is non-empty.
+        compliant:
+          type: array
+          anyOf:
+            - $ref: '#/components/schemas/ComplianceType'
+          description: Compliance regimes that apply to this contact's destination.
+          items:
+            $ref: '#/components/schemas/ComplianceType'
+          uniqueItems: true
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp at which the contact was created.
+          example: '2026-02-26T14:00:00Z'
+        details:
+          type: array
+          description: Named attributes of the contact's destination.
+          items:
+            $ref: '#/components/schemas/ContactDetail'
+        flags:
+          type: array
+          description: Additional flags qualifying this contact.
+          items:
+            type: string
+        id:
+          type: integer
+          format: int64
+          description: Unique identifier of the contact.
+          example: 12345
+        taxonomy:
+          $ref: '#/components/schemas/Taxonomy'
+          description: Rail and asset combination this contact is set up for.
+      required:
+        - created_at
+        - id
+        - taxonomy
+    ContactDetail:
+      type: object
+      description: >-
+        A single named attribute of the contact's destination, e.g. a CLABE or
+        an account number.
+      example:
+        name: CLABE
+        key: clabe
+        value: '012345678901234567'
+        flags: []
+      properties:
+        flags:
+          type: array
+          description: Additional flags qualifying this detail.
+          items:
+            type: string
+        key:
+          type: string
+          description: Machine-readable identifier for this detail.
+          example: clabe
+        name:
+          type: string
+          description: Human-readable label for this detail.
+          example: CLABE
+        value:
+          type: string
+          description: Value of this detail.
+          example: '012345678901234567'
+      required:
+        - key
+        - name
+        - value
+    ContactsSearchPagedResponse:
+      type: object
+      description: Paginated list of the authenticated user's contacts.
+      example:
+        contacts:
+          - id: 12345
+            alias: Jane's wallet
+            taxonomy:
+              network: spei
+              asset: mxn
+              protocol: clabe
+              integration: praxis
+              currency: mxn
+            details:
+              - name: CLABE
+                key: clabe
+                value: '012345678901234567'
+                flags: []
+            created_at: '2026-02-26T14:00:00Z'
+            compliant:
+              - TRAVEL_RULE
+            compliance:
+              travel_rule:
+                vasp:
+                  name: Example VASP
+                  did: did:example:123456
+                beneficiary:
+                  name: Jane Doe
+                  type: NATURAL
+            flags:
+              - FREQUENT
+        next_page_token: eyJjdXJzb3IiOiJiNjllM…
+        total_count: 1
+      properties:
+        contacts:
+          type: array
+          description: Contacts matching the search filters, for the current page.
+          items:
+            $ref: '#/components/schemas/Contact'
+        next_page_token:
+          type: string
+          description: Cursor for the next page. Omitted on the last page.
+          example: eyJjdXJzb3IiOiJiNjllM…
+        total_count:
+          type: integer
+          format: int64
+          description: >-
+            Total number of contacts matching the search filters, across all
+            pages.
+          example: 1
+      required:
+        - total_count
+    ErrorDefinition:
+      allOf:
+        - $ref: '#/components/schemas/ServiceUnavailableError'
+        - type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+      description: Service unavailable error schema.
+    ForbiddenErrorResponse:
+      description: Container error schema for forbidden errors.
+      example:
+        errors:
+          - code: forbidden_request
+            message: >-
+              Permission denied. You do not have the required authorization to
+              access this resource or perform this action.
+      properties:
+        errors:
+          type: array
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/ForbiddenRequestError'
+              - $ref: '#/components/schemas/IpAddressNotAllowedError'
+              - $ref: '#/components/schemas/SuspendedAccountError'
+            description: Forbidden error schema.
+          minItems: 1
+          uniqueItems: true
+    ForbiddenRequestError:
+      description: >-
+        Authorization error schema. Indicates the authenticated user lacks
+        necessary permissions.
+      properties:
+        code:
+          type: string
+          default: forbidden_request
+          description: Error code.
+          example: forbidden_request
+        message:
+          type: string
+          default: >-
+            Permission denied. You do not have the required authorization to
+            access this resource or perform this action.
+          description: Error message.
+          example: >-
+            Permission denied. You do not have the required authorization to
+            access this resource or perform this action.
+    InternalError:
+      description: >-
+        Internal error schema. Indicates the system encountered an internal
+        error.
+      properties:
+        code:
+          type: string
+          default: internal_error
+          description: Error code.
+          example: internal_error
+        message:
+          type: string
+          default: Internal error.
+          description: Error message.
+          example: Internal error.
+    InternalErrorResponse:
+      description: Container error schema for internal errors.
+      example:
+        errors:
+          - code: internal_error
+            message: Internal error.
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorDefinition'
+          maxItems: 1
+          minItems: 1
+          uniqueItems: true
+    InvalidFieldError:
+      description: >-
+        Invalid field error schema. Indicates the provided request has an
+        invalid field.
+      properties:
+        code:
+          type: string
+          default: invalid_field
+          description: Error code.
+          example: invalid_field
+        message:
+          type: string
+          description: Error message.
+    InvalidPageTokenError:
+      type: object
+      description: The page_token could not be decoded or failed integrity verification.
+      example:
+        code: invalid_page_token
+        message: The provided page_token is invalid.
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+    IpAddressNotAllowedError:
+      description: >-
+        Invalid IP error schema. Indicates the IP address to access the resource
+        is not allowed.
+      properties:
+        code:
+          type: string
+          default: ip_address_not_allowed
+          description: Error code.
+          example: ip_address_not_allowed
+        message:
+          type: string
+          default: IP address is not allowed to access the resource.
+          description: Error message.
+          example: IP address is not allowed to access the resource.
+    MaxAttemptsReachedError:
+      description: >-
+        Error indicating that the client has sent too many requests in a given
+        amount of time (rate limiting).
+      properties:
+        code:
+          type: string
+          default: too_many_requests
+          description: Error code.
+          example: too_many_requests
+        message:
+          type: string
+          default: Too many requests were made in the current time period.
+          description: Error message.
+          example: Too many requests were made in the current time period.
+    MissingParameterError:
+      description: >-
+        Missing parameter error schema. Indicates the provided request is
+        missing a required parameter.
+      properties:
+        code:
+          type: string
+          default: missing_parameter
+          description: Error code.
+          example: missing_parameter
+        message:
+          type: string
+          description: Error message.
+          example: sender_id parameter is missing.
+    NotFoundErrorResponse:
+      description: Container error schema for not found errors.
+      example:
+        errors:
+          - code: resource_not_found
+            message: Resource not found.
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorDefinition'
+          maxItems: 1
+          minItems: 1
+          uniqueItems: true
+    RequestNonceAlreadyInUseError:
+      description: >-
+        Request nonce already in use error schema. Indicates the provided
+        request nonce was already used.
+      properties:
+        code:
+          type: string
+          default: request_nonce_already_in_use
+          description: Error code.
+          example: request_nonce_already_in_use
+        message:
+          type: string
+          default: The provided request nonce was already used.
+          description: Error message.
+          example: The provided request nonce was already used.
+    RequestNonceDatetimeError:
+      description: >-
+        Request nonce date-time error schema. Indicates the provided request
+        nonce has a invalid date-time range.
+      properties:
+        code:
+          type: string
+          default: request_nonce_date_time_error
+          description: Error code.
+          example: request_nonce_date_time_error
+        message:
+          type: string
+          default: >-
+            The request nonce date-time must be in the past and is valid only
+            for 30 seconds.
+          description: Error message.
+          example: >-
+            The request nonce date-time must be in the past and is valid only
+            for 30 seconds.
+    RequestNonceNegativeError:
+      description: >-
+        Request nonce negative error schema. Indicates the nonce provided for
+        the request is negative value.
+      properties:
+        code:
+          type: string
+          default: request_nonce_negative
+          description: Error code.
+          example: request_nonce_negative
+        message:
+          type: string
+          default: The request nonce must be a positive number.
+          description: Error message.
+          example: The request nonce must be a positive number.
+    RequestSignatureInvalidError:
+      description: >-
+        Request signature invalid error schema. Indicates the request signature
+        is invalid.
+      properties:
+        code:
+          type: string
+          default: request_signature_invalid
+          description: Error code.
+          example: request_signature_invalid
+        message:
+          type: string
+          default: The request signature used for the request is invalid.
+          description: Error message.
+          example: The request signature used for the request is invalid.
+    ResourceNotFoundError:
+      description: >-
+        Resource not error schema. Indicates the requested resource was not
+        found.
+      properties:
+        code:
+          type: string
+          default: resource_not_found
+          description: Error code.
+          example: resource_not_found
+        message:
+          type: string
+          default: Resource not found.
+          description: Error message.
+          example: Resource not found.
+    SearchContactsPagedBadRequestErrorResponse:
+      type: object
+      description: Business errors returned when searching contacts.
+      example:
+        errors:
+          - code: invalid_page_token
+            message: The provided page_token is invalid.
+      properties:
+        errors:
+          type: array
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/InvalidPageTokenError'
+            description: Errors returned for this operation.
+          minItems: 1
+          uniqueItems: true
+    ServiceUnavailableError:
+      description: >-
+        Service unavailable error schema. Indicates the service is temporarily
+        unavailable.
+      properties:
+        code:
+          type: string
+          default: service_unavailable
+          description: Error code.
+          example: service_unavailable
+        message:
+          type: string
+          default: Service temporarily unavailable. Please try again later.
+          description: Error message.
+          example: Service temporarily unavailable. Please try again later.
+    ServiceUnavailableErrorResponse:
+      description: Container error schema for service unavailable errors.
+      example:
+        errors:
+          - code: service_unavailable
+            message: Service temporarily unavailable. Please try again later.
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorDefinition'
+          maxItems: 1
+          minItems: 1
+          uniqueItems: true
+    SuspendedAccountError:
+      description: >-
+        Suspended account error schema. Indicates the user's account is
+        suspended.
+      properties:
+        code:
+          type: string
+          default: suspended_account
+          description: Error code.
+          example: suspended_account
+        message:
+          type: string
+          default: >-
+            Account is currently suspended. Please, contact customer support for
+            additional information.
+          description: Error message.
+          example: >-
+            Account is currently suspended. Please, contact customer support for
+            additional information.
+    Taxonomy:
+      type: object
+      description: Rail and asset combination the contact is set up for.
+      example:
+        network: spei
+        asset: mxn
+        protocol: clabe
+        integration: praxis
+        currency: mxn
+      properties:
+        asset:
+          type: string
+          description: Settlement asset.
+          example: mxn
+        currency:
+          type: string
+          description: Currency of the destination account.
+          example: mxn
+        integration:
+          type: string
+          description: Integration used to reach the destination.
+          example: praxis
+        network:
+          type: string
+          description: Withdrawal network.
+          example: spei
+        protocol:
+          type: string
+          description: Withdrawal protocol.
+          example: clabe
+    TooManyRequestsErrorResponse:
+      description: Container error schema for rate-limiting errors.
+      example:
+        errors:
+          - code: too_many_requests
+            message: Too many requests were made in the current time period.
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorDefinition'
+          maxItems: 1
+          minItems: 1
+          uniqueItems: true
+    TravelRule:
+      type: object
+      description: Travel-rule declaration attached to the contact's destination.
+      example:
+        vasp:
+          name: Example VASP
+          did: did:example:123456
+        beneficiary:
+          name: Jane Doe
+          type: NATURAL
+      properties:
+        beneficiary:
+          $ref: '#/components/schemas/Beneficiary'
+          description: Beneficiary of the transaction.
+        vasp:
+          $ref: '#/components/schemas/Vasp'
+          description: Virtual asset service provider that holds the counterparty account.
+    UnauthorizedError:
+      description: >-
+        Authentication error schema. Indicates missing or invalid authentication
+        credentials.
+      properties:
+        code:
+          type: string
+          default: unauthorized_request
+          description: Error code.
+        message:
+          type: string
+          default: >-
+            Authentication required. Valid credentials must be provided to
+            access this resource.
+          description: Error message.
+    UnauthorizedErrorResponse:
+      description: Container error schema for authorization errors.
+      properties:
+        errors:
+          type: array
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/UnauthorizedError'
+              - $ref: '#/components/schemas/ApiKeyInvalidFormatError'
+              - $ref: '#/components/schemas/ApiKeyNotFoundError'
+              - $ref: '#/components/schemas/ApiKeyDisabledError'
+              - $ref: '#/components/schemas/RequestSignatureInvalidError'
+              - $ref: '#/components/schemas/RequestNonceNegativeError'
+              - $ref: '#/components/schemas/RequestNonceDatetimeError'
+              - $ref: '#/components/schemas/RequestNonceAlreadyInUseError'
+            description: Authorization error schema.
+          minItems: 1
+          uniqueItems: true
+    UnparseableInputError:
+      description: >-
+        Unparseable input error schema. Indicates the provided request is
+        unparseable.
+      properties:
+        code:
+          type: string
+          default: unparseable_input
+          description: Error code.
+          example: unparseable_input
+        message:
+          type: string
+          default: The provided input is unparseable.
+          description: Error message.
+          example: The provided input is unparseable.
+    Vasp:
+      type: object
+      description: Virtual asset service provider identified in a travel-rule declaration.
+      example:
+        name: Example VASP
+        did: did:example:123456
+      properties:
+        did:
+          type: string
+          description: Decentralized identifier of the virtual asset service provider.
+          example: did:example:123456
+        name:
+          type: string
+          description: Name of the virtual asset service provider.
+          example: Example VASP
