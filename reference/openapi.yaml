@@ -11,7 +11,9 @@ paths:
     get:
       summary: List all pets
       operationId: listPets
-      description: test hm
+      description: |
+        Replaces the callback URL of an existing subscription. The event type
+        cannot be changed; create a new subscription for a different event.
       tags:
         - pets
       parameters:
