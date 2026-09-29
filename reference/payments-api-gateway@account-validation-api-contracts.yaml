@@ -1,0 +1,609 @@
+openapi: 3.0.3
+info:
+  title: Webhooks API
+  version: v4
+  description: >
+    Subscribe to Bitso events, manage callback URLs, retrieve signing keys, and
+
+    retry webhook deliveries.
+
+
+    Authenticated endpoints use Bitso HMAC authentication. See
+
+    [Authentication](https://docs.bitso.com/bitso-payouts-funding/docs/authentication).
+
+    `GET /v4/webhooks/public-key` is public and does not require authentication.
+servers:
+  - description: Production environment
+    url: https://api.bitso.com
+  - description: Stage environment
+    url: https://api-stage.bitso.com
+tags:
+  - name: Subscriptions
+    description: Create and manage webhook subscriptions.
+  - name: Public Keys
+    description: Retrieve the public keys used to verify webhook signatures.
+  - name: Events
+    description: Preview and execute retries of webhook deliveries.
+paths:
+  /v4/webhooks:
+    post:
+      operationId: createWebhook
+      tags:
+        - Subscriptions
+      summary: Create webhook subscriptions
+      description: |
+        Creates one subscription per event type in `events`, all pointing at the
+        same HTTPS `callback_url`. Duplicate event names in the request are
+        collapsed (case-insensitive).
+
+        Returns `201 Created` with a `Location` header pointing at the first
+        created subscription.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateWebhookRequest'
+            examples:
+              fundingAndWithdrawal:
+                summary: Subscribe to funding and withdrawal events
+                value:
+                  callback_url: https://example.com/hooks/bitso
+                  events:
+                    - funding
+                    - withdrawal
+      responses:
+        '201':
+          description: Subscriptions created.
+          headers:
+            Location:
+              description: URL of the first created subscription.
+              schema:
+                type: string
+                format: uri
+              example: https://api.bitso.com/v4/webhooks/275
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateWebhookResponse'
+              examples:
+                created:
+                  value:
+                    message: Webhook successfully created
+                    webhooks:
+                      - id: 275
+                        event: funding
+                        callback_url: https://example.com/hooks/bitso
+                      - id: 276
+                        event: withdrawal
+                        callback_url: https://example.com/hooks/bitso
+        '400':
+          description: >-
+            Invalid request body, callback URL, or event type, or a subscription
+            already exists for an event.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                invalidCallback:
+                  summary: Invalid callback URL
+                  value:
+                    success: false
+                    error:
+                      - Invalid callback URL
+                emptyEvents:
+                  summary: Empty events list
+                  value:
+                    success: false
+                    error:
+                      - The field events must not be empty
+                duplicate:
+                  summary: Duplicate subscription
+                  value:
+                    success: false
+                    error: 'Duplicated subscription for event types: [funding]'
+    get:
+      operationId: listWebhooks
+      tags:
+        - Subscriptions
+      summary: List webhook subscriptions
+      description: |
+        Returns every active subscription for the authenticated user. If the
+        user has no subscriptions, the API returns `204 No Content`.
+      responses:
+        '200':
+          description: Subscriptions for the authenticated user.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Webhook'
+              examples:
+                list:
+                  value:
+                    - id: 11
+                      event: funding
+                      callback_url: https://example.com/hooks/bitso
+                    - id: 12
+                      event: withdrawal
+                      callback_url: https://example.com/hooks/bitso
+        '204':
+          description: The authenticated user has no subscriptions.
+  /v4/webhooks/{id}:
+    parameters:
+      - $ref: '#/components/parameters/WebhookId'
+    get:
+      operationId: getWebhook
+      tags:
+        - Subscriptions
+      summary: Get a webhook subscription
+      description: Returns a single subscription owned by the authenticated user.
+      responses:
+        '200':
+          description: Subscription found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookEnvelope'
+              examples:
+                found:
+                  value:
+                    success: true
+                    payload:
+                      id: 15
+                      event: withdrawal
+                      callback_url: https://example.com/hooks/bitso
+        '400':
+          description: The subscription id is invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                invalidId:
+                  value:
+                    success: false
+                    error: id must be greater than or equal to 1
+        '404':
+          description: No subscription exists for this id and user.
+    patch:
+      operationId: updateWebhook
+      tags:
+        - Subscriptions
+      summary: Update a webhook callback URL
+      description: >
+        Replaces the callback URL of an existing subscription. The event type
+
+        cannot be changed. If the event type must be changed, you need create a
+        new subscription for the given event.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateWebhookRequest'
+            examples:
+              updateUrl:
+                value:
+                  callback_url: https://example.com/hooks/bitso-updated
+      responses:
+        '200':
+          description: Callback URL updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookEnvelope'
+              examples:
+                updated:
+                  value:
+                    success: true
+                    payload:
+                      id: 15
+                      event: withdrawal
+                      callback_url: https://example.com/hooks/bitso-updated
+        '400':
+          description: >-
+            Invalid callback URL, invalid id, or the new URL conflicts with an
+            existing subscription.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                invalidCallback:
+                  value:
+                    success: false
+                    error:
+                      - Invalid callback URL
+                conflict:
+                  value:
+                    success: false
+                    error: >-
+                      A subscription already exists for this callback_url and
+                      event type
+        '404':
+          description: No subscription exists for this id and user.
+    delete:
+      operationId: deleteWebhook
+      tags:
+        - Subscriptions
+      summary: Delete a webhook subscription
+      description: |
+        Removes a subscription. Deleted subscriptions no longer appear in list
+        responses and no longer receive events.
+      responses:
+        '204':
+          description: Subscription deleted.
+  /v4/webhooks/public-key:
+    get:
+      operationId: listWebhookPublicKeys
+      tags:
+        - Public Keys
+      summary: List webhook public keys
+      description: |
+        Returns the public keys used to verify `x-bitso-webhook-event-signature`
+        on delivered webhook requests. This endpoint is public and does not
+        require authentication.
+
+        Select the key whose `key_id` matches the `x-bitso-key-id` header on the
+        incoming webhook.
+      responses:
+        '200':
+          description: Active public keys.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PublicKey'
+              examples:
+                keys:
+                  value:
+                    - public_key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA...
+                      key_id: a1c889ecd24ec289
+                      created_at: '2025-02-07T00:00:00+00:00'
+  /v4/webhooks/events/retry/preview:
+    post:
+      operationId: previewWebhookRetry
+      tags:
+        - Events
+      summary: Preview a webhook retry
+      description: |
+        Counts how many stored webhook events match the given criteria without
+        scheduling a re-delivery.
+
+        Retry is available for events created on or after 20 March 2025. Events
+        remain eligible for 60 days after creation. The interval between
+        `from_date` and `to_date` must not exceed 3 days.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RetryPreviewRequest'
+            examples:
+              failedFunding:
+                summary: Count failed funding events in a window
+                description: >-
+                  Replace from_date and to_date with timestamps inside the
+                  60-day retention window.
+                value:
+                  from_date: '2026-09-01T10:45:20'
+                  to_date: '2026-09-01T13:55:20'
+                  delivered: false
+                  event: funding
+      responses:
+        '200':
+          description: Count of matching events.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetryMessageEnvelope'
+              examples:
+                preview:
+                  value:
+                    success: true
+                    payload:
+                      message: 'Total items that match the specified criteria: 60'
+        '400':
+          description: Invalid retry criteria.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                invalidEvent:
+                  summary: Unknown event type
+                  value:
+                    success: false
+                    error:
+                      message: 'Invalid event type: as'
+                invertedRange:
+                  summary: from_date after to_date
+                  value:
+                    success: false
+                    error:
+                      message: From date must be before to date
+                tooOld:
+                  summary: from_date older than 60 days
+                  value:
+                    success: false
+                    error:
+                      message: From date cannot be more than 60 days in the past
+  /v4/webhooks/events/retry/execute:
+    post:
+      operationId: executeWebhookRetry
+      tags:
+        - Events
+      summary: Execute a webhook retry
+      description: |
+        Schedules matching webhook events for a single additional delivery
+        attempt. Delivery is not immediate.
+
+        You can retry events that were already delivered. Your endpoint must
+        handle duplicate deliveries.
+
+        Retry is available for events created on or after 20 March 2025. Events
+        remain eligible for 60 days after creation. The interval between
+        `from_date` and `to_date` must not exceed 3 days. At most 5,000 events
+        are scheduled per request unless `limit` is smaller.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RetryExecuteRequest'
+            examples:
+              failedFunding:
+                summary: Retry failed funding events in a window
+                description: >-
+                  Replace from_date and to_date with timestamps inside the
+                  60-day retention window.
+                value:
+                  from_date: '2026-09-01T10:45:20'
+                  to_date: '2026-09-01T13:55:20'
+                  delivered: false
+                  event: funding
+      responses:
+        '202':
+          description: Matching events were scheduled for retry.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetryMessageEnvelope'
+              examples:
+                scheduled:
+                  value:
+                    success: true
+                    payload:
+                      message: 60 events have been scheduled for retry
+        '400':
+          description: Invalid retry criteria.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  parameters:
+    WebhookId:
+      name: id
+      in: path
+      required: true
+      description: Subscription identifier returned when the webhook was created.
+      schema:
+        type: integer
+        format: int64
+        minimum: 1
+      example: 15
+  schemas:
+    EventType:
+      type: string
+      description: |
+        Event type to subscribe to or filter by.
+
+        `funding` and `withdrawal` report the Fundings and Withdrawals APIs
+        (`GET /v3/fundings`, `GET /v3/withdrawals`). They are not aliases of
+        `payin` and `payout`.
+
+        `payin`, `payout`, and `payin_intent` report Unified Payments API
+        resources (`GET /payments/v1/...`). Use these for that API; they are
+        the event types for new payment rails.
+      enum:
+        - funding
+        - withdrawal
+        - payout
+        - payin
+        - dynamic_qr_code
+        - spei_payment
+        - payment_intent
+        - payin_intent
+        - account_validation
+      example: funding
+    CallbackUrl:
+      type: string
+      format: uri
+      description: >-
+        HTTPS URL that receives webhook POST requests. Example:
+        `https://example.com/hooks/bitso`.
+      example: https://example.com/hooks/bitso
+    Webhook:
+      type: object
+      required:
+        - id
+        - event
+        - callback_url
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Subscription identifier.
+          example: 275
+        event:
+          $ref: '#/components/schemas/EventType'
+        callback_url:
+          $ref: '#/components/schemas/CallbackUrl'
+    CreateWebhookRequest:
+      type: object
+      required:
+        - callback_url
+        - events
+      properties:
+        callback_url:
+          $ref: '#/components/schemas/CallbackUrl'
+        events:
+          type: array
+          minItems: 1
+          uniqueItems: true
+          description: |
+            Event types to subscribe to. Values are stored in lowercase.
+            `funding`/`withdrawal` and `payin`/`payout` belong to different
+            APIs; see EventType.
+          items:
+            $ref: '#/components/schemas/EventType'
+          example:
+            - funding
+            - withdrawal
+    CreateWebhookResponse:
+      type: object
+      required:
+        - message
+        - webhooks
+      properties:
+        message:
+          type: string
+          example: Webhook successfully created
+        webhooks:
+          type: array
+          items:
+            $ref: '#/components/schemas/Webhook'
+    UpdateWebhookRequest:
+      type: object
+      required:
+        - callback_url
+      properties:
+        callback_url:
+          $ref: '#/components/schemas/CallbackUrl'
+    WebhookEnvelope:
+      type: object
+      required:
+        - success
+        - payload
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          $ref: '#/components/schemas/Webhook'
+    PublicKey:
+      type: object
+      required:
+        - public_key
+        - key_id
+        - created_at
+      properties:
+        public_key:
+          type: string
+          description: Base64-encoded X.509 SubjectPublicKeyInfo (DER) RSA public key.
+          example: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA...
+        key_id:
+          type: string
+          description: >-
+            Key fingerprint. Match this value to the `x-bitso-key-id` webhook
+            header.
+          example: a1c889ecd24ec289
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the key was created.
+          example: '2025-02-07T00:00:00+00:00'
+    RetryCriteria:
+      type: object
+      required:
+        - from_date
+        - to_date
+        - event
+      properties:
+        from_date:
+          type: string
+          format: date-time
+          description: >-
+            Inclusive start of the search window. Must be no more than 60 days
+            in the past and before `to_date`. Example timestamps are
+            illustrative; substitute a recent value inside the retention window.
+          example: '2026-09-01T10:45:20'
+        to_date:
+          type: string
+          format: date-time
+          description: >-
+            Inclusive end of the search window. Must not be in the future. The
+            span from `from_date` must not exceed 3 days. Example timestamps are
+            illustrative; substitute a recent value inside the retention window.
+          example: '2026-09-01T13:55:20'
+        delivered:
+          type: boolean
+          default: false
+          description: >-
+            When `true`, match events that were delivered successfully. When
+            `false`, match events that failed delivery.
+        event:
+          $ref: '#/components/schemas/EventType'
+    RetryPreviewRequest:
+      allOf:
+        - $ref: '#/components/schemas/RetryCriteria'
+    RetryExecuteRequest:
+      allOf:
+        - $ref: '#/components/schemas/RetryCriteria'
+        - type: object
+          properties:
+            limit:
+              type: integer
+              minimum: 1
+              maximum: 5000
+              description: Maximum number of events to schedule. Defaults to 5,000.
+              example: 100
+    RetryMessageEnvelope:
+      type: object
+      required:
+        - success
+        - payload
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          type: object
+          required:
+            - message
+          properties:
+            message:
+              type: string
+              example: 'Total items that match the specified criteria: 60'
+    ErrorResponse:
+      type: object
+      required:
+        - success
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          description: >-
+            Error detail. A string, a list of validation messages, or an object
+            with a `message` field.
+          oneOf:
+            - type: string
+              example: id must be greater than or equal to 1
+            - type: array
+              items:
+                type: string
+              example:
+                - Invalid callback URL
+            - type: object
+              properties:
+                message:
+                  type: string
+              example:
+                message: From date must be before to date
