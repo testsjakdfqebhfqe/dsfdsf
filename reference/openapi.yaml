@@ -13,7 +13,7 @@ paths:
       operationId: listPets
       description: |
         Replaces the callback URL of an existing subscription. The event type
-        cannot be changed; create a new subscription for a different event.
+        cannot be tres
       tags:
         - pets
       parameters:
