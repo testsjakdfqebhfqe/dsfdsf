@@ -1,6 +1,6 @@
 ---
 api:
   file: openapi.yaml
-  operationId: testWebhook
+  operationId: showPetById
 hidden: false
 ---

@@ -1,4 +1,0 @@
----
-title: /polymorphic
-hidden: false
----

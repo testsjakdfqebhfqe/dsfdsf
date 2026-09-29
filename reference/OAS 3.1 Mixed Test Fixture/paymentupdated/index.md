@@ -1,4 +1,0 @@
----
-title: paymentUpdated
-hidden: false
----

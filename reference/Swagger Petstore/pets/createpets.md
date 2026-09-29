@@ -1,6 +1,6 @@
 ---
 api:
   file: openapi.yaml
-  operationId: uploadFiles
+  operationId: createPets
 hidden: false
 ---

@@ -1,6 +1,6 @@
 ---
 api:
   file: openapi.yaml
-  operationId: testAllTypes
+  operationId: listPets
 hidden: false
 ---

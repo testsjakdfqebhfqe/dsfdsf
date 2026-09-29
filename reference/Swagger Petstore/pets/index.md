@@ -1,4 +1,4 @@
 ---
-title: /upload
+title: pets
 hidden: false
 ---
