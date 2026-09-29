@@ -13,7 +13,7 @@ paths:
       operationId: listPets
       description: |
         Replaces the callback URL of an existing subscription. The event type
-        cannot be tres testiks hm
+        cannot be tres testiks 
       tags:
         - pets
       parameters:
