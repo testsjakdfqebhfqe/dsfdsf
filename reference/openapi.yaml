@@ -11,7 +11,7 @@ paths:
     get:
       summary: List all pets
       operationId: listPets
-      description: test
+      description: test hm
       tags:
         - pets
       parameters:
