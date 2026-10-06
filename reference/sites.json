@@ -1,0 +1,1889 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "version": "2.0.0",
+    "title": "Account API"
+  },
+  "servers": [
+    {
+      "url": "https://api.kubra.io/account/v2"
+    }
+  ],
+  "security": [
+    {
+      "MachineToken": []
+    },
+    {
+      "StaffToken": []
+    },
+    {
+      "ConsumerToken": []
+    }
+  ],
+  "tags": [],
+  "paths": {
+    "/accounts/{accountKrn}": {
+      "get": {
+        "summary": "Get account",
+        "description": "Retrieve account information using the account KRN.\n## Access Control\nAny of the following allow access:\n- requester has the `acct:account:r` permission for the client-realm\n  that contains this account\n\n- A relationship links the requester to this account (for example,\n  consumer-to-account)",
+        "operationId": "getAccount",
+        "parameters": [
+          {
+            "name": "accountKrn",
+            "in": "path",
+            "required": true,
+            "description": "The KRN of the account to retrieve",
+            "schema": {
+              "type": "string",
+              "format": "Krn"
+            }
+          },
+          {
+            "name": "excludeBalance",
+            "in": "query",
+            "required": false,
+            "description": "Set to true to exclude balance information from the response",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Account"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Account not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResp"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResp"
+                }
+              }
+            }
+          },
+          "5XX": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResp"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update account",
+        "description": "Update an existing account identified by its KRN.\n## Access Control\nRequester must have the `acct:account:u` permission for the space containing this account.",
+        "operationId": "putAccount",
+        "parameters": [
+          {
+            "name": "accountKrn",
+            "in": "path",
+            "required": true,
+            "description": "The KRN of the account to update",
+            "schema": {
+              "type": "string",
+              "format": "Krn"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/AccountProto"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "lookupFields": {
+                        "type": "object",
+                        "additionalProperties": {
+                          "$ref": "#/components/schemas/LookupFieldValue"
+                        },
+                        "description": "Additional fields for lookup purposes"
+                      },
+                      "extensionFields": {
+                        "type": "object",
+                        "additionalProperties": {
+                          "$ref": "#/components/schemas/extensionFieldValue"
+                        },
+                        "description": "Client-defined extension field values for this account"
+                      }
+                    },
+                    "required": [
+                      "typeKrn",
+                      "spaceKrn",
+                      "businessUnitCode",
+                      "feeClass",
+                      "externalId",
+                      "accountNumber",
+                      "mailingAddress"
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The updated account",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Account"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Account not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResp"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResp"
+                }
+              }
+            }
+          },
+          "5XX": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResp"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Patch account",
+        "description": "Applies an [RFC 7396](https://www.rfc-editor.org/rfc/rfc7396) JSON Merge Patch to the account identified by its KRN. Fields omitted from the request body are left unchanged; fields explicitly set to `null` are cleared, subject to validation of any fields that are required. Nested objects (for example `mailingAddress`, `lookupFields`, `extensionFields`) are merged recursively per RFC 7396.\n## Access Control\nRequester must have the `acct:account:u` permission for the space containing this account.",
+        "operationId": "patchAccount",
+        "parameters": [
+          {
+            "name": "accountKrn",
+            "in": "path",
+            "required": true,
+            "description": "The KRN of the account to update",
+            "schema": {
+              "type": "string",
+              "format": "Krn"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/merge-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AccountPatch"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The updated account",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Account"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Account not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResp"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResp"
+                }
+              }
+            }
+          },
+          "5XX": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResp"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/accounts": {
+      "get": {
+        "summary": "List accounts",
+        "description": "Retrieves a paginated list of accounts within the specified space with optional filtering.\n## Access Control\nRequester must have the `acct:account:r` permission for the space containing the accounts.",
+        "operationId": "listAccounts",
+        "parameters": [
+          {
+            "name": "spaceKrn",
+            "in": "query",
+            "description": "The KRN of the space in which to look for the account(s)",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "Krn"
+            }
+          },
+          {
+            "name": "typeKrn",
+            "in": "query",
+            "description": "The KRN of the type of account to look for",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "Krn"
+            }
+          },
+          {
+            "name": "externalId",
+            "in": "query",
+            "description": "Filter accounts by external identifier",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "accountNumber",
+            "in": "query",
+            "description": "The account number to look for",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "excludeBalance",
+            "in": "query",
+            "description": "Set to true to exclude balance information from the response; default = false",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "[lookupFieldName]",
+            "in": "query",
+            "description": "Lookup fields to filter accounts by. The fields specified must match a defined `lookup` for the account type. The name of the field is the key, and the value is the value to match. The parameter name `[lookupFieldName]` shown here is a placeholder — substitute it with an actual lookup field name defined on the payable type, and repeat the parameter once per field in the lookup combination.",
+            "schema": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
+            "required": false
+          },
+          {
+            "name": "KUBRA-clientId",
+            "in": "header",
+            "description": "KUBRA-clientId or KUBRA-tenantId has to be provided",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountCollection"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResp"
+                }
+              }
+            }
+          },
+          "5XX": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResp"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create account",
+        "description": "Creates a new account within the specified space and realm.\n## Access Control\nRequester must have the `acct:account:c` and `acct:account:u` permissions for the space containing the account, and access to the target realm.",
+        "operationId": "createAccount",
+        "parameters": [
+          {
+            "name": "realm",
+            "in": "query",
+            "required": true,
+            "description": "The realm in which to create the account",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "live",
+                "sandbox"
+              ]
+            }
+          },
+          {
+            "name": "KUBRA-clientId",
+            "in": "header",
+            "required": true,
+            "description": "Client identifier for authorization",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/AccountProto"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "lookupFields": {
+                        "type": "object",
+                        "additionalProperties": {
+                          "$ref": "#/components/schemas/LookupFieldValue"
+                        },
+                        "description": "Additional fields for lookup purposes"
+                      },
+                      "extensionFields": {
+                        "type": "object",
+                        "additionalProperties": {
+                          "$ref": "#/components/schemas/extensionFieldValue"
+                        },
+                        "description": "Client-defined extension field values for this account"
+                      }
+                    },
+                    "required": [
+                      "typeKrn",
+                      "spaceKrn",
+                      "businessUnitCode",
+                      "feeClass",
+                      "externalId",
+                      "accountNumber",
+                      "mailingAddress"
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The created account",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Account"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResp"
+                }
+              }
+            }
+          },
+          "5XX": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResp"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/accounts/bulkKrnLookup": {
+      "post": {
+        "summary": "Look up account KRNs",
+        "description": "Looks up account KRNs for multiple account identifiers. Each request\nitem identifies a space, payable type, and external identifier. The\nresponse returns one item for each request item, with either `acctKrn`\npopulated or item-level errors explaining why the account could not be\nresolved.\n\nThis endpoint does not paginate results.\n\n## Access Control\n\nThe requester must have the `acct:account:r` permission for each matched\naccount. If any matched account is not authorized, the endpoint returns\n`403`.",
+        "operationId": "lookupAccountKrns",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BulkKrnLookupRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BulkKrnLookupResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResp"
+                }
+              }
+            }
+          },
+          "5XX": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResp"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/accounts/realm/{realm}": {
+      "get": {
+        "summary": "List accounts by realm",
+        "description": "Retrieves a paginated list of accounts within a specified realm for a\ngiven client. The response includes account details and pagination\nmetadata. Use `q` for intelligent account search; when provided, it must\nbe at least 3 characters.\n\n## Access Control\nAny of the following allow access:\n- an `authorized` relationship between the requester and an account exists\n- requester has the `acct:account:r` permission for the client that owns\n  the account",
+        "operationId": "listAccountsByRealm",
+        "parameters": [
+          {
+            "name": "realm",
+            "in": "path",
+            "required": true,
+            "description": "The realm containing the accounts.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "live",
+                "sandbox"
+              ]
+            }
+          },
+          {
+            "name": "clientKrn",
+            "in": "query",
+            "required": true,
+            "description": "The KRN of the client whose realm is being searched.",
+            "schema": {
+              "type": "string",
+              "format": "Krn"
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "description": "Intelligent account search query.",
+            "schema": {
+              "type": "string",
+              "minLength": 3
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "description": "Page number to return. Defaults to 1.",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "description": "Page size to return. Defaults to 10.",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 10
+            }
+          },
+          {
+            "name": "typeKrn",
+            "in": "query",
+            "required": false,
+            "description": "Filter accounts by payable type KRN.",
+            "schema": {
+              "type": "string",
+              "format": "Krn"
+            }
+          },
+          {
+            "name": "accountNumber",
+            "in": "query",
+            "required": false,
+            "description": "Filter accounts by account number.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "excludeBalance",
+            "in": "query",
+            "required": false,
+            "description": "Set to true to exclude balance information from the response; default = false.",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountCollection"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResp"
+                }
+              }
+            }
+          },
+          "5XX": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResp"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/verify-access": {
+      "get": {
+        "summary": "Verify account access",
+        "description": "Returns the set of accounts that match the provided semi-private information about the accounts. If the lookup fields' values provided don't match any account with the specified accountNumber, the result set will be empty. This endpoint is intended to be used by consumers to verify their access to their accounts.\n## Access Control\nThe space identified by `spaceKrn` must be visible to the requester. No additional permissions or relationships are required.",
+        "operationId": "verifyAccountAccess",
+        "parameters": [
+          {
+            "name": "spaceKrn",
+            "in": "query",
+            "description": "The KRN of the space in which to look for the account(s)",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "Krn"
+            }
+          },
+          {
+            "name": "typeKrn",
+            "in": "query",
+            "description": "The KRN of the type of account to look for.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "Krn"
+            }
+          },
+          {
+            "name": "accountNumber",
+            "in": "query",
+            "description": "The account number to look for.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "excludeBalance",
+            "in": "query",
+            "description": "Set to false to include balance information from the response; default = true",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "[lookupFieldName]",
+            "in": "query",
+            "description": "Lookup fields to validate on accounts with the specified accountNumber. The fields specified must match a defined `lookup` for the account type. The name of the field is the key, and the value is the value to match. The parameter name `[lookupFieldName]` shown here is a placeholder — substitute it with an actual lookup field name defined on the payable type, and repeat the parameter once per field in the lookup combination.",
+            "schema": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountCollection"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResp"
+                }
+              }
+            }
+          },
+          "5XX": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResp"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/accounts/{accountKrn}/consumer-settings": {
+      "get": {
+        "summary": "Get consumer settings",
+        "description": "Retrieves the consumer settings for the specified account.\n## Access Control\nRequester must have the `acct:account:r` permission for the account.",
+        "operationId": "getConsumerSettings",
+        "parameters": [
+          {
+            "name": "accountKrn",
+            "in": "path",
+            "required": true,
+            "description": "The KRN of the account to retrieve consumer settings from",
+            "schema": {
+              "type": "string",
+              "format": "Krn"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Consumer settings successfully retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConsumerSettings"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResp"
+                }
+              }
+            }
+          },
+          "5XX": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResp"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update consumer settings",
+        "description": "Creates or updates the consumer settings for the specified account.\n## Access Control\nRequester must have the `acct:account:u` permission for the account.",
+        "operationId": "putConsumerSettings",
+        "parameters": [
+          {
+            "name": "accountKrn",
+            "in": "path",
+            "required": true,
+            "description": "The KRN of the account for which the consumer settings are being set",
+            "schema": {
+              "type": "string",
+              "format": "Krn"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsumerSettings"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Consumer settings successfully created or updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConsumerSettings"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResp"
+                }
+              }
+            }
+          },
+          "5XX": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResp"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/space-configurations/{spaceKrn}": {
+      "get": {
+        "summary": "Get space configuration",
+        "description": "Retrieves the configuration for the specified space. If no configuration exists, a default configuration is returned with `isStitchEnabled` set to false.\n## Access Control\nRequester must have the `acct:spc-config:r` permission for the client that owns the space.",
+        "operationId": "getSpaceConfiguration",
+        "parameters": [
+          {
+            "name": "spaceKrn",
+            "in": "path",
+            "required": true,
+            "description": "The KRN of the space for which the configuration is being retrieved",
+            "schema": {
+              "type": "string",
+              "format": "Krn"
+            }
+          },
+          {
+            "name": "KUBRA-clientId",
+            "in": "header",
+            "required": true,
+            "description": "KUBRA-clientId or KUBRA-tenantId has to be provided",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Space configuration successfully retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpaceConfiguration"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResp"
+                }
+              }
+            }
+          },
+          "5XX": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResp"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update space configuration",
+        "description": "Creates or updates the configuration for the specified space.\n## Access Control\nRequester must have the `acct:spc-config:u` permission for the client that owns the space.",
+        "operationId": "putSpaceConfiguration",
+        "parameters": [
+          {
+            "name": "spaceKrn",
+            "in": "path",
+            "required": true,
+            "description": "The KRN of the space for which the configuration is being set",
+            "schema": {
+              "type": "string",
+              "format": "Krn"
+            }
+          },
+          {
+            "name": "KUBRA-clientId",
+            "in": "header",
+            "required": true,
+            "description": "KUBRA-clientId or KUBRA-tenantId has to be provided",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpaceConfigurationProto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Space configuration successfully created or updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpaceConfiguration"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResp"
+                }
+              }
+            }
+          },
+          "5XX": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResp"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "MachineToken": {
+        "type": "oauth2",
+        "description": "Machine-to-machine token issued to backend services, obtained with the OAuth 2.0 Client Credentials Grant.",
+        "flows": {
+          "clientCredentials": {
+            "tokenUrl": "https://api.kubra.io/authentication/api/v2/token",
+            "scopes": {}
+          }
+        }
+      },
+      "StaffToken": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "Bearer token issued to KUBRA or client staff."
+      },
+      "ConsumerToken": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "Bearer token issued to an end consumer."
+      }
+    },
+    "schemas": {
+      "BulkKrnLookupRequest": {
+        "type": "array",
+        "description": "Account KRN lookup requests.",
+        "items": {
+          "$ref": "#/components/schemas/BulkKrnLookupRequestItem"
+        }
+      },
+      "BulkKrnLookupRequestItem": {
+        "type": "object",
+        "properties": {
+          "spaceKrn": {
+            "type": "string",
+            "format": "Krn",
+            "description": "The KRN of the space containing the account."
+          },
+          "typeKrn": {
+            "type": "string",
+            "format": "Krn",
+            "description": "The payable type KRN of the account."
+          },
+          "externalId": {
+            "type": "string",
+            "description": "External account identifier to resolve. For legacy accounts this may match the account ID or account number, depending on the space's account-number reuse setting."
+          }
+        },
+        "required": [
+          "spaceKrn",
+          "typeKrn",
+          "externalId"
+        ]
+      },
+      "BulkKrnLookupResponse": {
+        "type": "array",
+        "description": "Account KRN lookup results. Each result echoes the `spaceKrn`, `typeKrn`, and `externalId` from the corresponding request item; clients should correlate results by those fields. Response array order is not guaranteed.",
+        "items": {
+          "$ref": "#/components/schemas/BulkKrnLookupResult"
+        }
+      },
+      "BulkKrnLookupResult": {
+        "type": "object",
+        "properties": {
+          "spaceKrn": {
+            "type": "string",
+            "format": "Krn",
+            "description": "The requested space KRN."
+          },
+          "typeKrn": {
+            "type": "string",
+            "format": "Krn",
+            "description": "The requested payable type KRN."
+          },
+          "externalId": {
+            "type": "string",
+            "description": "The requested external account identifier."
+          },
+          "acctKrn": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "Krn",
+            "description": "The resolved account KRN, or null when lookup failed."
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "description": "Item-level lookup errors."
+          }
+        },
+        "required": [
+          "spaceKrn",
+          "typeKrn",
+          "externalId",
+          "acctKrn"
+        ]
+      },
+      "AccountCollection": {
+        "title": "AccountCollection",
+        "description": "A paginated collection of accounts",
+        "type": "object",
+        "required": [
+          "first",
+          "items",
+          "self"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Account"
+            }
+          },
+          "page": {
+            "type": "integer",
+            "description": "Current page number"
+          },
+          "next": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uri-reference",
+            "description": "Link to the next page of results"
+          },
+          "prev": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uri-reference",
+            "description": "Link to the previous page of results"
+          },
+          "first": {
+            "type": "string",
+            "format": "uri-reference",
+            "description": "Link to the first page of results"
+          },
+          "self": {
+            "type": "string",
+            "format": "uri-reference",
+            "description": "Link to the current page of results"
+          },
+          "pageSize": {
+            "type": "integer",
+            "description": "Number of items returned on this page"
+          },
+          "totalCount": {
+            "type": "integer",
+            "description": "Total number of items in the collection"
+          },
+          "totalItems": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "description": "Total number of matching items, when available"
+          },
+          "totalPages": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "description": "Total number of pages, when available"
+          },
+          "errorCount": {
+            "type": "integer",
+            "description": "Number of items that could not be included in the page"
+          },
+          "errors": {
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "description": "Item-level errors encountered while building the page"
+          }
+        }
+      },
+      "Account": {
+        "title": "Account",
+        "description": "An account represents the ongoing relationship between a client and a consumer.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AccountProto"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "krn": {
+                "type": "string",
+                "format": "Krn",
+                "description": "The KRN of the account"
+              },
+              "lastBillAmount": {
+                "description": "The balance amount from the last bill for this account",
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "balanceLastUpdatedAtSourceDate": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date-time",
+                "description": "The last update date of the balance for this account"
+              },
+              "consumerSettings": {
+                "$ref": "#/components/schemas/ConsumerSettings",
+                "description": "Consumer preferences for this account"
+              },
+              "warnings": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "$ref": "#/components/schemas/Warning"
+                },
+                "description": "Warnings associated with this account response"
+              },
+              "revision": {
+                "type": "integer",
+                "description": "The revision number of this account"
+              },
+              "lookupFields": {
+                "type": "object",
+                "additionalProperties": {
+                  "$ref": "#/components/schemas/extensionFieldValue"
+                },
+                "description": "Additional fields for lookup purposes"
+              },
+              "extensionFields": {
+                "type": "object",
+                "additionalProperties": {
+                  "$ref": "#/components/schemas/extensionFieldValue"
+                },
+                "description": "Client-defined extension field values for this account"
+              }
+            },
+            "required": [
+              "krn",
+              "typeKrn",
+              "spaceKrn",
+              "accountNumber",
+              "feeClass",
+              "consumerSettings",
+              "revision"
+            ]
+          }
+        ]
+      },
+      "Address": {
+        "type": "object",
+        "properties": {
+          "streetAddress": {
+            "type": "string",
+            "description": "The first line of the mailing address"
+          },
+          "locality": {
+            "type": "string",
+            "description": "The smallest area containing the address, usually a city"
+          },
+          "region": {
+            "type": "string",
+            "description": "The state or province of the mailing address"
+          },
+          "postalCode": {
+            "type": "string",
+            "description": "The postal code of the mailing address"
+          },
+          "country": {
+            "type": "string",
+            "format": "iso-3166-1-alpha-3",
+            "description": "The country code of the mailing address (ISO 3166-1 alpha-3)"
+          }
+        }
+      },
+      "AddressPatch": {
+        "title": "AddressPatch",
+        "description": "Partial mailing address for JSON Merge Patch (RFC 7396). Fields omitted are left unchanged; fields explicitly set to `null` attempt to clear them, subject to validation of any that are required.",
+        "type": "object",
+        "properties": {
+          "streetAddress": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The first line of the mailing address"
+          },
+          "locality": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The smallest area containing the address, usually a city"
+          },
+          "region": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The state or province of the mailing address"
+          },
+          "postalCode": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The postal code of the mailing address"
+          },
+          "country": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "iso-3166-1-alpha-3",
+            "description": "The country code of the mailing address (ISO 3166-1 alpha-3)"
+          }
+        }
+      },
+      "ConsumerSettings": {
+        "type": "object",
+        "description": "Consumer preferences for account communication",
+        "properties": {
+          "sendPaperComms": {
+            "type": [
+              "boolean",
+              "null"
+            ],
+            "description": "Whether the consumer prefers to receive paper communications"
+          }
+        },
+        "required": []
+      },
+      "AccountProto": {
+        "title": "AccountProto",
+        "description": "Client-provided account fields used when creating or updating an account.",
+        "type": "object",
+        "properties": {
+          "typeKrn": {
+            "type": "string",
+            "format": "Krn",
+            "description": "The KRN for the type of this account"
+          },
+          "spaceKrn": {
+            "type": "string",
+            "format": "Krn",
+            "description": "The KRN of the space this account belongs to"
+          },
+          "businessUnitCode": {
+            "type": "string",
+            "description": "The code of the business unit this account belongs to"
+          },
+          "feeClass": {
+            "enum": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "E"
+            ],
+            "description": "The fee class of this account"
+          },
+          "externalId": {
+            "type": "string",
+            "description": "The external ID of this account"
+          },
+          "externalRevision": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "description": "The revision number of this account in the external source system. When provided on update, it must be greater than the existing revision."
+          },
+          "messageCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The message codes for this account"
+          },
+          "fundingRestrictions": {
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "BankAccount",
+                    "Card"
+                  ]
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "The funding restrictions for this account. Known values are `BankAccount` and `Card`"
+          },
+          "dueDate": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time",
+            "description": "The due date of the balance for this account"
+          },
+          "payableAmount": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The current balance for this account"
+          },
+          "minimumPayment": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The minimum amount due of the balance for this account"
+          },
+          "passThrough": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Arbitrary information that will be attached to payments made to this account"
+          },
+          "accountNumber": {
+            "type": "string",
+            "description": "The account number of this account"
+          },
+          "mailingAddress": {
+            "$ref": "#/components/schemas/Address",
+            "description": "The mailing address for this account"
+          },
+          "openedAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time",
+            "description": "The date and time when this account was opened"
+          }
+        }
+      },
+      "AccountPatch": {
+        "title": "AccountPatch",
+        "description": "JSON Merge Patch document for an account (RFC 7396). Every top-level field is optional; fields omitted are left unchanged. Fields explicitly set to `null` are cleared. Attempting to null a field required on the account will be rejected with a 400. Nested object fields are merged recursively.",
+        "type": "object",
+        "properties": {
+          "businessUnitCode": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The code of the business unit this account belongs to"
+          },
+          "feeClass": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "A",
+                  "B",
+                  "C",
+                  "D",
+                  "E"
+                ]
+              },
+              {
+                "type": "string",
+                "description": "placeholder for future values"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The fee class of this account"
+          },
+          "externalRevision": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "description": "The revision number of this account in the external source system. When provided, it must be greater than the existing revision."
+          },
+          "messageCodes": {
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "type": "string"
+            },
+            "description": "The message codes for this account"
+          },
+          "fundingRestrictions": {
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "BankAccount",
+                    "Card"
+                  ]
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "The funding restrictions for this account"
+          },
+          "dueDate": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time",
+            "description": "The due date of the balance for this account"
+          },
+          "payableAmount": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The current balance for this account"
+          },
+          "minimumPayment": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The minimum amount due of the balance for this account"
+          },
+          "passThrough": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Arbitrary information attached to payments made to this account"
+          },
+          "accountNumber": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The account number of this account"
+          },
+          "mailingAddress": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/AddressPatch"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Partial mailing address; merged with the existing address per RFC 7396."
+          },
+          "openedAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time",
+            "description": "The date and time when this account was opened"
+          },
+          "lookupFields": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "additionalProperties": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/LookupFieldValue"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "description": "Additional fields for lookup purposes. Setting an inner key to `null` removes that lookup field; omitting a key leaves it unchanged."
+          },
+          "extensionFields": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "additionalProperties": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/extensionFieldValue"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "description": "Extension field values. Setting an inner key to `null` removes that extension field; omitting a key leaves it unchanged."
+          }
+        }
+      },
+      "extensionFieldValue": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/NonBlankText"
+              },
+              {
+                "$ref": "#/components/schemas/Integer"
+              },
+              {
+                "$ref": "#/components/schemas/Boolean"
+              },
+              {
+                "$ref": "#/components/schemas/PhoneNumber"
+              },
+              {
+                "$ref": "#/components/schemas/Email"
+              },
+              {
+                "$ref": "#/components/schemas/Date"
+              },
+              {
+                "$ref": "#/components/schemas/DateTime"
+              },
+              {
+                "$ref": "#/components/schemas/Address"
+              },
+              {
+                "$ref": "#/components/schemas/SelectOne"
+              },
+              {
+                "$ref": "#/components/schemas/SelectMany"
+              },
+              {
+                "$ref": "#/components/schemas/DollarAmount"
+              }
+            ]
+          },
+          "type": {
+            "type": "string",
+            "description": "Type discriminator for this field's value"
+          }
+        },
+        "required": [
+          "value",
+          "type"
+        ]
+      },
+      "NonBlankText": {
+        "type": "string",
+        "description": "A non-blank text value"
+      },
+      "Integer": {
+        "type": "number",
+        "format": "int32",
+        "description": "An integer value"
+      },
+      "Boolean": {
+        "type": "boolean",
+        "description": "A boolean value"
+      },
+      "PhoneNumber": {
+        "type": "string",
+        "format": "phoneNumber",
+        "description": "A phone number value"
+      },
+      "Email": {
+        "type": "string",
+        "format": "email",
+        "description": "An email address value"
+      },
+      "Date": {
+        "type": "string",
+        "format": "date",
+        "description": "A date value"
+      },
+      "DateTime": {
+        "type": "string",
+        "format": "date-time",
+        "description": "A date and time value"
+      },
+      "SelectOne": {
+        "type": "string",
+        "description": "A single selected option"
+      },
+      "SelectMany": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Multiple selected options"
+      },
+      "DollarAmount": {
+        "type": "number",
+        "multipleOf": 0.01,
+        "description": "A dollar amount"
+      },
+      "LookupFieldValue": {
+        "type": "object",
+        "description": "A lookup field value on an account.",
+        "properties": {
+          "value": {
+            "type": "string",
+            "description": "The lookup field value"
+          },
+          "type": {
+            "type": "string",
+            "description": "Type discriminator for this field's value",
+            "default": "NonblankText"
+          }
+        },
+        "required": [
+          "value"
+        ]
+      },
+      "SpaceConfiguration": {
+        "title": "SpaceConfiguration",
+        "description": "The configuration for a space.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SpaceConfigurationProto"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "spaceKrn": {
+                "type": "string",
+                "format": "Krn",
+                "description": "The KRN of the space this configuration applies to"
+              }
+            },
+            "required": [
+              "spaceKrn"
+            ]
+          }
+        ]
+      },
+      "SpaceConfigurationProto": {
+        "title": "SpaceConfigurationProto",
+        "description": "Space configuration fields provided when creating or updating.",
+        "type": "object",
+        "properties": {
+          "isStitchEnabled": {
+            "type": "boolean",
+            "description": "Whether Stitch functionality is enabled for this space"
+          }
+        },
+        "required": [
+          "isStitchEnabled"
+        ]
+      },
+      "Warning": {
+        "type": "object",
+        "description": "A warning message associated with the account response",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The warning code"
+          },
+          "message": {
+            "type": "string",
+            "description": "The warning message"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ]
+      },
+      "Error": {
+        "description": "Represents an error",
+        "type": "object",
+        "properties": {
+          "code": {
+            "description": "Error code",
+            "type": "string"
+          },
+          "message": {
+            "description": "Error message",
+            "type": "string"
+          },
+          "target": {
+            "description": "What about the request caused this error",
+            "type": "object",
+            "properties": {
+              "type": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "enum": [
+                      "field",
+                      "parameter",
+                      "krn",
+                      "header",
+                      "permission",
+                      "internal_server_error"
+                    ]
+                  },
+                  {
+                    "type": "string"
+                  }
+                ],
+                "description": "The type of the input that caused this error. Known values include `field`, `parameter`, `krn`, `header`, `permission`, and `internal_server_error`"
+              },
+              "name": {
+                "type": "string",
+                "description": "The part of the request that caused the error"
+              }
+            }
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ErrorOnceRemoved"
+            }
+          }
+        }
+      },
+      "ErrorResp": {
+        "type": "object",
+        "properties": {
+          "trace": {
+            "type": "string",
+            "description": "Request trace ID"
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "description": "List of errors"
+          }
+        }
+      },
+      "ErrorOnceRemoved": {
+        "description": "Represents an Error. Same as Error but duplicated because some tools can't handle recursive types.",
+        "type": "object",
+        "properties": {
+          "code": {
+            "description": "Error code",
+            "type": "string"
+          },
+          "message": {
+            "description": "Error message",
+            "type": "string"
+          },
+          "target": {
+            "description": "What about the request caused this error",
+            "type": "object",
+            "properties": {
+              "type": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "enum": [
+                      "field",
+                      "parameter",
+                      "krn",
+                      "header",
+                      "permission",
+                      "internal_server_error"
+                    ]
+                  },
+                  {
+                    "type": "string"
+                  }
+                ],
+                "description": "The type of the input that caused this error. Known values include `field`, `parameter`, `krn`, `header`, `permission`, and `internal_server_error`; new values may be added over time."
+              },
+              "name": {
+                "type": "string",
+                "description": "The part of the request that caused the error"
+              }
+            }
+          },
+          "details": {
+            "description": "Additional details about this error",
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        }
+      }
+    }
+  }
+}
