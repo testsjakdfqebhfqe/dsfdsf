@@ -11,7 +11,7 @@
   ],
   "security": [
     {
-      "MachineToken": []
+      "MachineToken1": []
     },
     {
       "StaffToken": []
@@ -986,7 +986,7 @@
   },
   "components": {
     "securitySchemes": {
-      "MachineToken": {
+      "MachineToken1": {
         "type": "oauth2",
         "description": "Machine-to-machine token issued to backend services, obtained with the OAuth 2.0 Client Credentials Grant.",
         "flows": {
