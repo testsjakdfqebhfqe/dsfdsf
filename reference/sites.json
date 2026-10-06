@@ -21,6 +21,11 @@
     }
   ],
   "tags": [],
+  "x-readme": {
+    "oauth-options": {
+      "useInsecureClientAuthentication": true
+    }
+  },
   "paths": {
     "/accounts/{accountKrn}": {
       "get": {
