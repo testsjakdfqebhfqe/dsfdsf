@@ -48,7 +48,6 @@ Enjoy and have fun!
 
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif;
-      display: flex;
       align-items: center;
       justify-content: center;
     }
