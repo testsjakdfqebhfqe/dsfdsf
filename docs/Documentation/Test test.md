@@ -15,19 +15,271 @@ Welcome to the Taurus Platform Integration documentation. You will find all requ
 
 Note that User Guides access is password protected and only available to clients.
 
-Enjoy and have fun! 
+Enjoy and have fun!
 
 ***
 
 <br />
 
-[block:html]
-{
-  "html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\" />\n  <title>Docs Grid – Taurus Style</title>\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n  <style>\n    :root {\n      --bg: #ffffff;\n      --bg-soft: #f6f6f8;\n      --card-bg: #ffffff;\n      --border: #e4e4ea;\n      --text: #1b1b23;\n      --text-muted: #7a7a8a;\n      --accent-pink: #e192ed;\n      --accent-pink-soft: #fbe9ff;\n      --shadow-soft: 0 14px 30px rgba(15, 15, 30, 0.08);\n      --radius-card: 24px;\n    }\n\n    * {\n      box-sizing: border-box;\n    }\n\n    body {\n      margin: 0;\n      min-height: 100vh;\n      font-family: system-ui, -apple-system, BlinkMacSystemFont, \"SF Pro Text\", \"Inter\", sans-serif;\n      background: radial-gradient(circle at top, #ffffff 0, var(--bg-soft) 45%, #f1f1f6 100%);\n      color: var(--text);\n      display: flex;\n      align-items: center;\n      justify-content: center;\n    }\n\n    .wrapper {\n      width: 80%;\n      max-width: 980px;\n      padding: 2.5rem 1.5rem;\n      margin: 0 auto;\n    }\n\n    .grid {\n      display: grid;\n      grid-template-columns: repeat(2, minmax(0, 1fr));\n      gap: 1.75rem;\n    }\n\n    .card {\n      background: var(--card-bg);\n      border-radius: var(--radius-card);\n      overflow: hidden;\n      border: 1px solid var(--border);\n      box-shadow: var(--shadow-soft);\n      cursor: pointer;\n      transition:\n        transform 160ms ease-out,\n        box-shadow 160ms ease-out,\n        border-color 160ms ease-out,\n        background 160ms ease-out;\n    }\n\n    .card:hover {\n      transform: translateY(-4px);\n      box-shadow: 0 18px 40px rgba(15, 15, 30, 0.12);\n      border-color: rgba(225, 146, 237, 0.7);\n      background: linear-gradient(135deg, #ffffff, var(--accent-pink-soft));\n    }\n\n    .card a {\n      color: inherit;\n      text-decoration: none;\n      display: flex;\n      align-items: center;\n      justify-content: space-between;\n      gap: 0.5rem;\n    }\n\n    /* Image area for cards (fixed aspect ratio, responsive width) */\n    .card-image {\n      width: 80%;\n      aspect-ratio: 16 / 9;\n      background-color: #f7f5fc;\n      display: flex;\n      align-items: center;\n      justify-content: center;\n    }\n\n    .card-image-inner-overview,\n    .card-image-inner,\n    .card-image-inner-api,\n    .card-image-inner-sdk {\n      width: 80%;\n      height: 80%;\n      border-radius: 18px;\n      background-position: center;\n      background-size: cover;\n      background-repeat: no-repeat;\n    }\n\n    .card-image-inner-overview {\n      background-image: url(\"https://files.readme.io/6410cea97b056ce2aa0a92b99d96e553c37ae9f7911b1dec1db948eab6733519-2026_Taurus.jpg\");\n    }\n\n    .card-image-inner {\n      background-image: url(\"https://www.taurushq.com/img/hero-home.webp\");\n    }\n\n    .card-image-inner-api {\n      background-image: url(\"https://files.readme.io/e44e6a515e0f528c1389ecdcb0979ceadaa9815cd58b2af8a0a1397ecbb24792-generated-image.png\");\n    }\n\n    .card-image-inner-sdk {\n      background-image: url(\"https://files.readme.io/cc5e43be3eeca7058da33999d94c75e04ebb4dc316999c198cb664404005b972-2026_SDK.png\");\n    }\n\n    .card-body {\n      padding: 1rem 1.4rem 1.1rem;\n    }\n\n    .card-title {\n      font-size: 0.98rem;\n      font-weight: 500;\n    }\n\n    .card-sub {\n      margin-top: 0.1rem;\n      font-size: 0.8rem;\n      color: var(--text-muted);\n    }\n\n    .card-arrow {\n      flex-shrink: 0;\n      width: 28px;\n      height: 28px;\n      border-radius: 999px;\n      border: 1px solid rgba(225, 146, 237, 0.6);\n      background: linear-gradient(135deg, var(--accent-pink-soft), #ffffff);\n      display: flex;\n      align-items: center;\n      justify-content: center;\n      font-size: 0.9rem;\n      color: var(--accent-pink);\n    }\n\n    /* RESPONSIVE ADJUSTMENTS */\n\n    /* Stack cards in one column on tablets/phones used to be 780 */\n    @media (max-width: 750px) {\n      body {\n        align-items: flex-start;\n      }\n\n      .wrapper {\n        padding: 1.5rem 1rem 2rem;\n      }\n\n      .grid {\n        grid-template-columns: minmax(0, 1fr);\n      }\n\n      .card a {\n        align-items: flex-start;\n      }\n    }\n\n    /* Tighter layout on very small phones used to be 480 */\n    @media (max-width: 480x) {\n      .wrapper {\n        padding: 1.25rem 0.75rem 1.75rem;\n      }\n\n      .card-body {\n        padding: 0.9rem 1rem 1rem;\n      }\n\n      .card-title {\n        font-size: 0.9rem;\n      }\n\n      .card-sub {\n        font-size: 0.78rem;\n      }\n    }\n  </style>\n</head>\n<body>\n  <main class=\"wrapper\">\n    <section class=\"grid\">\n      <!-- Taurus Overview -->\n      <article class=\"card\">\n        <div class=\"card-image\">\n          <div class=\"card-image-inner-overview\"></div>\n        </div>\n        <div class=\"card-body\">\n          <a href=\"https://docs.taurushq.com/protect-capital/docs/taurus-platform-capabilities\">\n            <div>\n              <div class=\"card-title\">Documentation Overview</div>\n              <div class=\"card-sub\">Security principles, architecture, and wallet overview</div>\n            </div>\n            <div class=\"card-arrow\">›</div>\n          </a>\n        </div>\n      </article>\n\n      <!-- User Guide -->\n      <article class=\"card\">\n        <div class=\"card-image\">\n          <div class=\"card-image-inner\"></div>\n        </div>\n        <div class=\"card-body\">\n          <a href=\"https://docs.taurushq.com/user-guides/docs/introduction\">\n            <div>\n              <div class=\"card-title\">User Guides</div>\n              <div class=\"card-sub\">Master Taurus products through our detailed user guide</div>\n            </div>\n            <div class=\"card-arrow\">›</div>\n          </a>\n        </div>\n      </article>\n\n      <!-- API Reference -->\n      <article class=\"card\">\n        <div class=\"card-image\">\n          <div class=\"card-image-inner-api\"></div>\n        </div>\n        <div class=\"card-body\">\n          <a href=\"https://docs.taurushq.com/protect-capital/reference/api\">\n            <div>\n              <div class=\"card-title\">API Reference</div>\n              <div class=\"card-sub\">API endpoints and detailed API examples</div>\n            </div>\n            <div class=\"card-arrow\">›</div>\n          </a>\n        </div>\n      </article>\n\n      <!-- SDK -->\n      <article class=\"card\">\n        <div class=\"card-image\">\n          <div class=\"card-image-inner-sdk\"></div>\n        </div>\n        <div class=\"card-body\">\n          <a href=\"https://docs.taurushq.com/protect-capital/page/sdk-reference\">\n            <div>\n              <div class=\"card-title\">SDK</div>\n              <div class=\"card-sub\">Java, Go, Python SDKs and much more</div>\n            </div>\n            <div class=\"card-arrow\">›</div>\n          </a>\n        </div>\n      </article>\n    </section>\n  </main>\n</body>\n</html>\n\n\n\n\n"
-}
-[/block]
+<HTMLBlock>{`
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Docs Grid – Taurus Style</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #ffffff;
+      --bg-soft: #f6f6f8;
+      --card-bg: #ffffff;
+      --border: #e4e4ea;
+      --text: #1b1b23;
+      --text-muted: #7a7a8a;
+      --accent-pink: #e192ed;
+      --accent-pink-soft: #fbe9ff;
+      --shadow-soft: 0 14px 30px rgba(15, 15, 30, 0.08);
+      --radius-card: 24px;
+    }
 
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif;
+      background: radial-gradient(circle at top, #ffffff 0, var(--bg-soft) 45%, #f1f1f6 100%);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .wrapper {
+      width: 80%;
+      max-width: 980px;
+      padding: 2.5rem 1.5rem;
+      margin: 0 auto;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.75rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+      cursor: pointer;
+      transition:
+        transform 160ms ease-out,
+        box-shadow 160ms ease-out,
+        border-color 160ms ease-out,
+        background 160ms ease-out;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 18px 40px rgba(15, 15, 30, 0.12);
+      border-color: rgba(225, 146, 237, 0.7);
+      background: linear-gradient(135deg, #ffffff, var(--accent-pink-soft));
+    }
+
+    .card a {
+      color: inherit;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    /* Image area for cards (fixed aspect ratio, responsive width) */
+    .card-image {
+      width: 80%;
+      aspect-ratio: 16 / 9;
+      background-color: #f7f5fc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card-image-inner-overview,
+    .card-image-inner,
+    .card-image-inner-api,
+    .card-image-inner-sdk {
+      width: 80%;
+      height: 80%;
+      border-radius: 18px;
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+
+    .card-image-inner-overview {
+      background-image: url("https://files.readme.io/6410cea97b056ce2aa0a92b99d96e553c37ae9f7911b1dec1db948eab6733519-2026_Taurus.jpg");
+    }
+
+    .card-image-inner {
+      background-image: url("https://www.taurushq.com/img/hero-home.webp");
+    }
+
+    .card-image-inner-api {
+      background-image: url("https://files.readme.io/e44e6a515e0f528c1389ecdcb0979ceadaa9815cd58b2af8a0a1397ecbb24792-generated-image.png");
+    }
+
+    .card-image-inner-sdk {
+      background-image: url("https://files.readme.io/cc5e43be3eeca7058da33999d94c75e04ebb4dc316999c198cb664404005b972-2026_SDK.png");
+    }
+
+    .card-body {
+      padding: 1rem 1.4rem 1.1rem;
+    }
+
+    .card-title {
+      font-size: 0.98rem;
+      font-weight: 500;
+    }
+
+    .card-sub {
+      margin-top: 0.1rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .card-arrow {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      border: 1px solid rgba(225, 146, 237, 0.6);
+      background: linear-gradient(135deg, var(--accent-pink-soft), #ffffff);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      color: var(--accent-pink);
+    }
+
+    /* RESPONSIVE ADJUSTMENTS */
+
+    /* Stack cards in one column on tablets/phones used to be 780 */
+    @media (max-width: 750px) {
+      body {
+        align-items: flex-start;
+      }
+
+      .wrapper {
+        padding: 1.5rem 1rem 2rem;
+      }
+
+      .grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .card a {
+        align-items: flex-start;
+      }
+    }
+
+    /* Tighter layout on very small phones used to be 480 */
+    @media (max-width: 480x) {
+      .wrapper {
+        padding: 1.25rem 0.75rem 1.75rem;
+      }
+
+      .card-body {
+        padding: 0.9rem 1rem 1rem;
+      }
+
+      .card-title {
+        font-size: 0.9rem;
+      }
+
+      .card-sub {
+        font-size: 0.78rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrapper">
+    <section class="grid">
+      <!-- Taurus Overview -->
+      <article class="card">
+        <div class="card-image">
+          <div class="card-image-inner-overview"></div>
+        </div>
+        <div class="card-body">
+          <a href="https://docs.taurushq.com/protect-capital/docs/taurus-platform-capabilities">
+            <div>
+              <div class="card-title">Documentation Overview</div>
+              <div class="card-sub">Security principles, architecture, and wallet overview</div>
+            </div>
+            <div class="card-arrow">›</div>
+          </a>
+        </div>
+      </article>
+
+      <!-- User Guide -->
+      <article class="card">
+        <div class="card-image">
+          <div class="card-image-inner"></div>
+        </div>
+        <div class="card-body">
+          <a href="https://docs.taurushq.com/user-guides/docs/introduction">
+            <div>
+              <div class="card-title">User Guides</div>
+              <div class="card-sub">Master Taurus products through our detailed user guide</div>
+            </div>
+            <div class="card-arrow">›</div>
+          </a>
+        </div>
+      </article>
+
+      <!-- API Reference -->
+      <article class="card">
+        <div class="card-image">
+          <div class="card-image-inner-api"></div>
+        </div>
+        <div class="card-body">
+          <a href="https://docs.taurushq.com/protect-capital/reference/api">
+            <div>
+              <div class="card-title">API Reference</div>
+              <div class="card-sub">API endpoints and detailed API examples</div>
+            </div>
+            <div class="card-arrow">›</div>
+          </a>
+        </div>
+      </article>
+
+      <!-- SDK -->
+      <article class="card">
+        <div class="card-image">
+          <div class="card-image-inner-sdk"></div>
+        </div>
+        <div class="card-body">
+          <a href="https://docs.taurushq.com/protect-capital/page/sdk-reference">
+            <div>
+              <div class="card-title">SDK</div>
+              <div class="card-sub">Java, Go, Python SDKs and much more</div>
+            </div>
+            <div class="card-arrow">›</div>
+          </a>
+        </div>
+      </article>
+    </section>
+  </main>
+</body>
+</html>
+`}</HTMLBlock>
 
 <br />
 
-Should you require any assistance or have questions about this documentation, do not hesitate to [submit a support request. ](https://customer.support.taurushq.com/servicedesk/customer/portals).
+Should you require any assistance or have questions about this documentation, do not hesitate to [submit a support request. ](https://customer.support.taurushq.com/servicedesk/customer/portals).&#x20;
