@@ -9,13 +9,6 @@
       "url": "https://api.kubra.io/account/v2"
     }
   ],
-  "x-readme": {
-    "oauth-options": {
-      "scopeSeparator": ",",
-      "useInsecureClientAuthentication": true,
-      "usePkce": true
-    }
-  },
   "security": [
     {
       "MachineToken1": []
