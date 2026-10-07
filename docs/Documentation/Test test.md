@@ -50,7 +50,6 @@ Enjoy and have fun!
       margin: 0;
       min-height: 100vh;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif;
-      background: radial-gradient(circle at top, #ffffff 0, var(--bg-soft) 45%, #f1f1f6 100%);
       color: var(--text);
       display: flex;
       align-items: center;
