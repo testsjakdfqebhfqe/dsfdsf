@@ -13,9 +13,17 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "additionalProperties": {
-                  "type": "object"
-                }
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "object"
+                    }
+                  }
+                },
+                "required": [
+                  "data"
+                ]
               }
             }
           }
