@@ -4,3 +4,4 @@ api:
   operationId: getAccount
 hidden: false
 ---
+tedt
