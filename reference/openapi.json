@@ -1,25 +1,21 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "title": "Additional Properties API",
+    "title": "Test API",
     "version": "1.0.0"
   },
   "paths": {
     "/items": {
       "post": {
-        "summary": "Create item",
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  }
-                },
-                "additionalProperties": true
+                "additionalProperties": {
+                  "type": "object"
+                }
               }
             }
           }
