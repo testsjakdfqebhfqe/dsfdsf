@@ -1,4 +1,0 @@
----
-title: Rewards
-hidden: false
----
