@@ -1,6 +1,6 @@
 ---
 api:
   file: openapi.json
-  operationId: post_items
+  operationId: create-employee
 hidden: false
 ---

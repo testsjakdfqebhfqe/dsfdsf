@@ -1,4 +1,4 @@
 ---
-title: /items
+title: Employees
 hidden: false
 ---
