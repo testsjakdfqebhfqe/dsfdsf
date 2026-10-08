@@ -30,8 +30,7 @@
     }
   ],
   "x-readme": {
-    "explorer-enabled": false,
-    "proxy-enabled": true
+    "explorer-enabled": false
   },
   "tags": [
     {
