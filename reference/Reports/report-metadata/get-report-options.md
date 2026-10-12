@@ -1,6 +1,6 @@
 ---
 api:
   file: openapi.json
-  operationId: retrieveuser
+  operationId: get-report-options
 hidden: false
 ---
