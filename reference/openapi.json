@@ -536,7 +536,15 @@
                               "TIMESTAMP_MS",
                               "DATE_ISO8601"
                             ],
-                            "type": "string"
+                            "type": "string",
+                            "x-enumDescriptions": {
+                              "STRING": "STRING",
+                              "LONG": "LONG",
+                              "DOUBLE": "DOUBLE",
+                              "TIMESTAMP_SEC": "TIMESTAMP_SEC",
+                              "TIMESTAMP_MS": "TIMESTAMP_MS",
+                              "DATE_ISO8601": "DATE_ISO8601"
+                            }
                           }
                         },
                         "required": [
