@@ -7,3 +7,11 @@ metadata:
   robots: index
 ---
 v2.0 is deprecated test hm
+
+<Callout icon="📘" theme="info">
+
+</Callout>
+
+<Callout icon="far fa-circle-info" theme="info">
+
+</Callout>
