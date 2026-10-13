@@ -6,4 +6,4 @@ icon: 👍
 metadata:
   robots: index
 ---
-v2.0 is deprecated
+v2.0 is deprecated test
