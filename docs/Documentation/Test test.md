@@ -6,8 +6,10 @@ icon: 👍
 metadata:
   robots: index
 ---
-v2.0 is deprecated test hm
+<Callout icon="far fa-circle-info" theme="default">
 
-<Callout icon="📘" theme="info" />
+</Callout>
 
-<Callout icon="far fa-circle-info" theme="info" />
+<Callout icon="far fa-circle-info" theme="info">
+  ### test
+</Callout>
