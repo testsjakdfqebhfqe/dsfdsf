@@ -13,3 +13,5 @@ metadata:
 <Callout icon="far fa-circle-info" theme="info">
   ### test
 </Callout>
+
+<Glossary>testiks1234</Glossary>
