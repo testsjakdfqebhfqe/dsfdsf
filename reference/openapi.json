@@ -31,6 +31,16 @@
               "example": "1-5C0YLB:1-8BYUX",
               "type": "string"
             }
+          },
+                    {
+            "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).",
+            "in": "header",
+            "name": "test",
+            "required": false,
+            "schema": {
+              "example": "1-5C0YLB:1-8BYUX",
+              "type": "string"
+            }
           }
         ],
         "responses": {
