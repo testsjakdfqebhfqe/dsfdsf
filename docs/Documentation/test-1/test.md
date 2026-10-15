@@ -2,7 +2,8 @@
 title: test
 deprecated: false
 hidden: true
-icon: 👍
+link:
+  new_tab: false
 metadata:
   robots: index
 ---
