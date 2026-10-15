@@ -2,7 +2,8 @@
 title: Welcome to Taurus
 deprecated: false
 hidden: false
-icon: 👍
+link:
+  new_tab: false
 metadata:
   robots: index
 ---
