@@ -20,7 +20,16 @@
           "200": {
             "description": "Successful response"
           }
-        }
+        },
+        "parameters": [
+          {
+            "in": "header",
+            "name": "param",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
       }
     }
   },
