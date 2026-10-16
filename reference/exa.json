@@ -18,9 +18,12 @@
         "operationId": "get_new-endpoint",
         "responses": {
           "200": {
-            "description": "Successful response"
+            "description": "test response"
           }
-        }
+        },
+        "tags": [
+          "test"
+        ]
       }
     }
   },
