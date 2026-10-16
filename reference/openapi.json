@@ -16,10 +16,6 @@
     "/reports/{productFamily}/{reportingArea}/{report}": {
       "get": {
         "description": "Returns available options to generate the report.",
-        "externalDocs": {
-          "description": "See documentation for this operation in Akamai's Reporting API",
-          "url": "https://techdocs.akamai.com/reporting/reference/get-report-options"
-        },
         "operationId": "get-report-options",
         "parameters": [
           {
@@ -32,7 +28,7 @@
               "type": "string"
             }
           },
-                    {
+          {
             "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).",
             "in": "header",
             "name": "test",
