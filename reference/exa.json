@@ -9,7 +9,6 @@
       "url": "https://example.com"
     }
   ],
-  "tags": [],
   "paths": {
     "/new-endpoint": {
       "get": {
@@ -20,12 +19,12 @@
           "200": {
             "description": "test response"
           }
-        }
+        },
+        "tags": [
+          "testt"
+        ]
       }
     }
-  },
-  "components": {
-    "securitySchemes": {}
   },
   "x-readme": {
     "explorer-enabled": true,
