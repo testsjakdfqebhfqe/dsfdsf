@@ -19,7 +19,10 @@
           "200": {
             "description": "test response"
           }
-        }
+        },
+        "tags": [
+          "testts"
+        ]
       }
     }
   },
