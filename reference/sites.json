@@ -6,7 +6,7 @@
   },
   "servers": [
     {
-      "url": "https://6f02-45-93-184-167.ngrok-free.app"
+      "url": "https://0e0f-185-70-55-184.ngrok-free.app"
     }
   ],
   "paths": {
@@ -38,8 +38,8 @@
         "type": "oauth2",
         "flows": {
           "authorizationCode": {
-            "authorizationUrl": "https://6f02-45-93-184-167.ngrok-free.app/oauth/authorize",
-            "tokenUrl": "https://6f02-45-93-184-167.ngrok-free.app/oauth/token",
+            "authorizationUrl": "https://0e0f-185-70-55-184.ngrok-free.app/oauth/authorize",
+            "tokenUrl": "https://0e0f-185-70-55-184.ngrok-free.app/oauth/token",
             "scopes": {
               "api.read": "Read data from the API"
             }
