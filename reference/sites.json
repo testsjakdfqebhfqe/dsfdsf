@@ -1,0 +1,51 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "OAuth2 authorization-code debug API",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://6f02-45-93-184-167.ngrok-free.app"
+    }
+  ],
+  "paths": {
+    "/api/me": {
+      "get": {
+        "operationId": "getMe",
+        "summary": "Protected — echoes the token it was called with",
+        "security": [
+          {
+            "OAuth2": [
+              "api.read"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "OAuth2": {
+        "type": "oauth2",
+        "flows": {
+          "authorizationCode": {
+            "authorizationUrl": "https://6f02-45-93-184-167.ngrok-free.app/oauth/authorize?test=test",
+            "tokenUrl": "https://6f02-45-93-184-167.ngrok-free.app/oauth/token?test=test",
+            "scopes": {
+              "api.read": "Read data from the API"
+            }
+          }
+        }
+      }
+    }
+  }
+}
