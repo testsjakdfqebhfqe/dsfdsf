@@ -38,8 +38,8 @@
         "type": "oauth2",
         "flows": {
           "authorizationCode": {
-            "authorizationUrl": "https://6f02-45-93-184-167.ngrok-free.app/oauth/authorize?test=test",
-            "tokenUrl": "https://6f02-45-93-184-167.ngrok-free.app/oauth/token?test=test",
+            "authorizationUrl": "https://6f02-45-93-184-167.ngrok-free.app/oauth/authorize",
+            "tokenUrl": "https://6f02-45-93-184-167.ngrok-free.app/oauth/token",
             "scopes": {
               "api.read": "Read data from the API"
             }
