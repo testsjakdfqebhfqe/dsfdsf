@@ -1,0 +1,5003 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "EBSCOhost API Beta",
+    "description": "EBSCOhost API Beta provides external access to advanced research capabilities currently available within EBSCO research experiences.",
+    "version": "2023-05-09T20:06:03Z",
+    "contact": {
+      "name": "API Wizards",
+      "email": "EIS.APIWizards@ebsco.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.ebscohost.com/beta",
+      "description": "Production Server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Search"
+    },
+    {
+      "name": "Retrieve"
+    },
+    {
+      "name": "Utilities"
+    },
+    {
+      "name": "Citation Discovery"
+    },
+    {
+      "name": "AI Insights"
+    }
+  ],
+  "paths": {
+    "/ai/insights/{recordid}": {
+      "get": {
+        "description": "This operation returns a summary for the HTML full text or PDF full text document based on record id and opid.",
+        "tags": [
+          "AI Insights"
+        ],
+        "summary": "Retrieve AI Insights",
+        "operationId": "get-ai-insights",
+        "parameters": [
+          {
+            "name": "recordid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-z0-9]{10}$"
+            },
+            "description": "Record Identifier. EBSCO record identifier for the content item."
+          },
+          {
+            "name": "fulltextType",
+            "description": "Format of the full-text document to summarize. Valid values: html or pdf. Default is html.",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "html",
+                "pdf"
+              ]
+            }
+          },
+          {
+            "name": "opid",
+            "description": "Opaque Profile Identifier. Governs user entitlements and content access rights. Provisioned by EBSCO. Example: 4ovgdm",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Preferred language for the summary response. Supports ISO 639-1 language codes (e.g., en, es, fr, de, ja, zh). Default: en",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful AI Insights response.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "<ul><li>Mutual fund managers exposed to abnormally hot temperatures are significantly more likely to support climate proposals, indicating that personal experience with climate change affects voting behavior.</li><li>The effect of exposure to hot temperatures on voting support is specific to climate proposals, not other types of shareholder proposals, suggesting it is not due to omitted factors.</li></ul>"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - The request could not be processed because required parameters are missing, invalid, or malformed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "debugId": "e7c1a2b4-5d6f-7890-ab12-cd34ef567890",
+                  "name": "Bad Request",
+                  "message": "The request is invalid. Verify the request parameters and try again."
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - the Authorization token is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "debugId": "e7c1a2b4-5d6f-7890-ab12-cd34ef567890",
+                  "name": "Unauthorized",
+                  "message": "The Authorization token is missing or invalid."
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - the token is valid but does not have permission to access this endpoint.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "debugId": "e7c1a2b4-5d6f-7890-ab12-cd34ef567890",
+                  "name": "Forbidden",
+                  "message": "The token is valid but does not have permission to access this endpoint."
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found - Record not found or full-text content not available for the specified recordId and fulltextType combination.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "debugId": "e7c1a2b4-5d6f-7890-ab12-cd34ef567890",
+                  "name": "Not Found",
+                  "message": "Record not found or full-text content not available for the specified recordId and fulltextType combination."
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Not Acceptable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "debugId": "e7c1a2b4-5d6f-7890-ab12-cd34ef567890",
+                  "name": "Not Acceptable",
+                  "message": "Not Acceptable"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error - Unexpected server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "debugId": "e7c1a2b4-5d6f-7890-ab12-cd34ef567890",
+                  "name": "Internal Server Error",
+                  "message": "Unexpected server error."
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": []
+          }
+        ]
+      }
+    },
+    "/utilities/record-identifiers": {
+      "post": {
+        "tags": [
+          "Utilities"
+        ],
+        "summary": "Convert an AN and DB to a Record Identifier",
+        "description": "This operation retrieves a record identifier for a given AN and DB.",
+        "operationId": "post-record-identifiers",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/RecordIdentifierRequest"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Record Identifier response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RecordIdentifierResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - The request could not be processed because required parameters are missing, invalid, or malformed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "debugId": "e7c1a2b4-5d6f-7890-ab12-cd34ef567890",
+                  "name": "Bad Request",
+                  "message": "The request is invalid. Verify the request parameters and try again."
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - the Authorization token is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "debugId": "e7c1a2b4-5d6f-7890-ab12-cd34ef567890",
+                  "name": "Unauthorized",
+                  "message": "The Authorization token is missing or invalid."
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - the token is valid but does not have permission to access this endpoint.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "debugId": "e7c1a2b4-5d6f-7890-ab12-cd34ef567890",
+                  "name": "Forbidden",
+                  "message": "The token is valid but does not have permission to access this endpoint."
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found - AN or DB not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "debugId": "e7c1a2b4-5d6f-7890-ab12-cd34ef567890",
+                  "name": "Not Found",
+                  "message": "AN or DB not found."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error - Unexpected server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "debugId": "e7c1a2b4-5d6f-7890-ab12-cd34ef567890",
+                  "name": "Internal Server Error",
+                  "message": "Unexpected server error."
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": []
+          }
+        ]
+      }
+    },
+    "/content/search": {
+      "post": {
+        "description": "This operation executes a comprehensive search across all or selected databases within the consumer's profile. The operation supports advanced search capabilities including filters, facets, expanders, search modes, and custom actions. The response contains record counts, results list and applied filters.",
+        "tags": [
+          "Search"
+        ],
+        "summary": "Search",
+        "operationId": "post-search",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchRecordRequestV5"
+              }
+            }
+          },
+          "required": true
+        },
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "The media data type. application/json",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "HTTP 1.1 Accept-Language header. See (https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Language). Indicates the preferred language(s) for the response. This information is used to localize response content when multiple language variants are available. Language tags with higher language weight (q) values represent higher preference. If no q value is provided, it defaults to 1.0. Format: A comma separate list of language tags, optionally including language weights (q) to indicate preference order.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "includeResponseItems",
+            "in": "query",
+            "description": "Specifies a comma-separated list of items to include in the response. Consumers can use this parameter to control the data returned by the API.",
+            "required": false,
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "default": [
+                "ALL"
+              ],
+              "items": {
+                "type": "string",
+                "enum": [
+                  "id",
+                  "an",
+                  "shortDbName",
+                  "doi",
+                  "longDbName",
+                  "abstract",
+                  "contributors",
+                  "docTypes",
+                  "docTypeDisplayNames",
+                  "isiType",
+                  "subjects",
+                  "links",
+                  "publicationDate",
+                  "pubTypes",
+                  "pubTypeDisplayNames",
+                  "source",
+                  "coverDate",
+                  "peerReviewed",
+                  "title",
+                  "holdingsAvailable",
+                  "recordType",
+                  "guestAccessLevel",
+                  "ALL"
+                ]
+              }
+            }
+          },
+          {
+            "name": "applyAllLimiters",
+            "in": "query",
+            "description": "Determines how limiters are processed by the search endpoint. Set to true to process all limiters from the pre-search configuration, including both common and specialized limiters. The default value is false, which processes only the limiters from the common filter endpoint. It is recommended to set this to true, as limiters associated with the false flag will be deprecated soon.",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "excludeLinks",
+            "in": "query",
+            "description": "Set this optional parameter to true to exclude links from the response",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful search response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchRecordResponseV5"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - The request could not be processed because required parameters are missing, invalid, or malformed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "debugId": "e7c1a2b4-5d6f-7890-ab12-cd34ef567890",
+                  "name": "Bad Request",
+                  "message": "The request is invalid. Verify the request parameters and try again."
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - the Authorization token is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "debugId": "e7c1a2b4-5d6f-7890-ab12-cd34ef567890",
+                  "name": "Unauthorized",
+                  "message": "The Authorization token is missing or invalid."
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - the token is valid but does not have permission to access this endpoint.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "debugId": "e7c1a2b4-5d6f-7890-ab12-cd34ef567890",
+                  "name": "Forbidden",
+                  "message": "The token is valid but does not have permission to access this endpoint."
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found - Record not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "debugId": "e7c1a2b4-5d6f-7890-ab12-cd34ef567890",
+                  "name": "Not Found",
+                  "message": "Record not found."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error - Unexpected server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "debugId": "e7c1a2b4-5d6f-7890-ab12-cd34ef567890",
+                  "name": "Internal Server Error",
+                  "message": "Unexpected server error."
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": []
+          }
+        ]
+      }
+    },
+    "/content/{recordid}": {
+      "get": {
+        "tags": [
+          "Retrieve"
+        ],
+        "summary": "Retrieve a Record",
+        "description": "This operation retrieves a record for a given record id.",
+        "operationId": "get-record",
+        "parameters": [
+          {
+            "name": "recordid",
+            "in": "path",
+            "required": true,
+            "description": "Record Identifier. EBSCO record identifier for the content item.",
+            "schema": {
+              "type": "string",
+              "example": "gkgbk4pctx"
+            }
+          },
+          {
+            "name": "opid",
+            "in": "query",
+            "required": true,
+            "description": "Opaque Profile Identifier. Governs user entitlements and content access rights. Provisioned by EBSCO.",
+            "schema": {
+              "type": "string",
+              "example": "4ovgdm"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "required": true,
+            "description": "HTTP 1.1 Accept-Language header. See (https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Language).",
+            "schema": {
+              "type": "string",
+              "example": "en-US"
+            }
+          },
+          {
+            "name": "includeLinks",
+            "in": "query",
+            "required": false,
+            "description": "Set this optional parameter to true if the links section should be included in the response.",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful retrieve a record response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContentRecordV4"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - The request could not be processed because required parameters are missing, invalid, or malformed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "debugId": "e7c1a2b4-5d6f-7890-ab12-cd34ef567890",
+                  "name": "Bad Request",
+                  "message": "The request is invalid. Verify the request parameters and try again."
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - the Authorization token is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "debugId": "e7c1a2b4-5d6f-7890-ab12-cd34ef567890",
+                  "name": "Unauthorized",
+                  "message": "The Authorization token is missing or invalid."
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - the token is valid but does not have permission to access this endpoint.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "debugId": "e7c1a2b4-5d6f-7890-ab12-cd34ef567890",
+                  "name": "Forbidden",
+                  "message": "The token is valid but does not have permission to access this endpoint."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error - Unexpected server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "debugId": "e7c1a2b4-5d6f-7890-ab12-cd34ef567890",
+                  "name": "Internal Server Error",
+                  "message": "Unexpected server error."
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": []
+          }
+        ]
+      }
+    },
+    "/content/{recordid}/html": {
+      "get": {
+        "description": "This operation returns html full text for given record id.",
+        "tags": [
+          "Retrieve"
+        ],
+        "summary": "Retrieve HTML Full Text",
+        "operationId": "get-html-fulltext",
+        "parameters": [
+          {
+            "name": "recordid",
+            "in": "path",
+            "description": "Record Identifier. EBSCO record identifier for the content item.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "gkgbk4pctx"
+            }
+          },
+          {
+            "name": "opid",
+            "in": "query",
+            "description": "Opaque Profile Identifier. Governs user entitlements and content access rights. Provisioned by EBSCO.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "4ovgdm"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Retrieve HTML Full text response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "htmlFulltext": {
+                      "type": "string",
+                      "description": "HTML Full Text",
+                      "example": "<p>Climate change in the United States.</p>"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - The request could not be processed because required parameters are missing, invalid, or malformed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "debugId": "e7c1a2b4-5d6f-7890-ab12-cd34ef567890",
+                  "name": "Bad Request",
+                  "message": "The request is invalid. Verify the request parameters and try again."
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - the Authorization token is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "debugId": "e7c1a2b4-5d6f-7890-ab12-cd34ef567890",
+                  "name": "Unauthorized",
+                  "message": "The Authorization token is missing or invalid."
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - the token is valid but does not have permission to access this endpoint.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "debugId": "e7c1a2b4-5d6f-7890-ab12-cd34ef567890",
+                  "name": "Forbidden",
+                  "message": "The token is valid but does not have permission to access this endpoint."
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found - Record not found or full-text content not available.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "debugId": "e7c1a2b4-5d6f-7890-ab12-cd34ef567890",
+                  "name": "Not Found",
+                  "message": "Record not found or full-text content not available."
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": []
+          }
+        ]
+      }
+    },
+    "/content/{recordid}/pdf": {
+      "get": {
+        "description": "This operation returns a link to pdf full text for the record id provided.",
+        "tags": [
+          "Retrieve"
+        ],
+        "summary": "Retrieve a URL to PDF Full Text",
+        "operationId": "get-pdf-fulltext",
+        "parameters": [
+          {
+            "name": "recordid",
+            "in": "path",
+            "description": "Record Identifier. EBSCO record identifier for the content item.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "gkgbk4pctx"
+            }
+          },
+          {
+            "name": "opid",
+            "in": "query",
+            "description": "Opaque Profile Identifier. Governs user entitlements and content access rights. Provisioned by EBSCO.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "4ovgdm"
+            }
+          },
+          {
+            "name": "sourceRecordId",
+            "in": "query",
+            "description": "Source Record Identifier. Identifier of the record from which the PDF link originates. In most cases identical to recordId; differs in linked-record or aggregated-source scenarios.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "gkgbk4pctx"
+            }
+          },
+          {
+            "name": "intent",
+            "in": "query",
+            "description": "Intent of the request. Describes the intended access mode for the PDF (e.g. view, download, print). Controls which type of link is returned.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "view"
+            }
+          },
+          {
+            "name": "restriction",
+            "in": "query",
+            "description": "Restriction Level. Access restriction level to apply when resolving the link. Omit unless a specific restriction context is required.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "type": "string",
+                      "description": "PDF URL",
+                      "example": "/link/content"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - The request could not be processed because required parameters are missing, invalid, or malformed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "debugId": "e7c1a2b4-5d6f-7890-ab12-cd34ef567890",
+                  "name": "Bad Request",
+                  "message": "The request is invalid. Verify the request parameters and try again."
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - the Authorization token is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "debugId": "e7c1a2b4-5d6f-7890-ab12-cd34ef567890",
+                  "name": "Unauthorized",
+                  "message": "The Authorization token is missing or invalid."
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - the token is valid but does not have permission to access this endpoint.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "debugId": "e7c1a2b4-5d6f-7890-ab12-cd34ef567890",
+                  "name": "Forbidden",
+                  "message": "The token is valid but does not have permission to access this endpoint."
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found - Record not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "debugId": "e7c1a2b4-5d6f-7890-ab12-cd34ef567890",
+                  "name": "Not Found",
+                  "message": "Record not found."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error - Unexpected server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "debugId": "e7c1a2b4-5d6f-7890-ab12-cd34ef567890",
+                  "name": "Internal Server Error",
+                  "message": "Unexpected server error."
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": []
+          }
+        ]
+      }
+    },
+    "/scholarly-graph/works": {
+      "post": {
+        "description": "This operation returns entitled and unentitled works for the specified EBSCO Scholarly Graph identifier.",
+        "tags": [
+          "Citation Discovery"
+        ],
+        "summary": "Retrieve Scholarly Works",
+        "operationId": "post-scholarly-graph-works",
+        "requestBody": {
+          "description": "Scholarly Works request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WorksRequestV1"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Retrieve Scholarly Works response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorksResponseV1"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - The request could not be processed because required parameters are missing, invalid, or malformed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "debugId": "e7c1a2b4-5d6f-7890-ab12-cd34ef567890",
+                  "name": "Bad Request",
+                  "message": "The request is invalid. Verify the request parameters and try again."
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - the Authorization token is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "debugId": "e7c1a2b4-5d6f-7890-ab12-cd34ef567890",
+                  "name": "Unauthorized",
+                  "message": "The Authorization token is missing or invalid."
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - the token is valid but does not have permission to access this endpoint.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "debugId": "e7c1a2b4-5d6f-7890-ab12-cd34ef567890",
+                  "name": "Forbidden",
+                  "message": "The token is valid but does not have permission to access this endpoint."
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found - EBSCO Scholarly Graph identifier not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "debugId": "e7c1a2b4-5d6f-7890-ab12-cd34ef567890",
+                  "name": "Not Found",
+                  "message": "EBSCO Scholarly Graph identifier not found."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error - Unexpected server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "debugId": "e7c1a2b4-5d6f-7890-ab12-cd34ef567890",
+                  "name": "Internal Server Error",
+                  "message": "Unexpected server error."
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": []
+          }
+        ]
+      }
+    },
+    "/scholarly-graph/cited-by": {
+      "post": {
+        "description": "This operation returns cited-by resolutions for a list of record ids and DOIs.",
+        "tags": [
+          "Citation Discovery"
+        ],
+        "summary": "Retrieve Citation Metrics",
+        "operationId": "post-scholarly-graph-cited-by",
+        "parameters": [
+          {
+            "name": "opid",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Opaque Profile Identifier. Governs user entitlements and content access rights. Provisioned by EBSCO.",
+            "example": "4ovgdm"
+          }
+        ],
+        "requestBody": {
+          "description": "Request objects",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 50,
+                "items": {
+                  "$ref": "#/components/schemas/CitedByRequestItem"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful retrieve cited-by metrics response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CitedByBulkResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - The request could not be processed because required parameters are missing, invalid, or malformed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "debugId": "e7c1a2b4-5d6f-7890-ab12-cd34ef567890",
+                  "name": "Bad Request",
+                  "message": "The request is invalid. Verify the request parameters and try again."
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - the Authorization token is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "debugId": "e7c1a2b4-5d6f-7890-ab12-cd34ef567890",
+                  "name": "Unauthorized",
+                  "message": "The Authorization token is missing or invalid."
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - the token is valid but does not have permission to access this endpoint.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "debugId": "e7c1a2b4-5d6f-7890-ab12-cd34ef567890",
+                  "name": "Forbidden",
+                  "message": "The token is valid but does not have permission to access this endpoint."
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found - Records not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "debugId": "e7c1a2b4-5d6f-7890-ab12-cd34ef567890",
+                  "name": "Not Found",
+                  "message": "Record not found."
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "debugId": "e7c1a2b4-5d6f-7890-ab12-cd34ef567890",
+                  "name": "Quota Exceeded",
+                  "message": "Request quota exceeded"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error - Unexpected server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "debugId": "e7c1a2b4-5d6f-7890-ab12-cd34ef567890",
+                  "name": "Internal Server Error",
+                  "message": "Unexpected server error."
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": []
+          }
+        ]
+      }
+    },
+    "/config/databases": {
+      "get": {
+        "description": "This operation returns the search database configuration for the given opid and language.",
+        "operationId": "get-config-databases",
+        "tags": [
+          "Search"
+        ],
+        "summary": "Retrieve Database Configuration",
+        "parameters": [
+          {
+            "name": "opid",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Opaque Profile Identifier. Governs user entitlements and content access rights. Provisioned by EBSCO.",
+            "example": "4ovgdm"
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "HTTP 1.1 Accept-Language header. Indicates the preferred language(s) for the response.",
+            "example": "en-us"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful retrieve database configuration response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatabaseConfigurationResponseV3"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - The request could not be processed because required parameters are missing, invalid, or malformed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "debugId": "e7c1a2b4-5d6f-7890-ab12-cd34ef567890",
+                  "name": "Bad Request",
+                  "message": "The request is invalid. Verify the request parameters and try again."
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - the Authorization token is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "debugId": "e7c1a2b4-5d6f-7890-ab12-cd34ef567890",
+                  "name": "Unauthorized",
+                  "message": "The Authorization token is missing or invalid."
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - the token is valid but does not have permission to access this endpoint.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "debugId": "e7c1a2b4-5d6f-7890-ab12-cd34ef567890",
+                  "name": "Forbidden",
+                  "message": "The token is valid but does not have permission to access this endpoint."
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found - Opid not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "debugId": "e7c1a2b4-5d6f-7890-ab12-cd34ef567890",
+                  "name": "Not Found",
+                  "message": "Opid not found."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error - Unexpected server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "debugId": "e7c1a2b4-5d6f-7890-ab12-cd34ef567890",
+                  "name": "Internal Server Error",
+                  "message": "Unexpected server error."
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": []
+          }
+        ]
+      }
+    },
+    "/config/search-options": {
+      "post": {
+        "description": "This operation returns the pre-search configuration of Common, Specialized and Custom Limiters for a list of given Short Database names.",
+        "tags": [
+          "Search"
+        ],
+        "summary": "Retrieve Pre-Search Configuration",
+        "operationId": "post-options-pre-search-configuration",
+        "parameters": [
+          {
+            "name": "opid",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Opaque Profile Identifier. Governs user entitlements and content access rights. Provisioned by EBSCO.",
+            "example": "4ovgdm"
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "HTTP 1.1 Accept-Language header. Indicates the preferred language(s) for the response.",
+            "example": "en-us"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "Type of configuration to be returned. Valid values are expanders, limiters, specializedLimiters, customLimiters, searchModes, didYouMean, autoCorrect, and advancedSearchStrategy."
+          },
+          {
+            "name": "X-EIS-PREVIEW-ID",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Preview Data ID"
+          }
+        ],
+        "requestBody": {
+          "description": "Request body for pre-search configuration",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PreSearchConfigurationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful retrieve pre-search configuration response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreSearchConfigurationResponseV3"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - The request could not be processed because required parameters are missing, invalid, or malformed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "debugId": "e7c1a2b4-5d6f-7890-ab12-cd34ef567890",
+                  "name": "Bad Request",
+                  "message": "The request is invalid. Verify the request parameters and try again."
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - the Authorization token is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "debugId": "e7c1a2b4-5d6f-7890-ab12-cd34ef567890",
+                  "name": "Unauthorized",
+                  "message": "The Authorization token is missing or invalid."
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - the token is valid but does not have permission to access this endpoint.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "debugId": "e7c1a2b4-5d6f-7890-ab12-cd34ef567890",
+                  "name": "Forbidden",
+                  "message": "The token is valid but does not have permission to access this endpoint."
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found - Opid not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "debugId": "e7c1a2b4-5d6f-7890-ab12-cd34ef567890",
+                  "name": "Not Found",
+                  "message": "Resource Not Found"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error - Unexpected server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "debugId": "e7c1a2b4-5d6f-7890-ab12-cd34ef567890",
+                  "name": "Internal Server Error",
+                  "message": "Unexpected server error."
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "RecordIdentifierRequest": {
+        "type": "object",
+        "description": "Record Identifier Request",
+        "required": [
+          "an",
+          "db"
+        ],
+        "properties": {
+          "an": {
+            "type": "string",
+            "description": "Accession Number",
+            "example": "191433137"
+          },
+          "db": {
+            "type": "string",
+            "description": "Database",
+            "example": "bhh"
+          }
+        }
+      },
+      "RecordIdentifierResponse": {
+        "type": "object",
+        "description": "Record Identifier Response",
+        "required": [
+          "an",
+          "db"
+        ],
+        "properties": {
+          "an": {
+            "type": "string",
+            "description": "Accession Number",
+            "example": "191433137"
+          },
+          "db": {
+            "type": "string",
+            "description": "Database",
+            "example": "bhh"
+          },
+          "id": {
+            "type": "string",
+            "description": "Record Identifier",
+            "example": "gkgbk4pcti"
+          },
+          "objectType": {
+            "type": "string",
+            "description": "Object Type",
+            "example": "RECORD"
+          }
+        }
+      },
+      "AppliedFilter": {
+        "type": "object",
+        "description": "Represents a filter that has been applied to search results, containing the filter metadata.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Applied Filter ID",
+            "example": "databases"
+          },
+          "label": {
+            "type": "string",
+            "description": "Applied Filter Label",
+            "example": "Content Provider"
+          },
+          "type": {
+            "type": "string",
+            "description": "Applied Filter Type",
+            "enum": [
+              "LIMITER",
+              "LIMITER_CUSTOM",
+              "FACET",
+              "LIMITER_SYSTEM",
+              "CONTENT_PROVIDER",
+              "SOURCE_TYPE"
+            ]
+          },
+          "shortDbName": {
+            "type": "string",
+            "description": "Short DB Name",
+            "example": "buh"
+          },
+          "groupId": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Facets sharing the same groupId will be logically OR'd, others will be AND'd. In order to ensure drill-down behavior where narrowing the results are desired, groupIds should be unique across all facets and across all rounds of selection.",
+            "maximum": 2147483647,
+            "minimum": 0
+          },
+          "values": {
+            "type": "array",
+            "description": "Values",
+            "items": {
+              "$ref": "#/components/schemas/AppliedFilterValuesInner"
+            }
+          },
+          "dateRanges": {
+            "type": "array",
+            "description": "Date Ranges",
+            "items": {
+              "$ref": "#/components/schemas/FilterV5DateRangesInner"
+            }
+          }
+        }
+      },
+      "AppliedFilterValuesInner": {
+        "type": "object",
+        "description": "Filter Values",
+        "properties": {
+          "value": {
+            "type": "string",
+            "description": "Value",
+            "example": "8gh"
+          },
+          "valueLabel": {
+            "type": "string",
+            "description": "Label Value",
+            "example": "GreenFILE"
+          }
+        }
+      },
+      "CompositionDetails": {
+        "type": "object",
+        "description": "Search composition details",
+        "properties": {
+          "subQueries": {
+            "type": "array",
+            "description": "Sub Queries",
+            "items": {
+              "type": "string",
+              "description": "Sub Query"
+            }
+          }
+        }
+      },
+      "Contributor": {
+        "type": "object",
+        "description": "contributor",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name",
+            "example": "Shams, Mink"
+          },
+          "query": {
+            "type": "string",
+            "description": "Query",
+            "example": "AR \"Shams, Mink\""
+          },
+          "type": {
+            "type": "string",
+            "description": "Type"
+          },
+          "linkType": {
+            "type": "string",
+            "description": "Link Type",
+            "example": "search"
+          }
+        }
+      },
+      "DateEra": {
+        "type": "object",
+        "description": "Date with optional era",
+        "properties": {
+          "date": {
+            "type": "string",
+            "description": "Date",
+            "format": "date"
+          },
+          "era": {
+            "type": "string",
+            "description": "Era",
+            "enum": [
+              "BCE",
+              "CE"
+            ]
+          }
+        },
+        "required": [
+          "date"
+        ]
+      },
+      "DateRange": {
+        "type": "object",
+        "description": "Date range with min and max date.",
+        "properties": {
+          "minDate": {
+            "type": "string",
+            "description": "Minimum Date",
+            "example": "18900501"
+          },
+          "maxDate": {
+            "type": "string",
+            "description": "Maximum Date",
+            "example": "20270101"
+          }
+        }
+      },
+      "DbHyperlink": {
+        "type": "object",
+        "description": "DB Hyperlink",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "URL link",
+            "example": "/linkprocessor/dbHyperLink"
+          },
+          "type": {
+            "type": "string",
+            "description": "Type",
+            "example": "dbHyperLink"
+          },
+          "isRestricted": {
+            "type": "boolean",
+            "description": "Restricted",
+            "example": true
+          },
+          "restrictionMsgKey": {
+            "type": "string",
+            "description": "Restriction message key",
+            "example": "Restriction message key"
+          }
+        }
+      },
+      "EbookTocMrp": {
+        "type": "object",
+        "description": "ebook to mrp",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "URL link",
+            "example": "/linkprocessor/example"
+          }
+        }
+      },
+      "FacetV5": {
+        "type": "object",
+        "description": "Facet",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Facet ID",
+            "example": "databases"
+          },
+          "label": {
+            "type": "string",
+            "description": "Label",
+            "example": "Subject"
+          },
+          "values": {
+            "type": "array",
+            "description": "Array of available facet values that can be used to filter search results.",
+            "items": {
+              "$ref": "#/components/schemas/FacetValueV5"
+            }
+          }
+        }
+      },
+      "FacetValueV5": {
+        "type": "object",
+        "description": "Facet Value",
+        "properties": {
+          "value": {
+            "type": "string",
+            "description": "A value that identifies the filter.",
+            "example": "aph"
+          },
+          "count": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Count",
+            "example": "314831"
+          },
+          "valueLabel": {
+            "type": "string",
+            "description": "Value Label",
+            "example": "Academic Search Premier"
+          }
+        }
+      },
+      "FilterV5DateRangesInner": {
+        "type": "object",
+        "description": "Date Ranges",
+        "properties": {
+          "startDate": {
+            "description": "Start Date",
+            "$ref": "#/components/schemas/DateEra"
+          },
+          "endDate": {
+            "description": "End Date",
+            "$ref": "#/components/schemas/DateEra"
+          }
+        }
+      },
+      "FullTextLink": {
+        "type": "object",
+        "description": "fulltext link",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "restricted": {
+            "type": "boolean"
+          },
+          "restrictionMsgKey": {
+            "type": "string"
+          },
+          "linkText": {
+            "type": "string"
+          }
+        }
+      },
+      "ImageLink": {
+        "type": "object",
+        "description": "Image link",
+        "properties": {
+          "thumbnail": {
+            "type": "string",
+            "description": "Thumbnail Url",
+            "example": "/linkprocessor/thumbnail"
+          },
+          "original": {
+            "type": "string",
+            "description": "Original rl",
+            "example": "/linkprocessor/original"
+          },
+          "alt": {
+            "type": "string",
+            "description": "Alternate Url",
+            "example": "/linkprocessor/alternate"
+          },
+          "type": {
+            "type": "string",
+            "description": "Type",
+            "example": "Image type"
+          },
+          "restricted": {
+            "type": "boolean",
+            "description": "Restricted",
+            "example": true
+          },
+          "restrictionMsgKey": {
+            "type": "string",
+            "description": "Restriction message key",
+            "example": "Restriction message key"
+          }
+        }
+      },
+      "ItemV5": {
+        "type": "object",
+        "description": "Item",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Record ID",
+            "example": "hjpfughpx8"
+          },
+          "an": {
+            "type": "string",
+            "description": "Ascension Number",
+            "example": "192257658"
+          },
+          "shortDbName": {
+            "type": "string",
+            "description": "Short Database Name",
+            "example": "buh"
+          },
+          "longDbName": {
+            "type": "string",
+            "description": "Long Database Name",
+            "example": "Business Source Premier"
+          },
+          "abstract": {
+            "$ref": "#/components/schemas/ModelAbstract"
+          },
+          "contributors": {
+            "type": "array",
+            "description": "Contributors",
+            "items": {
+              "$ref": "#/components/schemas/Contributor"
+            }
+          },
+          "docTypes": {
+            "type": "array",
+            "description": "Document types. This field is deprecated and docTypeDisplayNames should be used in place.",
+            "items": {
+              "type": "string",
+              "description": "Document Type",
+              "example": "Article"
+            }
+          },
+          "docTypeDisplayNames": {
+            "type": "array",
+            "description": "Document Type Display Names",
+            "items": {
+              "$ref": "#/components/schemas/LocalizedDisplayName"
+            }
+          },
+          "doi": {
+            "type": "string",
+            "description": "Digital Object Identifier",
+            "example": "10.1337/mnsc.2022.03733"
+          },
+          "isiType": {
+            "type": "string",
+            "description": "ISI Type",
+            "example": "JOUR"
+          },
+          "subjects": {
+            "type": "array",
+            "description": "Subjects",
+            "items": {
+              "$ref": "#/components/schemas/Subject"
+            }
+          },
+          "links": {
+            "description": "Link types available for search results.",
+            "$ref": "#/components/schemas/LinksV5"
+          },
+          "pageCount": {
+            "type": "string",
+            "description": "Page count of the record",
+            "example": "24"
+          },
+          "pageStart": {
+            "type": "string",
+            "description": "Start page of the record",
+            "example": "12"
+          },
+          "pageEnd": {
+            "type": "string",
+            "description": "End page of the record",
+            "example": "23"
+          },
+          "volume": {
+            "type": "string",
+            "description": "Volume of the record",
+            "example": "72"
+          },
+          "issue": {
+            "type": "string",
+            "description": "Issue of the record",
+            "example": "2"
+          },
+          "publisherName": {
+            "type": "string",
+            "description": "Publisher Name",
+            "example": "INFORMS: Institute for Operations Research & the Management Sciences"
+          },
+          "publicationDate": {
+            "type": "string",
+            "description": "Publication Date",
+            "example": "20260201"
+          },
+          "pubTypes": {
+            "type": "array",
+            "description": "Publication Types. This field is deprecated and pubTypeDisplayNames should be used in place.",
+            "items": {
+              "type": "string",
+              "description": "Publication Type",
+              "example": "Academic Journal"
+            }
+          },
+          "pubTypeDisplayNames": {
+            "type": "array",
+            "description": "Publication Type Display Names",
+            "items": {
+              "$ref": "#/components/schemas/LocalizedDisplayName"
+            }
+          },
+          "source": {
+            "type": "string",
+            "description": "Source",
+            "example": "Management Science (INFORMS)"
+          },
+          "coverDate": {
+            "type": "string",
+            "description": "Cover Date",
+            "example": "Feb2026"
+          },
+          "peerReviewed": {
+            "type": "boolean",
+            "description": "Peer Reviewed",
+            "example": true
+          },
+          "openAccess": {
+            "type": "boolean",
+            "description": "Open Access",
+            "example": true
+          },
+          "title": {
+            "$ref": "#/components/schemas/Title"
+          },
+          "holdingsAvailable": {
+            "type": "boolean"
+          },
+          "recordType": {
+            "type": "string",
+            "enum": [
+              "articles",
+              "companies",
+              "pages",
+              "audioBooks",
+              "eBooks",
+              "videos",
+              "images"
+            ]
+          },
+          "guestAccessLevel": {
+            "type": "string",
+            "enum": [
+              "no_access",
+              "placeholder",
+              "no_detail",
+              "full_access",
+              "no_fulltext"
+            ]
+          },
+          "genAiInsightsEnabled": {
+            "type": "boolean",
+            "description": "Indicator for GenAI Insights button",
+            "example": true
+          },
+          "isbns": {
+            "type": "array",
+            "description": "ISBNs (in the ISBN-13 format) related to the item.",
+            "items": {
+              "type": "string",
+              "description": "ISBN",
+              "example": "978-3-16-148410-0"
+            }
+          },
+          "forthcoming": {
+            "type": "boolean",
+            "description": "Forthcomig",
+            "example": true
+          },
+          "recommendationLevel": {
+            "type": "array",
+            "description": "Recommendation Levels",
+            "items": {
+              "type": "string",
+              "description": "Recommendation Level",
+              "example": "Example recommendation level"
+            }
+          }
+        }
+      },
+      "LinksV5": {
+        "type": "object",
+        "description": "Collection of various link types available for search results.",
+        "properties": {
+          "ebookTocMrp": {
+            "type": "array",
+            "description": "ebook to mrps",
+            "items": {
+              "$ref": "#/components/schemas/EbookTocMrp"
+            }
+          },
+          "v2-exportLinks": {
+            "type": "array",
+            "description": "v2 export links",
+            "items": {
+              "$ref": "#/components/schemas/V2ExportLink"
+            }
+          },
+          "fullTextLinks": {
+            "type": "array",
+            "description": "Full text links",
+            "items": {
+              "$ref": "#/components/schemas/FullTextLink"
+            }
+          },
+          "imageLinks": {
+            "type": "array",
+            "description": "Image Links",
+            "items": {
+              "$ref": "#/components/schemas/ImageLink"
+            }
+          },
+          "v2-downloadLinks": {
+            "type": "array",
+            "description": "Download Links",
+            "items": {
+              "$ref": "#/components/schemas/V2DownloadLink"
+            }
+          },
+          "v2-printLinks": {
+            "type": "array",
+            "description": "Print Links",
+            "items": {
+              "$ref": "#/components/schemas/V2PrintLink"
+            }
+          },
+          "v2-bibExportLinks": {
+            "type": "array",
+            "description": "Bib Export Links",
+            "items": {
+              "$ref": "#/components/schemas/V2BibExportLink"
+            }
+          },
+          "v2-emailLinks": {
+            "type": "array",
+            "description": "Email Links",
+            "items": {
+              "$ref": "#/components/schemas/V2EmailLink"
+            }
+          },
+          "plinks": {
+            "type": "array",
+            "description": "Permanent Links",
+            "items": {
+              "$ref": "#/components/schemas/Plink"
+            }
+          },
+          "dbHyperlinks": {
+            "type": "array",
+            "description": "DB Hyperlinks",
+            "items": {
+              "$ref": "#/components/schemas/DbHyperlink"
+            }
+          },
+          "v2-fullTextAndCustomLinks": {
+            "type": "array",
+            "description": "Full Text and Custom Links",
+            "items": {
+              "$ref": "#/components/schemas/V2FullTextAndCustomLink"
+            }
+          },
+          "providerLinks": {
+            "type": "array",
+            "description": "Provider Links",
+            "items": {
+              "$ref": "#/components/schemas/ProviderLink"
+            }
+          }
+        }
+      },
+      "LocalizedDisplayName": {
+        "type": "object",
+        "description": "Localized Display Name",
+        "properties": {
+          "locale": {
+            "type": "string",
+            "description": "Locale",
+            "example": "en"
+          },
+          "value": {
+            "type": "string",
+            "description": "Value",
+            "example": "Article"
+          },
+          "originalValue": {
+            "type": "string",
+            "description": "Name Original Value",
+            "example": "Article"
+          }
+        },
+        "required": [
+          "locale",
+          "originalValue",
+          "value"
+        ]
+      },
+      "ModelAbstract": {
+        "type": "object",
+        "description": "Model Abstract",
+        "properties": {
+          "value": {
+            "type": "string",
+            "description": "Value",
+            "example": "This paper explores climate change."
+          },
+          "locale": {
+            "type": "string",
+            "description": "Locale",
+            "example": "EN"
+          }
+        }
+      },
+      "Plink": {
+        "type": "object",
+        "description": "Permanent Link",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "URL Link",
+            "example": "/linkprocessor/v2-permanentlink"
+          },
+          "type": {
+            "type": "string",
+            "description": "Type",
+            "example": "type"
+          },
+          "restricted": {
+            "type": "boolean",
+            "description": "Restricted",
+            "example": true
+          },
+          "restrictionMsgKey": {
+            "type": "string",
+            "description": "Restriction message key",
+            "example": "Restriction message key"
+          }
+        }
+      },
+      "ProviderLink": {
+        "type": "object",
+        "description": "Provider Link",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "URL link",
+            "example": "/linkprocessor/provider"
+          },
+          "linkText": {
+            "type": "string",
+            "description": "Link Text",
+            "example": "Provider"
+          },
+          "restrictionMsgKey": {
+            "type": "string",
+            "description": "Restriction message key",
+            "example": "Restriction message key",
+            "maxLength": 2147483647,
+            "minLength": 1
+          },
+          "restricted": {
+            "type": "boolean",
+            "description": "Restricted",
+            "example": true
+          }
+        },
+        "required": [
+          "linkText",
+          "restricted",
+          "restrictionMsgKey",
+          "url"
+        ]
+      },
+      "QueryModelPart": {
+        "type": "object",
+        "description": "Query Model",
+        "properties": {
+          "value": {
+            "type": "string",
+            "description": "Value"
+          },
+          "type": {
+            "type": "string",
+            "description": "Type of query model.",
+            "enum": [
+              "phrase",
+              "logic",
+              "field",
+              "text"
+            ]
+          },
+          "code": {
+            "type": "string",
+            "description": "Code"
+          }
+        },
+        "required": [
+          "type",
+          "value"
+        ]
+      },
+      "ResultSuggestion": {
+        "type": "object",
+        "description": "Result Suggestion",
+        "properties": {
+          "autoCorrectQueryTerm": {
+            "type": "string",
+            "description": "Autocorrect Query Term"
+          },
+          "originalQueryTerm": {
+            "type": "string",
+            "description": "Original Query Term",
+            "example": "climate change"
+          },
+          "didYouMean": {
+            "type": "string",
+            "description": "Did You Mean"
+          }
+        }
+      },
+      "SearchRecordResponseV5": {
+        "type": "object",
+        "description": "Search Record Response",
+        "properties": {
+          "searchQueryId": {
+            "type": "string",
+            "description": "Id of saved search query.",
+            "example": "19dd7173-cff2-411e-a9aa-b69a76a2be03"
+          },
+          "dateRange": {
+            "description": "Date range with minimum and maximum date.",
+            "$ref": "#/components/schemas/DateRange"
+          },
+          "facets": {
+            "type": "array",
+            "description": "Facets",
+            "items": {
+              "$ref": "#/components/schemas/FacetV5"
+            }
+          },
+          "items": {
+            "type": "array",
+            "description": "Items",
+            "items": {
+              "$ref": "#/components/schemas/ItemV5"
+            }
+          },
+          "query": {
+            "type": "string",
+            "description": "Query",
+            "example": "climate change"
+          },
+          "queryModel": {
+            "type": "array",
+            "description": "Query Models",
+            "items": {
+              "$ref": "#/components/schemas/QueryModelPart"
+            }
+          },
+          "effectiveQuery": {
+            "type": "string",
+            "description": "Effective query term generated by the AI model call from Assisted-search.",
+            "example": "Example effective query."
+          },
+          "resultSuggestions": {
+            "description": "Result Suggestions",
+            "$ref": "#/components/schemas/ResultSuggestion"
+          },
+          "totalItems": {
+            "type": "integer",
+            "description": "Total Items",
+            "format": "int64",
+            "example": "657178"
+          },
+          "dedupedItems": {
+            "type": "integer",
+            "description": "Deduplicated Total Items",
+            "format": "int64",
+            "example": "657178"
+          },
+          "unsearchableDatabases": {
+            "type": "array",
+            "description": "Unsearchable Databases",
+            "items": {
+              "$ref": "#/components/schemas/UnsearchableDatabase"
+            }
+          },
+          "appliedFilters": {
+            "type": "array",
+            "description": "Applied Filters",
+            "items": {
+              "$ref": "#/components/schemas/AppliedFilter"
+            }
+          },
+          "compositionDetails": {
+            "description": "Composition Details",
+            "$ref": "#/components/schemas/CompositionDetails"
+          },
+          "displayTerm": {
+            "type": "string",
+            "description": "Display Term",
+            "example": "climate change"
+          },
+          "advancedSearchStrategy": {
+            "type": "string",
+            "description": "Advanced Search Strategy",
+            "enum": [
+              "NONE",
+              "SMART_TEXT_FAILOVER"
+            ]
+          }
+        },
+        "required": [
+          "appliedFilters",
+          "facets",
+          "items",
+          "unsearchableDatabases"
+        ]
+      },
+      "Subject": {
+        "type": "object",
+        "description": "Subject",
+        "properties": {
+          "name": {
+            "$ref": "#/components/schemas/SubjectName"
+          },
+          "query": {
+            "type": "string",
+            "description": "Query",
+            "example": "DE \"Portfolio managers (Investments)\""
+          },
+          "linkType": {
+            "type": "string",
+            "description": "Link Type",
+            "example": "search"
+          }
+        }
+      },
+      "SubjectName": {
+        "type": "object",
+        "description": "Subject name",
+        "properties": {
+          "value": {
+            "type": "string",
+            "description": "Value",
+            "example": "Portfolio managers (Investments)"
+          },
+          "locale": {
+            "type": "string",
+            "description": "Locale",
+            "example": "en"
+          }
+        }
+      },
+      "Title": {
+        "type": "object",
+        "description": "Title",
+        "properties": {
+          "value": {
+            "type": "string",
+            "description": "Title Value",
+            "example": "Climate Change"
+          },
+          "locale": {
+            "type": "string",
+            "description": "Title Locale",
+            "example": "EN"
+          }
+        }
+      },
+      "UnsearchableDatabase": {
+        "type": "object",
+        "description": "Represents a database that could not be included in the search operation due to availability or access restrictions. Contains the database identifier and reason for exclusion.",
+        "properties": {
+          "shortDbName": {
+            "type": "string",
+            "description": "Short DB Name",
+            "example": "buh"
+          },
+          "reason": {
+            "type": "string",
+            "enum": [
+              "NOT_ELIGIBLE",
+              "NOT_SUBSCRIBED",
+              "SEAT_UNAVAILABLE",
+              "NOT_FOUND",
+              "GUEST_ACCESS_RESTRICTED",
+              "CONTENT_PROVIDER_FILTER"
+            ]
+          }
+        },
+        "required": [
+          "reason",
+          "shortDbName"
+        ]
+      },
+      "V2BibExportLink": {
+        "type": "object",
+        "description": "Bib Export Link",
+        "properties": {
+          "note": {
+            "type": "string",
+            "description": "Note",
+            "example": "(e.g. CITAVI, EasyBib, EndNote, Mendeley)"
+          },
+          "type": {
+            "type": "string",
+            "description": "Type",
+            "example": "ris"
+          },
+          "url": {
+            "type": "string",
+            "description": "URL link",
+            "example": "/linkprocessor/v2-easybib"
+          },
+          "linkText": {
+            "type": "string",
+            "description": "Link Text",
+            "example": "Export to RIS format"
+          },
+          "restricted": {
+            "type": "boolean",
+            "description": "Restricted",
+            "example": true
+          },
+          "restrictionMsgKey": {
+            "type": "string",
+            "description": "Restriction message key",
+            "example": "Restriction message key"
+          }
+        }
+      },
+      "V2DownloadLink": {
+        "type": "object",
+        "description": "Download Link",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Type",
+            "example": "pdf"
+          },
+          "url": {
+            "type": "string",
+            "description": "URL link",
+            "example": "/linkprocessor/v2-pdf?recordId=gkgbk4pttn"
+          },
+          "restricted": {
+            "type": "boolean",
+            "description": "Restricted",
+            "example": true
+          },
+          "restrictionMsgKey": {
+            "type": "string",
+            "description": "Restriction message key",
+            "example": "Restriction message key"
+          }
+        }
+      },
+      "V2EmailLink": {
+        "type": "object",
+        "description": "Email Link",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "URL link",
+            "example": "/linkprocessor/v2-email"
+          },
+          "type": {
+            "type": "string",
+            "description": "Type",
+            "example": "email"
+          },
+          "restricted": {
+            "type": "boolean",
+            "description": "URL link",
+            "example": true
+          },
+          "restrictionMsgKey": {
+            "type": "string",
+            "description": "Restriction message key",
+            "example": "Restriction message key"
+          }
+        }
+      },
+      "V2ExportLink": {
+        "type": "object",
+        "description": "v2 export link",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Type",
+            "example": "driveUpload"
+          },
+          "url": {
+            "type": "string",
+            "description": "URL link",
+            "example": "/linkprocessor/v2-drive-upload?recordId=gkgbk4pcin&opid=toi5qv&lang=en"
+          },
+          "restricted": {
+            "type": "boolean",
+            "description": "Restricted",
+            "example": true
+          },
+          "restrictionMsgKey": {
+            "type": "string",
+            "description": "Restriction message key",
+            "example": "Restriction message key"
+          }
+        }
+      },
+      "V2FullTextAndCustomLink": {
+        "type": "object",
+        "description": "Full Text and Custom Links",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Type",
+            "example": "pdfFullText"
+          },
+          "url": {
+            "type": "string",
+            "description": "URL link",
+            "example": "/linkprocessor/v2-pdf-full-text"
+          },
+          "linkText": {
+            "type": "string",
+            "description": "Link Text",
+            "example": "PDF Full Text"
+          },
+          "restricted": {
+            "type": "boolean",
+            "description": "Restricted",
+            "example": true
+          },
+          "restrictionMsgKey": {
+            "type": "string",
+            "description": "Restriction message key",
+            "example": "Restriction message key"
+          },
+          "category": {
+            "type": "string",
+            "description": "Category",
+            "example": "fullText"
+          },
+          "hintText": {
+            "type": "string",
+            "description": "Hint Text",
+            "example": "Hint"
+          },
+          "externalApiCall": {
+            "type": "boolean",
+            "description": "External API Call",
+            "example": true
+          }
+        }
+      },
+      "V2PrintLink": {
+        "type": "object",
+        "description": "Print Link",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Type",
+            "example": "pdf"
+          },
+          "url": {
+            "type": "string",
+            "description": "URL link",
+            "example": "/linkprocessor/v2-print-html"
+          },
+          "restricted": {
+            "type": "boolean",
+            "description": "Restricted",
+            "example": true
+          },
+          "restrictionMsgKey": {
+            "type": "string",
+            "description": "Restriction message key",
+            "example": "Restriction message key"
+          }
+        }
+      },
+      "FilterV5": {
+        "type": "object",
+        "description": "Search Filter",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Filter Id",
+            "example": "FT"
+          },
+          "shortDbName": {
+            "type": "string",
+            "description": "Database id to apply database specific specialized limiter. It will only limit results for given id.",
+            "example": "aph"
+          },
+          "groupId": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Facets sharing the same groupId will be logically OR'd, others will be AND'd. In order to ensure drill-down behavior where narrowing the results are desired, groupIds should be unique across all facets and across all rounds of selection.",
+            "example": 32,
+            "minimum": 0
+          },
+          "values": {
+            "type": "array",
+            "description": "Values",
+            "items": {
+              "type": "string",
+              "description": "Value"
+            }
+          },
+          "dateRanges": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FilterV5DateRangesInner"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "values"
+        ]
+      },
+      "SearchRecordRequestV5": {
+        "type": "object",
+        "description": "Search Query Request Body",
+        "properties": {
+          "opid": {
+            "type": "string",
+            "description": "Opaque Profile Identifier. Governs user entitlements and content access rights. Provisioned by EBSCO.",
+            "example": "4ovgdx"
+          },
+          "query": {
+            "type": "string",
+            "description": "Query Term"
+          },
+          "autoCorrect": {
+            "type": "boolean",
+            "description": "Auto Correct",
+            "example": true
+          },
+          "count": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0,
+            "description": "The number of records to return.",
+            "example": 2
+          },
+          "offset": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Offset",
+            "minimum": 0
+          },
+          "expanders": {
+            "type": "array",
+            "description": "Expanders",
+            "items": {
+              "type": "string",
+              "enum": [
+                "thesaurus",
+                "fullText",
+                "concept"
+              ]
+            }
+          },
+          "filters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FilterV5"
+            }
+          },
+          "highlightTag": {
+            "type": "string",
+            "description": "Highlight Tag"
+          },
+          "queryModel": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/QueryModelPart"
+            }
+          },
+          "searchMode": {
+            "type": "string",
+            "description": "Specify the search mode to be used for this search request. - all: Default value. Returns results matching all search criteria. - any: Returns results matching any of the search criteria. - boolean: Supports boolean logic in search queries. - smartText: Uses SmartText processing for improved relevance. - enhanced: Uses AI-powered search for advanced relevance and ranking.",
+            "enum": [
+              "all",
+              "any",
+              "boolean",
+              "smartText",
+              "enhanced"
+            ]
+          },
+          "sort": {
+            "type": "string",
+            "description": "Sort criteria. Sort criteria is database specific and may not be supported by all databases. When the supplied sort criteria is not supported by the database, the search will use the databases default sort.",
+            "enum": [
+              "relevance",
+              "date:asc",
+              "date:desc",
+              "title",
+              "author",
+              "volume"
+            ]
+          },
+          "advancedSearchStrategy": {
+            "type": "string",
+            "description": "Advanced search strategy configured for a customer profile in the admin settings. Possible values are: - NONE: No advanced search strategy is applied. This is the default value in search API requests. - SMART_TEXT_FAILOVER: Enables SmartText failover strategy. When SmartText is requested, the API will attempt to return results for similar search terms.",
+            "enum": [
+              "NONE",
+              "SMART_TEXT_FAILOVER"
+            ]
+          }
+        },
+        "required": [
+          "opid"
+        ]
+      },
+      "ContentErrorResponse": {
+        "type": "object",
+        "description": "Common Error response",
+        "properties": {
+          "debugId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "debugId",
+          "message",
+          "name"
+        ]
+      },
+      "ContentContributor": {
+        "type": "object",
+        "description": "Contributor",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of contributor",
+            "example": "Di Giuli, Alberta"
+          },
+          "type": {
+            "type": "string",
+            "description": "Type of contributor (Author, Illustrator, etc.).",
+            "example": "Author"
+          },
+          "linkType": {
+            "type": "string",
+            "description": "Link type associated with use of the query.",
+            "example": "search"
+          },
+          "query": {
+            "type": "string",
+            "description": "Query string",
+            "example": "AR \"Di Giuli, Alberta\""
+          }
+        }
+      },
+      "ContentDocTypeDisplayName": {
+        "type": "object",
+        "description": "Document Type Display Name",
+        "properties": {
+          "value": {
+            "type": "string",
+            "description": "Document Type Display Name Value",
+            "example": "Article"
+          },
+          "locale": {
+            "type": "string",
+            "description": "Document Type Display Name Locale",
+            "example": "en"
+          },
+          "originalValue": {
+            "type": "string",
+            "description": "Document Type Display Name Original Value",
+            "example": "Article"
+          }
+        }
+      },
+      "ContentEbookAllowanceInfoLink": {
+        "type": "object",
+        "description": "eBook Allowance Information Link",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Type"
+          },
+          "url": {
+            "type": "string",
+            "description": "URL",
+            "example": "/link/ebookallowance"
+          },
+          "restricted": {
+            "type": "boolean",
+            "description": "Restricted",
+            "example": true
+          },
+          "restrictionMsgKey": {
+            "type": "string",
+            "description": "Restricted Message Key",
+            "example": "Restricted Message Key"
+          }
+        }
+      },
+      "ContentEbookTocLink": {
+        "type": "object",
+        "description": "eBook TOC (Table of Contents) Link",
+        "properties": {
+          "ebookPageLabels": {
+            "type": "array",
+            "description": "eBook Page Labels",
+            "items": {
+              "type": "string",
+              "description": "eBook Page Label",
+              "example": "Example Page Label"
+            }
+          },
+          "downloadURL": {
+            "type": "string",
+            "description": "Download URL",
+            "example": "/link/download"
+          },
+          "pagesRemainingURL": {
+            "type": "string",
+            "description": "Pages Remainining URL",
+            "example": "/link/pagesremain"
+          },
+          "tocLinks": {
+            "type": "array",
+            "description": "Table of Contents Links",
+            "items": {
+              "$ref": "#/components/schemas/ContentTocLink"
+            }
+          }
+        }
+      },
+      "ContentEbookTocMrp": {
+        "type": "object",
+        "description": "eBook TOC (Table of Contents) and MRP (Most Relevant Pages) Link",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "Link",
+            "example": "/link/ebookmrp"
+          }
+        }
+      },
+      "ContentFullTextLink": {
+        "type": "object",
+        "description": "Full Text Link",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Type",
+            "example": "pdfFullText"
+          },
+          "url": {
+            "type": "string",
+            "description": "URL link",
+            "example": "/linkprocessor/pdfFullText?an=191433139"
+          },
+          "linkText": {
+            "type": "string",
+            "description": "Link Text",
+            "example": "PDF Full Text"
+          },
+          "restricted": {
+            "type": "boolean",
+            "description": "Restricted",
+            "example": true
+          },
+          "restrictionMsgKey": {
+            "type": "string",
+            "description": "Restriction message key",
+            "example": "Restriction message key"
+          }
+        }
+      },
+      "ContentImageLink": {
+        "type": "object",
+        "description": "Image Links",
+        "properties": {
+          "thumbnail": {
+            "type": "string",
+            "description": "Thumbnail Url",
+            "example": "/linkprocessor/thumbnail"
+          },
+          "original": {
+            "type": "string",
+            "description": "Original url",
+            "example": "/linkprocessor/original"
+          },
+          "alt": {
+            "type": "string",
+            "description": "Alternate Url",
+            "example": "/linkprocessor/alternate"
+          },
+          "type": {
+            "type": "string",
+            "description": "Type",
+            "example": "Image type"
+          },
+          "restricted": {
+            "type": "boolean",
+            "description": "Restricted",
+            "example": true
+          },
+          "restrictionMsgKey": {
+            "type": "string",
+            "description": "Restriction message key",
+            "example": "Restriction message key"
+          }
+        },
+        "required": [
+          "alt",
+          "original",
+          "type"
+        ]
+      },
+      "ContentPlink": {
+        "type": "object",
+        "description": "Persistent Link",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Type",
+            "example": "type"
+          },
+          "url": {
+            "type": "string",
+            "description": "URL Link",
+            "example": "/linkprocessor/v2-permanentlink"
+          },
+          "restricted": {
+            "type": "boolean",
+            "description": "Restricted",
+            "example": true
+          },
+          "restrictionMsgKey": {
+            "type": "string",
+            "description": "Restriction message key",
+            "example": "Restriction message key"
+          }
+        }
+      },
+      "ContentProviderLink": {
+        "type": "object",
+        "description": "Provider Link",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "URL link",
+            "example": "/linkprocessor/provider"
+          },
+          "linkText": {
+            "type": "string",
+            "description": "Link Text",
+            "example": "Provider"
+          },
+          "linkType": {
+            "type": "string",
+            "description": "Link Type",
+            "example": "Link Type"
+          },
+          "restricted": {
+            "type": "boolean",
+            "description": "Restricted",
+            "example": true
+          },
+          "restrictionMsgKey": {
+            "type": "string",
+            "description": "Restriction message key",
+            "example": "Restriction message key"
+          }
+        }
+      },
+      "ContentPubTypeDisplayName": {
+        "type": "object",
+        "description": "Publication Type Display Name",
+        "properties": {
+          "value": {
+            "type": "string",
+            "description": "Publication Type Display Name Value",
+            "example": "Academic Journal"
+          },
+          "locale": {
+            "type": "string",
+            "description": "Publication Type Display Name Locale",
+            "example": "en"
+          },
+          "originalValue": {
+            "type": "string",
+            "description": "Publication Type Original Name Value",
+            "example": "Academic Journal"
+          }
+        }
+      },
+      "ContentSubSection": {
+        "type": "object",
+        "description": "SubSection",
+        "properties": {
+          "label": {
+            "type": "string",
+            "description": "Label",
+            "example": "Label A"
+          },
+          "lpid": {
+            "type": "string",
+            "description": "lpid",
+            "example": "lpid example"
+          },
+          "ebookViewerURL": {
+            "type": "string",
+            "description": "eBook Viewer URL",
+            "example": "/link/eBookViewer"
+          },
+          "startPageLabel": {
+            "type": "string",
+            "description": "Start Page Label",
+            "example": "Start Page"
+          },
+          "endPageLabel": {
+            "type": "string",
+            "description": "End Page Label",
+            "example": "End Page"
+          },
+          "subSections": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ContentsubSections"
+            }
+          }
+        }
+      },
+      "ContentSubject": {
+        "type": "object",
+        "description": "Subject of the record",
+        "properties": {
+          "name": {
+            "description": "Name of the Subject",
+            "$ref": "#/components/schemas/ContentName"
+          },
+          "linkType": {
+            "type": "string",
+            "description": "Link type",
+            "example": "search"
+          },
+          "query": {
+            "type": "string",
+            "description": "Query string",
+            "example": "DE \"Portfolio managers (Investments)\""
+          }
+        }
+      },
+      "ContentTitle": {
+        "type": "object",
+        "description": "Title of the record",
+        "properties": {
+          "value": {
+            "type": "string",
+            "description": "Title Value",
+            "example": "Climate Change and Mutual Fund Voting on Climate Proposals."
+          },
+          "locale": {
+            "type": "string",
+            "description": "Locale of the value in the form of a 2-3 letter code that is optionally followed by a country or region variant.",
+            "example": "EN"
+          }
+        }
+      },
+      "ContentToc": {
+        "type": "object",
+        "description": "Table of Contents (TOC) item properties",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Item identifier"
+          },
+          "item": {
+            "type": "string",
+            "description": "Display text for the item"
+          },
+          "level": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Position level of the item"
+          },
+          "objectId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Position within the item's level"
+          },
+          "parentId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Identifier of the parent"
+          },
+          "subSections": {
+            "type": "array",
+            "description": "TOC subsections",
+            "items": {
+              "$ref": "#/components/schemas/ContentsubSections1"
+            }
+          }
+        }
+      },
+      "ContentV2BibExportLink": {
+        "type": "object",
+        "description": "Bibliographic Export Link",
+        "properties": {
+          "note": {
+            "type": "string",
+            "description": "Note",
+            "example": "(e.g. CITAVI, EasyBib, EndNote, Mendeley)"
+          },
+          "type": {
+            "type": "string",
+            "description": "Type",
+            "example": "ris"
+          },
+          "url": {
+            "type": "string",
+            "description": "URL link",
+            "example": "/linkprocessor/v2-easybib"
+          },
+          "linkText": {
+            "type": "string",
+            "description": "Link Text",
+            "example": "Export to RIS format"
+          },
+          "restricted": {
+            "type": "boolean",
+            "description": "Restricted",
+            "example": true
+          },
+          "restrictionMsgKey": {
+            "type": "string",
+            "description": "Restriction message key",
+            "example": "Restriction message key"
+          }
+        }
+      },
+      "ContentV2DownloadLink": {
+        "type": "object",
+        "description": "DownloadLink Version 2",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "restricted": {
+            "type": "boolean"
+          },
+          "restrictionMsgKey": {
+            "type": "string"
+          }
+        }
+      },
+      "ContentV2EmailLink": {
+        "type": "object",
+        "description": "EmailLink Version 2",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Type",
+            "example": "email"
+          },
+          "url": {
+            "type": "string",
+            "description": "URL link",
+            "example": "/linkprocessor/v2-email"
+          },
+          "restricted": {
+            "type": "boolean",
+            "description": "URL link",
+            "example": true
+          },
+          "restrictionMsgKey": {
+            "type": "string",
+            "description": "Restriction message key",
+            "example": "Restriction message key"
+          }
+        }
+      },
+      "ContentV2ExportLink": {
+        "type": "object",
+        "description": "ExportLink Version 2",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Type of Bibliographic Export Link",
+            "example": "noodletools"
+          },
+          "url": {
+            "type": "string",
+            "description": "Url to the link",
+            "example": "/link/exportlink"
+          },
+          "restricted": {
+            "type": "boolean",
+            "description": "Restricted",
+            "example": true
+          },
+          "restrictionMsgKey": {
+            "type": "string",
+            "description": "Restricted Message Key",
+            "example": "Restricted Message Key"
+          }
+        }
+      },
+      "ContentV2FullTextAndCustomLink": {
+        "type": "object",
+        "description": "FullText and Custom Link",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Type",
+            "example": "pdfFullText"
+          },
+          "url": {
+            "type": "string",
+            "description": "URL link",
+            "example": "/linkprocessor/v2-pdf-full-text"
+          },
+          "linkText": {
+            "type": "string",
+            "description": "Link Text",
+            "example": "PDF Full Text"
+          },
+          "restricted": {
+            "type": "boolean",
+            "description": "Restricted",
+            "example": true
+          },
+          "restrictionMsgKey": {
+            "type": "string",
+            "description": "Restriction message key",
+            "example": "Restriction message key"
+          },
+          "category": {
+            "type": "string",
+            "description": "Category",
+            "example": "fullText"
+          },
+          "hintText": {
+            "type": "string",
+            "description": "Hint Text",
+            "example": "Hint"
+          },
+          "externalApiCall": {
+            "type": "boolean",
+            "description": "External API Call",
+            "example": true
+          }
+        }
+      },
+      "ContentV2PrintLink": {
+        "type": "object",
+        "description": "Print Link",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Type",
+            "example": "pdf"
+          },
+          "url": {
+            "type": "string",
+            "description": "URL link",
+            "example": "/linkprocessor/v2-print-html"
+          },
+          "restricted": {
+            "type": "boolean",
+            "description": "Restricted",
+            "example": true
+          },
+          "restrictionMsgKey": {
+            "type": "string",
+            "description": "Restriction message key",
+            "example": "Restriction message key"
+          }
+        }
+      },
+      "ContentAdditionalItem": {
+        "type": "object",
+        "description": "AdditionalItems of the record",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the item",
+            "example": "Title"
+          },
+          "label": {
+            "type": "string",
+            "description": "Display label of the item",
+            "example": "Title"
+          },
+          "group": {
+            "type": "string",
+            "description": "Group name of the item",
+            "example": "Ti"
+          },
+          "data": {
+            "type": "array",
+            "description": "Additional Data",
+            "items": {
+              "type": "array",
+              "items": {}
+            }
+          }
+        }
+      },
+      "ContentName": {
+        "type": "object",
+        "description": "Name of the Subject",
+        "properties": {
+          "value": {
+            "type": "string",
+            "description": "Text",
+            "example": "Portfolio managers (Investments)"
+          },
+          "locale": {
+            "type": "string",
+            "description": "Locale of the value in the form of a 2-3 letter code optionally followed by a country or region variant",
+            "example": "en"
+          }
+        },
+        "required": [
+          "locale",
+          "value"
+        ]
+      },
+      "ContentRecordV4": {
+        "type": "object",
+        "description": "Record",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Record ID of resource",
+            "example": "gkgbk4pctx"
+          },
+          "mid": {
+            "type": "string",
+            "description": "MID for the Record ID",
+            "example": "MGS"
+          },
+          "longDbName": {
+            "type": "string",
+            "description": "Long Database name",
+            "example": "Business Source Premier"
+          },
+          "shortDbName": {
+            "type": "string",
+            "description": "Short Database name",
+            "example": "buh"
+          },
+          "an": {
+            "type": "string",
+            "description": "Accession Number of the record",
+            "example": "191433138"
+          },
+          "publicationDate": {
+            "type": "string",
+            "description": "Publication Date",
+            "example": "20260201"
+          },
+          "title": {
+            "$ref": "#/components/schemas/ContentTitle"
+          },
+          "abstract": {
+            "$ref": "#/components/schemas/Contentabstract"
+          },
+          "contributors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ContentContributor"
+            }
+          },
+          "doi": {
+            "type": "string",
+            "description": "Digital Object Identifier",
+            "example": "10.1287/mnsc.2022.03733"
+          },
+          "docTypes": {
+            "type": "array",
+            "description": "Document Types",
+            "items": {
+              "type": "string",
+              "description": "Document Type",
+              "example": "Article"
+            }
+          },
+          "docTypeDisplayNames": {
+            "type": "array",
+            "description": "Document Type Display Names",
+            "items": {
+              "$ref": "#/components/schemas/ContentDocTypeDisplayName"
+            }
+          },
+          "pubTypes": {
+            "type": "array",
+            "description": "Publication Types",
+            "items": {
+              "type": "string",
+              "description": "Publication Type",
+              "example": "Academic Journal"
+            }
+          },
+          "pubTypeDisplayNames": {
+            "type": "array",
+            "description": "Publication Type Display Names",
+            "items": {
+              "$ref": "#/components/schemas/ContentPubTypeDisplayName"
+            }
+          },
+          "coverDate": {
+            "type": "string",
+            "description": "Cover Date Text",
+            "example": "Feb2026"
+          },
+          "peerReviewed": {
+            "type": "boolean",
+            "description": "Peer Reviewed",
+            "example": true
+          },
+          "source": {
+            "type": "string",
+            "description": "Source of the record",
+            "example": "Management Science (INFORMS)"
+          },
+          "isiType": {
+            "type": "string",
+            "description": "ISI Type of the record",
+            "example": "JOUR"
+          },
+          "doids": {
+            "type": "array",
+            "description": "DOIDs related to this record",
+            "items": {
+              "type": "string",
+              "description": "DOID"
+            }
+          },
+          "issns": {
+            "type": "array",
+            "description": "ISSNS related to this record.",
+            "items": {
+              "type": "string",
+              "description": "ISSNS",
+              "example": "0025-1909"
+            }
+          },
+          "isbns": {
+            "type": "array",
+            "description": "ISBNs related to this record.",
+            "items": {
+              "type": "string",
+              "description": "ISBNS"
+            }
+          },
+          "publisherLocations": {
+            "type": "array",
+            "description": "Publisher Locations",
+            "items": {
+              "type": "string",
+              "description": "Publisher Location"
+            }
+          },
+          "openAccess": {
+            "type": "boolean",
+            "description": "Open Access",
+            "example": true
+          },
+          "bookEdition": {
+            "type": "string",
+            "description": "Book edition"
+          },
+          "edition": {
+            "type": "string",
+            "description": "Edition"
+          },
+          "language": {
+            "type": "string",
+            "description": "Language of the record in the form of a 2-3 letter language code optionally followed by a country or region variant.",
+            "example": "eng"
+          },
+          "publisher": {
+            "type": "string",
+            "description": "Publisher of the record",
+            "example": "INFORMS: Institute for Operations Research & the Management Sciences"
+          },
+          "pageEnd": {
+            "type": "string",
+            "description": "End page of the record",
+            "example": "1276"
+          },
+          "pageStart": {
+            "type": "string",
+            "description": "Start page of the record",
+            "example": "1253"
+          },
+          "volume": {
+            "type": "string",
+            "description": "Volume of the record",
+            "example": "72"
+          },
+          "issue": {
+            "type": "string",
+            "description": "Issue of the record",
+            "example": "2"
+          },
+          "physicalDescription": {
+            "type": "string",
+            "description": "Physical description of the described resource, including its extent, dimensions, and such other physical details as a description of any accompanying materials and unit type and size."
+          },
+          "seriesTitle": {
+            "type": "string",
+            "description": "Series title associated with the resource"
+          },
+          "notes": {
+            "type": "array",
+            "description": "Notes",
+            "items": {
+              "type": "string",
+              "description": "Note",
+              "example": "Note"
+            }
+          },
+          "alternateTitle": {
+            "type": "string",
+            "description": "Alternate Title",
+            "example": "Alternate Title"
+          },
+          "subjects": {
+            "type": "array",
+            "description": "Subjects",
+            "items": {
+              "$ref": "#/components/schemas/ContentSubject"
+            }
+          },
+          "recordType": {
+            "type": "string",
+            "description": "Record type",
+            "enum": [
+              "IMAGES",
+              "VIDEOS",
+              "EBOOKS",
+              "AUDIO_BOOKS",
+              "PAGES",
+              "COMPANIES",
+              "ARTICLES"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/Contentlinks"
+          },
+          "guestAccessLevel": {
+            "type": "string",
+            "description": "Guest Level Access",
+            "enum": [
+              "NO_ACCESS",
+              "PLACEHOLDER",
+              "NO_DETAIL",
+              "FULL_ACCESS",
+              "NO_FULLTEXT"
+            ]
+          },
+          "toc": {
+            "type": "array",
+            "description": "Table of Contents",
+            "items": {
+              "$ref": "#/components/schemas/ContentToc"
+            }
+          },
+          "additionalItems": {
+            "type": "array",
+            "description": "Additional Items",
+            "items": {
+              "$ref": "#/components/schemas/ContentAdditionalItem"
+            }
+          },
+          "htmlFullText": {
+            "type": "string",
+            "description": "HTML FullText content",
+            "example": "<p>test</p>"
+          },
+          "copyright": {
+            "type": "string",
+            "description": "Copyright text",
+            "example": "Copyright 1973"
+          },
+          "degreeLevel": {
+            "type": "string",
+            "description": "Degree level",
+            "example": "Level 1"
+          },
+          "pageCount": {
+            "type": "string",
+            "description": "Page Count",
+            "example": "24"
+          },
+          "holdingsAvailable": {
+            "type": "boolean",
+            "description": "Holdings Information available",
+            "example": true
+          },
+          "genAiInsightsEnabled": {
+            "type": "boolean",
+            "description": "Gen AI insigths enabled",
+            "example": true
+          },
+          "ftRestrictionLevel": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Full text restriction level",
+            "example": 0
+          }
+        }
+      },
+      "ContentTocLink": {
+        "type": "object",
+        "description": "TOC (Table of Contents) Link",
+        "properties": {
+          "label": {
+            "type": "string",
+            "description": "Label",
+            "example": "Content Label"
+          },
+          "lpid": {
+            "type": "string",
+            "description": "lpid",
+            "example": "example lpid"
+          },
+          "ebookViewerURL": {
+            "type": "string",
+            "description": "eBook Viewer URL",
+            "example": "/link/ebookviewer"
+          },
+          "startPageLabel": {
+            "type": "string",
+            "description": "Start page label",
+            "example": "Page Initial"
+          },
+          "endPageLabel": {
+            "type": "string",
+            "description": "End Page Label",
+            "example": "Page End"
+          },
+          "subSections": {
+            "type": "array",
+            "description": "Sub Sections",
+            "items": {
+              "$ref": "#/components/schemas/ContentSubSection"
+            }
+          }
+        }
+      },
+      "Contentabstract": {
+        "type": "object",
+        "description": "Abstract for the record",
+        "properties": {
+          "value": {
+            "type": "string",
+            "description": "Abstract text",
+            "example": "This paper explores investors' personal experience."
+          },
+          "locale": {
+            "type": "string",
+            "description": "Locale of the value in the form of a 2-3 letter code optionally followed by a country or region variant.",
+            "example": "EN"
+          }
+        }
+      },
+      "Contentlinks": {
+        "type": "object",
+        "description": "Links associated with the record",
+        "properties": {
+          "ebookTocLinks": {
+            "type": "array",
+            "description": "eBook Table of Contents links",
+            "items": {
+              "$ref": "#/components/schemas/ContentEbookTocLink"
+            }
+          },
+          "ebookTocMrp": {
+            "type": "array",
+            "description": "eBook to Mrps",
+            "items": {
+              "$ref": "#/components/schemas/ContentEbookTocMrp"
+            }
+          },
+          "ebookAllowanceInfoLink": {
+            "type": "array",
+            "description": "eBook Allowance Info Links",
+            "items": {
+              "$ref": "#/components/schemas/ContentEbookAllowanceInfoLink"
+            }
+          },
+          "v2-exportLinks": {
+            "type": "array",
+            "description": "V2 Export Links",
+            "items": {
+              "$ref": "#/components/schemas/ContentV2ExportLink"
+            }
+          },
+          "fullTextLinks": {
+            "type": "array",
+            "description": "Full Text Links",
+            "items": {
+              "$ref": "#/components/schemas/ContentFullTextLink"
+            }
+          },
+          "imageLinks": {
+            "type": "array",
+            "description": "Image Links",
+            "items": {
+              "$ref": "#/components/schemas/ContentImageLink"
+            }
+          },
+          "v2-downloadLinks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ContentV2DownloadLink"
+            }
+          },
+          "v2-printLinks": {
+            "type": "array",
+            "description": "Print Links",
+            "items": {
+              "$ref": "#/components/schemas/ContentV2PrintLink"
+            }
+          },
+          "v2-bibExportLinks": {
+            "type": "array",
+            "description": "Bib Export Links",
+            "items": {
+              "$ref": "#/components/schemas/ContentV2BibExportLink"
+            }
+          },
+          "v2-emailLinks": {
+            "type": "array",
+            "description": "Email Links",
+            "items": {
+              "$ref": "#/components/schemas/ContentV2EmailLink"
+            }
+          },
+          "plinks": {
+            "type": "array",
+            "description": "P link",
+            "items": {
+              "$ref": "#/components/schemas/ContentPlink"
+            }
+          },
+          "v2-fullTextAndCustomLinks": {
+            "type": "array",
+            "description": "Full Text and Custom Links",
+            "items": {
+              "$ref": "#/components/schemas/ContentV2FullTextAndCustomLink"
+            }
+          },
+          "providerLinks": {
+            "type": "array",
+            "description": "Provider Links",
+            "items": {
+              "$ref": "#/components/schemas/ContentProviderLink"
+            }
+          }
+        }
+      },
+      "ContentsubSections": {
+        "type": "object",
+        "description": "subSections",
+        "properties": {
+          "label": {
+            "type": "string",
+            "description": "Label",
+            "example": "SubSection A"
+          },
+          "lpid": {
+            "type": "string",
+            "description": "lpid",
+            "example": "Example Sub Section"
+          },
+          "ebookViewerURL": {
+            "type": "string",
+            "description": "eBook Viewer URL",
+            "example": "/link/ebookviewer"
+          },
+          "startPageLabel": {
+            "type": "string",
+            "description": "Start Page Label",
+            "example": "Page Start"
+          },
+          "endPageLabel": {
+            "type": "string",
+            "description": "End Page URL",
+            "example": "End Page"
+          }
+        }
+      },
+      "ContentsubSections1": {
+        "type": "object",
+        "description": "SubSections",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Subsection ID"
+          },
+          "item": {
+            "type": "string",
+            "description": "Subsection Item"
+          },
+          "level": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Subsection Level"
+          },
+          "objectId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Object ID"
+          },
+          "parentId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Error details",
+            "items": {
+              "type": "object",
+              "properties": {
+                "field": {
+                  "type": "string",
+                  "description": "Which field contains error"
+                },
+                "value": {
+                  "type": "string",
+                  "description": "Value of error"
+                },
+                "issue": {
+                  "type": "string",
+                  "description": "What was the reason of error"
+                },
+                "location": {
+                  "type": "string",
+                  "description": "Where the error is occured"
+                }
+              }
+            }
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "description": "Common Error response",
+        "properties": {
+          "debugId": {
+            "type": "string",
+            "description": "Unique identifier used to trace and debug the error."
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the error."
+          },
+          "message": {
+            "type": "string",
+            "description": "Description of the error."
+          }
+        },
+        "required": [
+          "debugId",
+          "message",
+          "name"
+        ]
+      },
+      "CitedByRequestItem": {
+        "type": "object",
+        "description": "Request item for citation resolution",
+        "properties": {
+          "recordId": {
+            "type": "string",
+            "maxLength": 2147483647,
+            "minLength": 1,
+            "example": "y555miftqz"
+          },
+          "doi": {
+            "type": "string",
+            "maxLength": 2147483647,
+            "minLength": 1,
+            "example": "10.1080/19392699.2021.1900135"
+          }
+        }
+      },
+      "CitedByResponse": {
+        "type": "object",
+        "description": "Citation resolution response item",
+        "properties": {
+          "ern": {
+            "type": "string",
+            "description": "ESG resource name",
+            "example": "esg:MTAuMTA4MC8xOTM5MjY5OS4yMDIxLjE5MDAxMzU="
+          },
+          "citedByCount": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0,
+            "description": "Number of works citing this record.",
+            "example": 3
+          },
+          "citedByUrl": {
+            "type": "string",
+            "maxLength": 2147483647,
+            "minLength": 1,
+            "description": "Link to the citing works on Scopus. Present only when the profile is configured for Scopus as the citation source.",
+            "example": "/link"
+          },
+          "esgId": {
+            "type": "string",
+            "maxLength": 2147483647,
+            "minLength": 1,
+            "description": "ESG ID",
+            "example": "MTAuMTA4MC8xOTM5MjY5OS4yMDIxLjE5MDAxMzU="
+          },
+          "retracted": {
+            "type": "boolean",
+            "description": "Retracted",
+            "example": false
+          },
+          "retractionNote": {
+            "type": "string",
+            "description": "Retracted Note",
+            "example": "Retracted Note"
+          },
+          "citationNormalizedPercentile": {
+            "type": "number",
+            "description": "Citation Normalized Percentile",
+            "example": 0.85
+          }
+        }
+      },
+      "BulkResponseErrorItemsHeadersInner": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "value"
+        ]
+      },
+      "BulkResponseErrorItems": {
+        "type": "object",
+        "description": "Wrapper for the result of an unsuccessfully handled resource",
+        "properties": {
+          "resourceId": {
+            "type": "string",
+            "description": "Resource ID",
+            "example": "gkgbk4pctn"
+          },
+          "requestId": {
+            "type": "string",
+            "description": "Request ID",
+            "example": "2c77e5e8-441h-71h7-dhf0-2hdfdf31c63e"
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Status",
+            "example": "404"
+          },
+          "headers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BulkResponseErrorItemsHeadersInner"
+            },
+            "uniqueItems": true
+          },
+          "response": {
+            "$ref": "#/components/schemas/ErrorResponse"
+          }
+        },
+        "required": [
+          "response",
+          "status"
+        ]
+      },
+      "CitedByResponseItem": {
+        "type": "object",
+        "description": "response item for bulk citation resolution",
+        "properties": {
+          "resourceId": {
+            "type": "string",
+            "description": "Resource ID",
+            "example": "gkgbk4pctn"
+          },
+          "requestId": {
+            "type": "string",
+            "description": "Request ID",
+            "example": "2c77e5e8-441h-71h7-dhf0-2hdfdf31c63e"
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Status",
+            "example": "200"
+          },
+          "headers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BulkResponseErrorItemsHeadersInner"
+            },
+            "uniqueItems": true
+          },
+          "response": {
+            "$ref": "#/components/schemas/CitedByResponse"
+          }
+        }
+      },
+      "CitedByBulkResponse": {
+        "type": "object",
+        "description": "Citation resolution bulk response",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CitedByResponseItem"
+            }
+          },
+          "errorItems": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BulkResponseErrorItems"
+            }
+          }
+        }
+      },
+      "WorksRequestV1": {
+        "title": "WorksRequest",
+        "description": "Request body for Scholarly Works request",
+        "type": "object",
+        "properties": {
+          "opid": {
+            "description": "opaque profile identifier",
+            "type": "string",
+            "example": "tov5qv"
+          },
+          "esgId": {
+            "description": "An ESG identifier representing a work. Can be a base64-encoded DOI (Citation and Reference works), esgId (Contributor works) or an ERN.",
+            "type": "string",
+            "example": "MTAuMTA4MC8xOTM5MjY5OS4yMDIxLjE5MDAxMzop"
+          },
+          "count": {
+            "description": "Number of records to return.",
+            "type": "integer",
+            "example": "20",
+            "default": 10,
+            "minimum": 0,
+            "maximum": 50
+          },
+          "offset": {
+            "description": "Number of results to return per page",
+            "type": "integer",
+            "example": "10",
+            "default": 0,
+            "minimum": 0
+          },
+          "order": {
+            "description": "Order of results, either 'asc' or 'desc'",
+            "type": "string",
+            "enum": [
+              "ASC",
+              "DESC"
+            ],
+            "default": "DESC"
+          },
+          "sort": {
+            "description": "Sort criteria for results. If not provided, defaults to relevance.",
+            "type": "string",
+            "enum": [
+              "PUBLISHED_ONLINE",
+              "CITED_BY"
+            ],
+            "default": "PUBLISHED_ONLINE"
+          },
+          "filters": {
+            "description": "Filters",
+            "$ref": "#/components/schemas/SearchFilter"
+          },
+          "workType": {
+            "$ref": "#/components/schemas/WorkType"
+          }
+        },
+        "required": [
+          "opid",
+          "esgId",
+          "workType"
+        ]
+      },
+      "SearchFilter": {
+        "title": "SearchFilter",
+        "description": "Search Filter object for Works request.",
+        "type": "object",
+        "properties": {
+          "shortDbName": {
+            "description": "Short database name used for the 'In this database' filter.",
+            "type": "string",
+            "example": "buh"
+          },
+          "fullText": {
+            "description": "Indicates if search should consider full text availability.",
+            "type": "boolean",
+            "example": true
+          },
+          "candidatePageSet": {
+            "description": "A 1-based page number indicating which page of works results to return.",
+            "type": "integer",
+            "minimum": 1,
+            "default": 1
+          }
+        },
+        "required": [
+          "candidatePageSet"
+        ]
+      },
+      "WorkType": {
+        "title": "A work type",
+        "description": "A type of work, such as citation, contributor, or reference.",
+        "type": "string",
+        "enum": [
+          "CITATION",
+          "CONTRIBUTOR",
+          "REFERENCE"
+        ]
+      },
+      "WorksResponseV1": {
+        "title": "WorksResponseV1",
+        "description": "Scholarly Works",
+        "type": "object",
+        "properties": {
+          "hasNextPage": {
+            "type": "boolean",
+            "description": "Flag indicating there are more results.",
+            "example": true
+          },
+          "hasPreviousPage": {
+            "type": "boolean",
+            "description": "Flag indicating there is a previous page of results.",
+            "example": false
+          },
+          "hasAdditionalCandidates": {
+            "type": "boolean",
+            "description": "Flag indicating there are additional candidate works not included in the current result.",
+            "example": true
+          },
+          "filteredResultsCount": {
+            "type": "integer",
+            "description": "The total results count for filtered results.",
+            "example": 10
+          },
+          "consideredResultsCount": {
+            "type": "integer",
+            "description": "The maximum results count considered before filtering.",
+            "example": 23
+          },
+          "works": {
+            "type": "array",
+            "description": "A list of citation, contributor, or reference works",
+            "items": {
+              "$ref": "#/components/schemas/WorksResponseItemV1"
+            }
+          }
+        },
+        "required": [
+          "hasNextPage",
+          "hasPreviousPage",
+          "hasAdditionalCandidates",
+          "works"
+        ]
+      },
+      "WorksResponseItemV1": {
+        "title": "WorksResponseItemV1",
+        "description": "The individual work item.",
+        "type": "object",
+        "properties": {
+          "pageCount": {
+            "description": "Number of pages",
+            "type": "string",
+            "example": "23"
+          },
+          "pageStart": {
+            "description": "First page number",
+            "type": "string",
+            "example": "2"
+          },
+          "pageEnd": {
+            "description": "Last page number",
+            "type": "string",
+            "example": "33"
+          },
+          "coverDate": {
+            "description": "Issue date",
+            "type": "string",
+            "example": "2018-01-01"
+          },
+          "issue": {
+            "description": "Publication issue number",
+            "type": "string",
+            "example": "23"
+          },
+          "volume": {
+            "description": "Publication volume number",
+            "type": "string",
+            "example": "23"
+          },
+          "source": {
+            "description": "Publication title",
+            "type": "string",
+            "example": "Behavioral and Brain Sciences"
+          }
+        },
+        "anyOf": [
+          {
+            "$ref": "#/components/schemas/BaseWorksItemEntitledV1"
+          },
+          {
+            "$ref": "#/components/schemas/BaseWorksItemFromEsgV1"
+          }
+        ]
+      },
+      "BaseWorksItemFromEsgV1": {
+        "description": "The work of an contributor as returned from the Ebsco Scholarly Graph.",
+        "type": "object",
+        "properties": {
+          "ern": {
+            "description": "ERN of the record",
+            "type": "string",
+            "example": "esg:MTAuMTA4MC8yNDY5NDQ1Mi4yMDE4LjE1MzM4MDA"
+          },
+          "articleType": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The type of the work according to EBSCO Scholarly Graph."
+          },
+          "citedByCount": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "The number of times the work has been cited",
+            "example": 0
+          },
+          "contributorCount": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "The number of contributors for the work",
+            "example": 2
+          },
+          "contributors": {
+            "description": "The contributors for a specific work from the contributor as returned from the Ebsco Scholarly Graph.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WorksContributor"
+            }
+          },
+          "publicationDate": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The publication date of the work",
+            "example": "2018-01-01"
+          },
+          "retracted": {
+            "type": "boolean",
+            "description": "indication of the work's retraction status",
+            "example": true
+          },
+          "retractionNote": {
+            "type": "string",
+            "description": "The url to additional information about the work's retraction.",
+            "example": "https://doi.org/10.1234/5678"
+          },
+          "citationNormalizedPercentile": {
+            "type": "number",
+            "description": "citation normalized percentile as a value between 0 and 1",
+            "example": 0.85
+          },
+          "title": {
+            "$ref": "#/components/schemas/WorksTitle"
+          }
+        }
+      },
+      "BaseWorksItemEntitledV1": {
+        "description": "The contributor's work that has entitlement to an Ebsco record",
+        "type": "object",
+        "properties": {
+          "abstract": {
+            "description": "Abstract of the record",
+            "type": "object",
+            "properties": {
+              "value": {
+                "description": "Value",
+                "type": "string",
+                "example": "I make three points..."
+              },
+              "locale": {
+                "description": "Locale",
+                "type": "string",
+                "example": "en"
+              }
+            }
+          },
+          "an": {
+            "description": "AN of the record",
+            "type": "string"
+          },
+          "ern": {
+            "description": "ERN of the record",
+            "type": "string",
+            "example": "esg:MTAuMTA4MC8yNDY5NDQ1Mi4yMDE4LjE1MzM4MDA"
+          },
+          "citedByCount": {
+            "description": "The number of times the work has been cited",
+            "type": "integer",
+            "example": 0
+          },
+          "contributors": {
+            "type": "array",
+            "description": "List of contributors",
+            "items": {
+              "$ref": "#/components/schemas/WorksContributor"
+            }
+          },
+          "coverDate": {
+            "description": "Cover date",
+            "type": "string",
+            "example": "2018-01-01"
+          },
+          "docTypeDisplayNames": {
+            "type": "array",
+            "description": "List of document type display names",
+            "items": {
+              "$ref": "#/components/schemas/LocalizedDisplayName"
+            }
+          },
+          "doi": {
+            "description": "Digital Object Identifier",
+            "type": "string",
+            "example": "10.1234/5678"
+          },
+          "fullTextIndicator": {
+            "description": "Full text indicator",
+            "type": "string",
+            "enum": [
+              "FULL_TEXT_AVAILABLE",
+              "CHECK_FOR_FULL_TEXT",
+              "NO_FULL_TEXT"
+            ]
+          },
+          "guestAccessLevel": {
+            "description": "Guest level access",
+            "type": "string",
+            "enum": [
+              "NO_ACCESS",
+              "PLACEHOLDER",
+              "NO_DETAIL",
+              "FULL_ACCESS",
+              "NO_FULLTEXT"
+            ]
+          },
+          "recordId": {
+            "type": "string",
+            "description": "The recordId",
+            "example": "123ABC"
+          },
+          "retracted": {
+            "type": "boolean",
+            "description": "Indication of the work's retraction status",
+            "example": true
+          },
+          "retractionNote": {
+            "type": "string",
+            "description": "The url to additional information about the work's retraction.",
+            "example": "https://doi.org/10.1234/5678"
+          },
+          "citationNormalizedPercentile": {
+            "type": "number",
+            "description": "citation normalized percentile as a value between 0 and 1",
+            "example": 0.85
+          },
+          "longDbName": {
+            "description": "Long database name",
+            "type": "string",
+            "example": "BASE"
+          },
+          "openAccess": {
+            "description": "Record is available for open access",
+            "type": "boolean",
+            "example": false
+          },
+          "peerReviewed": {
+            "description": "Record is peer reviewed",
+            "type": "boolean",
+            "example": true
+          },
+          "publicationDate": {
+            "description": "Publication date",
+            "type": "string",
+            "example": "2018-01-01"
+          },
+          "pubTypeDisplayNames": {
+            "type": "array",
+            "description": "List of publication type display names",
+            "items": {
+              "$ref": "#/components/schemas/LocalizedDisplayName"
+            }
+          },
+          "shortDbName": {
+            "description": "Short database name",
+            "type": "string",
+            "example": "buh"
+          },
+          "source": {
+            "description": "Source",
+            "type": "string",
+            "example": "Behavioral and Brain Sciences"
+          },
+          "title": {
+            "$ref": "#/components/schemas/WorksTitle"
+          }
+        }
+      },
+      "WorksContributor": {
+        "title": "WorksContributor",
+        "description": "a contributor to a work",
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "name of contributor",
+            "type": "string",
+            "example": "Thaler, Richard H.",
+            "minLength": 1
+          },
+          "query": {
+            "description": "Author search, AR, of the contributor's name.",
+            "type": "string",
+            "example": "AR \"Thaler, Richard H.\"",
+            "minLength": 1
+          }
+        }
+      },
+      "WorksTitle": {
+        "title": "WorksTitle",
+        "description": "Title of the work (from ESG or search)",
+        "type": "object",
+        "properties": {
+          "value": {
+            "description": "Value",
+            "type": "string",
+            "minLength": 1,
+            "example": "Nudging is being framed"
+          },
+          "locale": {
+            "description": "Locale",
+            "type": "string",
+            "minLength": 1,
+            "example": "en"
+          }
+        }
+      },
+      "AdvancedSearchStrategyEnum": {
+        "title": "AdvancedSearchStrategyEnum.V5",
+        "description": "Enumeration describing the advanced search strategy configured for a customer profile in the admin settings. This parameter is included in both the search API request and response. Possible values are: - NONE: No advanced search strategy is applied. This is the default value in search API requests. - SMART_TEXT_FAILOVER: Enables SmartText failover strategy. When SmartText is requested, the API will attempt to return results for similar search terms.\n",
+        "type": "string",
+        "enum": [
+          "NONE",
+          "SMART_TEXT_FAILOVER"
+        ]
+      },
+      "CustomLimiter": {
+        "title": "CustomLimiter",
+        "description": "Custom Limiter item that can be added at the customer level and available for all profiles",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Id of the limiter",
+            "example": "RV"
+          },
+          "label": {
+            "type": "string",
+            "description": "limiter caption",
+            "example": "Peer Reviewed"
+          },
+          "display": {
+            "type": "boolean",
+            "description": "Show parameter which determines if the filter should be shown at UI",
+            "example": true
+          },
+          "searchString": {
+            "type": "string",
+            "description": "Search string for the limiter",
+            "example": "test"
+          },
+          "type": {
+            "description": "ControlType parameter which determines the type of the filter",
+            "enum": [
+              "CHECK_BOX"
+            ]
+          },
+          "values": {
+            "type": "array",
+            "description": "Possible values or flags of the Limiter",
+            "items": {
+              "type": "object",
+              "title": "CustomLimiterValue",
+              "description": "Possible value or flag of the Limiter",
+              "properties": {
+                "value": {
+                  "type": "string",
+                  "description": "Actual value",
+                  "example": "true"
+                },
+                "valueLabel": {
+                  "type": "string",
+                  "description": "Label of the value",
+                  "example": "true"
+                },
+                "default": {
+                  "type": "boolean",
+                  "description": "Default value of the flag or selected value",
+                  "example": true
+                }
+              },
+              "required": [
+                "value",
+                "valueLabel",
+                "default"
+              ]
+            }
+          }
+        },
+        "required": [
+          "id",
+          "label",
+          "display",
+          "searchString",
+          "type",
+          "values"
+        ]
+      },
+      "DatabaseConfigurationResponseV3": {
+        "description": "Database configurations",
+        "type": "object",
+        "properties": {
+          "searchDatabaseConfiguration": {
+            "description": "Database configurations",
+            "type": "array",
+            "uniqueItems": false,
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "properties": {
+                "shortDbName": {
+                  "description": "database short name",
+                  "type": "string",
+                  "minLength": 1,
+                  "example": "buh"
+                },
+                "selected": {
+                  "description": "selected",
+                  "type": "boolean",
+                  "example": true
+                }
+              },
+              "required": [
+                "shortDbName",
+                "shortName",
+                "selected"
+              ]
+            }
+          }
+        },
+        "required": [
+          "searchDatabaseConfiguration"
+        ]
+      },
+      "ExpanderV2": {
+        "title": "ExpanderV2",
+        "type": "object",
+        "description": "Expander",
+        "properties": {
+          "label": {
+            "description": "Expander label",
+            "type": "string",
+            "example": "Apply related words"
+          },
+          "name": {
+            "description": "Expander name",
+            "type": "string",
+            "example": "thesaurus"
+          },
+          "default": {
+            "description": "expander default value in admin",
+            "type": "boolean",
+            "example": true
+          }
+        },
+        "required": [
+          "label",
+          "name",
+          "default"
+        ]
+      },
+      "LimiterV2": {
+        "title": "LimiterV2",
+        "description": "Limiter item",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Id of the limiter",
+            "example": "RV"
+          },
+          "label": {
+            "type": "string",
+            "description": "limiter caption",
+            "example": "Peer Reviewed"
+          },
+          "display": {
+            "type": "boolean",
+            "description": "Show parameter provided by epcc service, determines if the filter should be shown at UI",
+            "example": true
+          },
+          "format": {
+            "type": "string",
+            "description": "Date format for date limiters",
+            "example": "YYYYMM"
+          },
+          "type": {
+            "description": "ControlType parameter provided by epcc service, determines the type of the filter",
+            "enum": [
+              "LIST_BUTTON",
+              "LIST_BOX",
+              "CHECK_BOX",
+              "CHECK_GROUP",
+              "DATE",
+              "EDIT",
+              "COMP_NUM",
+              "HIST_DATE",
+              "RANGE_EDIT",
+              "UNKNOWN"
+            ]
+          },
+          "freeformRegexConstraint": {
+            "type": "string",
+            "description": "Determines the format and constraints of values"
+          },
+          "values": {
+            "type": "array",
+            "description": "Possible values or flags of the Limiter",
+            "items": {
+              "type": "object",
+              "description": "Possible value or flag of the Limiter",
+              "properties": {
+                "value": {
+                  "type": "string",
+                  "description": "Actual value",
+                  "example": "true"
+                },
+                "valueLabel": {
+                  "type": "string",
+                  "description": "Label of the value",
+                  "example": "true"
+                },
+                "default": {
+                  "type": "boolean",
+                  "description": "Default value of the flag or selected value provided by epcc service",
+                  "example": true
+                }
+              },
+              "required": [
+                "value",
+                "valueLabel",
+                "default"
+              ]
+            }
+          }
+        },
+        "required": [
+          "id",
+          "label",
+          "display",
+          "type",
+          "values"
+        ]
+      },
+      "PreSearchConfigurationRequest": {
+        "title": "PreSearchConfigurationRequest",
+        "description": "Pre-search configuration request body",
+        "type": "object",
+        "properties": {
+          "shortDbNames": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Short database name",
+              "example": "buh"
+            },
+            "minItems": 1
+          }
+        }
+      },
+      "PreSearchConfigurationResponseV3": {
+        "title": "PreSearchConfigurationResponseV3",
+        "description": "Pre-search configuration information such as Common Limiters, Specialized Limiters, and Custom Limiters.",
+        "type": "object",
+        "properties": {
+          "commonLimiters": {
+            "description": "Limiter options common to selected databases",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LimiterV2"
+            }
+          },
+          "specializedLimiters": {
+            "description": "Limiter options specific to selected databases",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SpecializedLimitersResponse"
+            }
+          },
+          "customLimiters": {
+            "description": "Custom limiter options that can be added at the customer level and available for all profiles",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CustomLimiter"
+            }
+          },
+          "expanders": {
+            "description": "Expanders",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExpanderV2"
+            }
+          },
+          "searchModes": {
+            "description": "search modes",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SearchMode"
+            }
+          },
+          "didYouMeanEnabled": {
+            "description": "Should searches be executed with didYouMean functionality",
+            "type": "boolean",
+            "example": true
+          },
+          "autoCorrectEnabled": {
+            "description": "Should auto-corrected search results be displayed",
+            "type": "boolean",
+            "example": true
+          },
+          "advancedSearchStrategy": {
+            "$ref": "#/components/schemas/AdvancedSearchStrategyEnum"
+          },
+          "showSuggestSubjectTerms": {
+            "$ref": "#/components/schemas/ShowSuggestSubjectTermsEnum"
+          }
+        }
+      },
+      "SearchMode": {
+        "title": "SearchMode",
+        "type": "object",
+        "description": "Search Mode",
+        "properties": {
+          "label": {
+            "description": "Search mode label",
+            "type": "string",
+            "example": "Apply equivalent subjects"
+          },
+          "name": {
+            "description": "Search mode name",
+            "type": "string",
+            "example": "boolean"
+          },
+          "default": {
+            "description": "Search mode default value in admin",
+            "type": "boolean",
+            "example": true
+          },
+          "secondaryDefault": {
+            "description": "Interface default value for search mode",
+            "type": "boolean",
+            "example": true
+          },
+          "enableSuggestedQueries": {
+            "description": "Flag to indicate if suggested search queries are enabled for the search mode",
+            "type": "boolean",
+            "example": false
+          }
+        },
+        "required": [
+          "label",
+          "name",
+          "default"
+        ]
+      },
+      "ShowSuggestSubjectTermsEnum": {
+        "title": "ShowSuggestSubjectTermsEnum",
+        "description": "Enumeration describing the show suggest subject terms configured for a customer profile in the admin settings. This parameter is included in search API response if single database is provided in the request. Possible values are: - DISABLED: When value is set to `No` in admin settings. - ENABLED_ON_DEFAULT: When value is set to `Yes (On by default)` in admin settings. - ENABLED_OFF_DEFAULT:When value is set to `Yes (Off by default)` in admin settings.\n",
+        "type": "string",
+        "enum": [
+          "DISABLED",
+          "ENABLED_ON_DEFAULT",
+          "ENABLED_OFF_DEFAULT"
+        ]
+      },
+      "SpecializedLimitersResponse": {
+        "title": "SpecializedLimitersResponse",
+        "description": "Response with list of SpecializedLimiters",
+        "type": "object",
+        "properties": {
+          "shortDbName": {
+            "description": "short database name",
+            "type": "string"
+          },
+          "limiters": {
+            "description": "list of limiters associated to a shortDbName",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LimiterV2"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "OAuth2": {
+        "type": "oauth2",
+        "flows": {
+          "authorizationCode": {
+            "authorizationUrl": "https://example.com/oauth/authorize?acr_values=guest&login_hint=custid%3Ans187805%2Cgroupid%3Anewuxa",
+            "tokenUrl": "https://logon.ebsco.zone/api/dispatcher/oauth/token",
+            "scopes": {}
+          }
+        }
+      }
+    }
+  },
+  "x-readme": {
+    "oauth-options": {
+      "useInsecureClientAuthentication": true
+    }
+  },
+  "x-amazon-apigateway-gateway-responses": {
+    "DEFAULT_5XX": {
+      "statusCode": 500,
+      "responseTemplates": {
+        "application/json": "{\"debugId\": \"$context.requestId\",\"name\": \"Internal Server Error\",\"message\": \"Internal Server Error. Please Contact EBSCO.\"}"
+      }
+    },
+    "INTEGRATION_FAILURE": {
+      "statusCode": 502,
+      "responseTemplates": {
+        "application/json": "{\"debugId\": \"$context.requestId\",\"name\": \"Bad Gateway\",\"message\": \"Bad Gateway. Please Contact EBSCO.\"}"
+      }
+    },
+    "INTEGRATION_TIMEOUT": {
+      "statusCode": 504,
+      "responseTemplates": {
+        "application/json": "{\"debugId\": \"$context.requestId\",\"name\": \"Gateway Timeout\",\"message\": \"Gateway Timeout. Please Contact EBSCO.\"}"
+      }
+    },
+    "MISSING_AUTHENTICATION_TOKEN": {
+      "statusCode": 401,
+      "responseTemplates": {
+        "application/json": "{\"debugId\": \"$context.requestId\",\"name\": \"Unauthorized\",\"message\": \"Missing or invalid authentication token\"}"
+      }
+    },
+    "ACCESS_DENIED": {
+      "statusCode": 403,
+      "responseTemplates": {
+        "application/json": "{\"debugId\": \"$context.requestId\",\"name\": \"Forbidden\",\"message\": \"Access denied\"}"
+      }
+    },
+    "INVALID_API_KEY": {
+      "statusCode": 403,
+      "responseTemplates": {
+        "application/json": "{\"debugId\": \"$context.requestId\",\"name\": \"Invalid API Key\",\"message\": \"Request contained an invalid API key\"}"
+      }
+    },
+    "THROTTLED": {
+      "statusCode": 429,
+      "responseTemplates": {
+        "application/json": "{\"debugId\": \"$context.requestId\",\"name\": \"Too Many Requests\",\"message\": \"Request rate limit exceeded\"}"
+      }
+    },
+    "BAD_REQUEST_BODY": {
+      "statusCode": 400,
+      "responseTemplates": {
+        "application/json": "{\"debugId\": \"$context.requestId\",\"name\": \"Bad Request\",\"message\": \"Invalid request body: $context.error.validationErrorString\"}"
+      }
+    },
+    "BAD_REQUEST_PARAMETERS": {
+      "statusCode": 400,
+      "responseTemplates": {
+        "application/json": "{\"debugId\": \"$context.requestId\",\"name\": \"Bad Request\",\"message\": \"Invalid request parameters: $context.error.validationErrorString\"}"
+      }
+    },
+    "QUOTA_EXCEEDED": {
+      "statusCode": 429,
+      "responseTemplates": {
+        "application/json": "{\"debugId\": \"$context.requestId\",\"name\": \"Quota Exceeded\",\"message\": \"Request quota exceeded\"}"
+      }
+    },
+    "UNAUTHORIZED": {
+      "statusCode": 401,
+      "responseTemplates": {
+        "application/json": "{\"debugId\": \"$context.requestId\",\"name\": \"Unauthorized\",\"message\": \"Unauthorized\"}"
+      }
+    },
+    "RESOURCE_NOT_FOUND": {
+      "statusCode": 404,
+      "responseTemplates": {
+        "application/json": "{\"debugId\": \"$context.requestId\",\"name\": \"Not Found\",\"message\": \"Resource Not Found\"}"
+      }
+    },
+    "REQUEST_TOO_LARGE": {
+      "statusCode": 413,
+      "responseTemplates": {
+        "application/json": "{\"debugId\": \"$context.requestId\",\"name\": \"Request Too Large\",\"message\": \"Request body exceeded the 10 megabyte limit\"}"
+      }
+    },
+    "INVALID_SIGNATURE": {
+      "statusCode": 403,
+      "responseTemplates": {
+        "application/json": "{\"debugId\": \"$context.requestId\",\"name\": \"Invalid Signature\",\"message\": \"Invalid Signature\"}"
+      }
+    },
+    "UNSUPPORTED_MEDIA_TYPE": {
+      "statusCode": 415,
+      "responseTemplates": {
+        "application/json": "{\"debugId\": \"$context.requestId\",\"name\": \"Unsupported Media Type\",\"message\": \"Unsupported Media Type\"}"
+      }
+    },
+    "WAF_FILTERED": {
+      "statusCode": 403,
+      "responseTemplates": {
+        "application/json": "{\"debugId\": \"$context.requestId\",\"name\": \"Caller Blocked\",\"message\": \"Access Denied\"}"
+      }
+    },
+    "EXPIRED_TOKEN": {
+      "statusCode": 401,
+      "responseTemplates": {
+        "application/json": "{\"debugId\": \"$context.requestId\",\"name\": \"Unauthorized\",\"message\": \"Unauthorized Token. Please Contact EBSCO.\"}"
+      }
+    }
+  },
+  "x-amazon-apigateway-request-validators": {
+    "ValidateBody": {
+      "validateRequestParameters": false,
+      "validateRequestBody": true
+    },
+    "ValidateQuerystringParameters": {
+      "validateRequestParameters": true,
+      "validateRequestBody": false
+    },
+    "ValidateAll": {
+      "validateRequestParameters": true,
+      "validateRequestBody": true
+    }
+  }
+}
