@@ -4870,7 +4870,7 @@
         "flows": {
           "authorizationCode": {
             "authorizationUrl": "https://example.com/oauth/authorize?acr_values=guest&login_hint=custid%3Ans187805%2Cgroupid%3Anewuxa",
-            "tokenUrl": "https://logon.ebsco.zone/api/dispatcher/oauth/token",
+            "tokenUrl": "https://example.com/api/dispatcher/oauth/token?test=test",
             "scopes": {}
           }
         }
