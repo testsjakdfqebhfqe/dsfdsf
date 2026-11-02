@@ -7728,7 +7728,7 @@
           "External Account Links"
         ],
         "summary": "Get External Account Link",
-        "description": "> 👍 Availability\n>\n>Some of the field descriptions for this endpoint reference FedNow or Fedwire, which are future capabilities not yet available for clients. Right now, this endpoint supports only Mastercard Data Connect: Account Linking and Mastercard Data Connect: Balance Check.\n\nUse the Get External Account Link endpoint to retrieve a remote account that was created by <a href=\"ref:paymenthub_post_createexternalaccountlink\" target=\"_blank\">Create External Account Link</a> for the specified `accountNo`.",
+        "description": "> 👍 Availability>>Some test of the field descriptions for this endpoint reference FedNow or Fedwire, which are future capabilities not yet available for clients. Right now, this endpoint supports only Mastercard Data Connect: Account Linking and Mastercard Data Connect: Balance Check.Use the Get External Account Link endpoint to retrieve a remote account that was created by <a href=\"ref:paymenthub_post_createexternalaccountlink\" target=\"_blank\">Create External Account Link</a> for the specified `accountNo`.",
         "operationId": "paymenthub_post_getexternalaccountlink",
         "requestBody": {
           "content": {
