@@ -16,7 +16,7 @@
     "/pets": {
       "get": {
         "summary": "List all pets",
-        "description": "test  test ts",
+        "description": "test \n test",
         "operationId": "listPets",
         "tags": [
           "pets"
@@ -65,6 +65,7 @@
         }
       },
       "post": {
+        "description": "test \n\n test",
         "summary": "Create a pet",
         "operationId": "createPets",
         "tags": [
