@@ -65,7 +65,7 @@
         }
       },
       "post": {
-        "description": "test \n\n test",
+        "description": "test <\br> test",
         "summary": "Create a pet",
         "operationId": "createPets",
         "tags": [
