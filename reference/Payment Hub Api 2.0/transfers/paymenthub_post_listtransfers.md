@@ -1,6 +1,6 @@
 ---
 api:
   file: sites.json
-  operationId: createPets
+  operationId: paymenthub_post_listtransfers
 hidden: false
 ---
