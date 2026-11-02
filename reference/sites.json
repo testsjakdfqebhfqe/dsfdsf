@@ -16,7 +16,7 @@
     "/pets": {
       "get": {
         "summary": "List all pets",
-        "description": "test \n test",
+        "description": "test  test test",
         "operationId": "listPets",
         "tags": [
           "pets"
