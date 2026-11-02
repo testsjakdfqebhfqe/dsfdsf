@@ -1,6 +1,6 @@
 ---
 api:
   file: openapi0.json
-  operationId: showPetById
+  operationId: paymenthub_post_gettransfer
 hidden: false
 ---

@@ -1,6 +1,6 @@
 ---
 api:
   file: openapi0.json
-  operationId: createPets
+  operationId: paymenthub_post_canceltransfer
 hidden: false
 ---
