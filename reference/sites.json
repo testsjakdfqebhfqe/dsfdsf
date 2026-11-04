@@ -2186,7 +2186,7 @@
     "/getTransfer": {
       "post": {
         "tags": [
-          "Transfers"
+          "Transfers test"
         ],
         "summary": "Get Transfer",
         "description": "> 👍 Availability\n>\n>Some of the field descriptions for this endpoint reference FedNow or Fedwire, which are future capabilities not yet available for clients.\n\nUse the Get Transfer endpoint to retrieve information about an existing incoming or outgoing transferthat was initiated by the <a href=\"ref:payhub_post_createTransfer\" target=\"_blank\">Create Transfer</a>.",
