@@ -1,4 +1,0 @@
----
-title: EmployeeTerminationChangeEvent
-hidden: false
----

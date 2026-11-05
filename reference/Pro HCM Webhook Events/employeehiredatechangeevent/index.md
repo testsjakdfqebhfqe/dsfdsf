@@ -1,4 +1,0 @@
----
-title: EmployeeHireDateChangeEvent
-hidden: false
----
