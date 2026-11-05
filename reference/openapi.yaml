@@ -80,6 +80,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+      x-internal: true
 components:
   schemas:
     Pet:
