@@ -2,7 +2,7 @@
 api:
   file: openapi.yaml
   operationId: listPets
-hidden: false
+hidden: true
 link:
   new_tab: false
 metadata:
