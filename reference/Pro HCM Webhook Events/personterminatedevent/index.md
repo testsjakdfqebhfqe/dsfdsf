@@ -1,0 +1,4 @@
+---
+title: PersonTerminatedEvent
+hidden: false
+---

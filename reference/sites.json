@@ -1,0 +1,731 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Pro HCM Webhook Events",
+    "version": "1.0.0",
+    "description": "This specification describes each of the various Pro HCM events to which users can subscribe using UKG Webhooks as well as how each event is triggered.",
+    "contact": {
+      "name": "UKG Developer Hub",
+      "url": "https://developer.ukg.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://{hostname}/webhooks"
+    }
+  ],
+  "webhooks": {
+    "EmployeeAddressChangeEvent": {
+      "post": {
+        "summary": "Employee Address Change Event",
+        "description": "This event is triggered when an employee's address information changes: \n\n- Address Line 1\n- Address Line 2\n- Address City\n- Address State\n- Address Zip Code\n- Address Country\n- Address County\n\nAdditionally, the following actions trigger an Employee Address Change Event:\n\n- **Inserts** – The Employee Address record for an EE will be inserted upon new hire:\n  - Web > Web Import Tool New Hire Process\n  - Back Office > New Hire process\n  - Back Office > Import Process\n\n- **Updates** – Updates to the Employee Address record can happen by leveraging:\n  - Web > Change Name, Address, Telephone business process\n  - Web > Web Import Tool > Change Name, Address, Telephone business process\n  - Back Office > Manually update EE record\n  - Back Office > Import process\n\n- **Deletes** – Deletes to the Employee Address record can occur if the EE is deleted from UKG Pro:\n  - Web > Administration > Employee Admin > Employee Management > Delete Employee\n  - Back Office > Tools > Utilities > Delete Employee\n\n To obtain a bearer token, refer to https://developer.ukg.com/hcm/reference/post_signin-oauth2-t-tenant-name-access-token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenericWebhookEvent"
+              }
+            }
+          }
+        }
+      }
+    },
+    "EmployeeAlternativeEmailChangeEvent": {
+      "post": {
+        "summary": "Employee Alternative Email Change Event",
+        "description": "Triggered when an employee's alternative email address changes: \n\n- Email Address Alternate\n\nAdditionally, the following actions trigger an Employee Alternative Email Change Event:\n\n- **Inserts** – The Alternative Email record for an EE will be inserted upon new hire:\n  - Web > Web Import Tool New Hire Process\n  - Back Office > New Hire process\n  - Back Office > Import Process\n\n- **Updates** – Updates to the Alternative Email record can happen by leveraging:\n  - Web > Change Alternative Email\n  - Web > Web Import Tool > Change Alternative Email\n  - Back Office > Manually update EE record\n  - Back Office > Import process\n\n- **Deletes** – Deletes to the Alternative Email record can occur if the EE is deleted from UKG Pro:\n  - Web > Administration > Employee Admin > Employee Management > Delete Employee\n  - Back Office > Tools > Utilities > Delete Employee \n\n To obtain a bearer token, refer to https://developer.ukg.com/hcm/reference/post_signin-oauth2-t-tenant-name-access-token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenericWebhookEvent"
+              }
+            }
+          }
+        }
+      }
+    },
+    "EmployeeDateDeceasedChangeEvent": {
+      "post": {
+        "summary": "Employee Date Deceased Change Event",
+        "description": "Triggered when an employee's date of death is added, modified, or removed: \n\n- Deceased\n\nAdditionally, the following actions trigger an Employee Date Deceased Change Event:\n\n- **Inserts** – The Date Deceased for an EE can be inserted, updated, or deleted by leveraging:\n  - Web > Change Status and Key Dates business process\n  - Web > Web Import Tool > Change Status and Key Dates business process\n  - Back Office > Manually update EE record\n\n- **Deletes** – Deletes can occur if the EE is deleted from the system:\n  - Web > Administration > Employee Admin > Employee Management > Delete Employee\n  - Back Office > Tools > Utilities > Delete Employee\n\n To obtain a bearer token, refer to https://developer.ukg.com/hcm/reference/post_signin-oauth2-t-tenant-name-access-token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenericWebhookEvent"
+              }
+            }
+          }
+        }
+      }
+    },
+    "EmployeeDateOfBenefitsSeniorityChangeEvent": {
+      "post": {
+        "summary": "Employee Date Of Benefits Seniority Change Event",
+        "description": "Triggered when an employee's benefits seniority date changes: \n\n- **Updates** – Updates to the HireDate data can happen by leveraging:\n  - Web > Change Status and Key Dates\n  - Web > Web Import Tool > Change Status and Key Dates business process\n  - Back Office > Manually update EE record\n\n- **Deletes** – Deletes to the HireDate data can occur if the EE is deleted from Pro:\n  - Web > Administration > Employee Admin > Employee Management > Delete Employee\n  - Back Office > Tools > Utilities > Delete Employee\n\n To obtain a bearer token, refer to https://developer.ukg.com/hcm/reference/post_signin-oauth2-t-tenant-name-access-token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenericWebhookEvent"
+              }
+            }
+          }
+        }
+      }
+    },
+    "EmployeeDateOfBirthChangeEvent": {
+      "post": {
+        "summary": "Employee Date Of Birth Change Event",
+        "description": "Triggered when an employee's date of birth is inserted, updated, or deleted: \n\n- Date of Birth\n\nAdditionally, the following actions trigger an Employee Date of Birth Change Event:\n\n- **Inserts** – The DOB for an EE will be inserted upon new hire:\n  - Web > Web Import Tool New Hire process\n  - Back Office > New Hire process\n  - Back Office > Import process\n\n- **Updates** – Updates to the DOB can happen by leveraging::\n  - Web > Change Private Info business process\n  - Web > Web Import Tool > Change Private Info business process\n  - Back Office > Manually update EE record\n  - Back Office > Import process\n\n- **Deletes** – Deletes to the DOB can occur if the EE is deleted from Pro.\n  - Web > Administration > Employee Admin > Employee Management > Delete Employee\n  - Back Office > Tools > Utilities > Delete Employee\n\n To obtain a bearer token, refer to https://developer.ukg.com/hcm/reference/post_signin-oauth2-t-tenant-name-access-token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenericWebhookEvent"
+              }
+            }
+          }
+        }
+      }
+    },
+    "EmployeeDeductionGroupChangeEvent": {
+      "post": {
+        "summary": "Employee Deduction Group Change Event",
+        "description": "Triggered when an employee's deduction group information changes: \n\n- **Inserts** – The DeductionGroup data for an EE will be inserted:\n  - Web > Web Import Tool New Hire process\n  - Back Office > New Hire process\n  - Back Office > Import process\n\n- **Updates** – Updates to the DeductionGroup data can happen by leveraging:\n  - Web > Change Job\n  - Web > Change Job and Salary\n  - Web > Change Salary\n  - Back Office > Manually update EE record\n\n> _**Note:** There are other actions that can be taken in Pro that adversely affect the EEs DeductionGroup. A quick example is Open Enrollment & Life Events._\n\n- **Deletes** – Deletes to the DeductionGroup data can occur if the EE is deleted from Pro:\n  - Web > Administration > Employee Admin > Employee Management > Delete Employee\n  - Back Office > Tools > Utilities > Delete Employee\n\n To obtain a bearer token, refer to https://developer.ukg.com/hcm/reference/post_signin-oauth2-t-tenant-name-access-token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenericWebhookEvent"
+              }
+            }
+          }
+        }
+      }
+    },
+    "EmployeeDisabilityChangeEvent": {
+      "post": {
+        "summary": "Employee Disability Change Event",
+        "description": "Triggered when an employee's disability status is updated: \n\n- Disabled\n- Disability Type\n\nAdditionally, the following actions trigger an Employee Disability Change Event:\n\n- **Inserts** or **Updates** – The Disability Status can be inserted or updated by leveraging:\n  - Web > Change Private Info business process\n  - Web > Web Import Tool > Change Private Info business process\n  - Back Office > Manually Update EE Record\n\n- **Deletes** – Deletes to employee disability can occur if the EE is deleted from Pro.\n  - Web > Administration > Employee Admin > Employee Management > Delete Employee\n  - Back Office > Tools > Utilities > Delete Employee\n\n To obtain a bearer token, refer to https://developer.ukg.com/hcm/reference/post_signin-oauth2-t-tenant-name-access-token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenericWebhookEvent"
+              }
+            }
+          }
+        }
+      }
+    },
+    "EmployeeEducationChangeEvent": {
+      "post": {
+        "summary": "Employee Education Change Event",
+        "description": "Triggered when an employee's education information is inserted, updated, or deleted: \n\n- Inserts, Updates, and **Deletes** – The EducationInfo for an EE can be inserted, updated, or deleted by leveraging:\n  - Web > Add/Change Education business process\n  - Web > Web Import Tool > Add/Change Education business process\n  - Back Office > Manually update EE record\n\n> _**Note:** Deletes can also occur if the EE is deleted from the system:_\n> - Web > Administration > Employee Admin > Employee Management > Delete Employee\n> - Back Office > Tools > Utilities > Delete Employee\n\n To obtain a bearer token, refer to https://developer.ukg.com/hcm/reference/post_signin-oauth2-t-tenant-name-access-token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenericWebhookEvent"
+              }
+            }
+          }
+        }
+      }
+    },
+    "EmployeeEmailChangeEvent": {
+      "post": {
+        "summary": "Employee Email Change Event",
+        "description": "Triggered when an employee's email address changes: \n\n- Email Address\n\nAdditionally, the following actions trigger an Employee Email Change Event:\n\n- **Inserts** – The Email record for an EE will be inserted upon new hire:\n  - Web > Web Import Tool New Hire Process\n  - Back Office > New Hire process\n  - Back Office > Import Process\n\n- **Updates** – Updates to the Email record can happen by leveraging:\n  - Web > Change Email\n  - Web > Web Import Tool > Change Email\n  - Back Office > Manually update EE record\n  - Back Office > Import process\n\n- **Deletes** – Deletes to the Email record can occur if the EE is deleted from UKG Pro:\n  - Web > Administration > Employee Admin > Employee Management > Delete Employee\n  - Back Office > Tools > Utilities > Delete Employee\n\n To obtain a bearer token, refer to https://developer.ukg.com/hcm/reference/post_signin-oauth2-t-tenant-name-access-token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenericWebhookEvent"
+              }
+            }
+          }
+        }
+      }
+    },
+    "EmployeeGenderChangeEvent": {
+      "post": {
+        "summary": "Employee Gender Change Event",
+        "description": "Triggered when an employee's gender field is modified: \n\n- **Inserts** – The gender for an EE will be inserted upon new hire:\n  - Web > Web Import Tool New Hire process\n  - Back Office > New Hire process\n  - Back Office > Import process\n\n- **Updates** – Updates to gender can happen by leveraging::\n  - Web > Change Private Info business process\n  - Web > Web Import Tool > Change Private Info business process\n  - Back Office > Manually update EE record\n  - Back Office > Import process\n\n- **Deletes** – Deletes to gender can occur if the EE is deleted from Pro.\n  - Web > Administration > Employee Admin > Employee Management > Delete Employee\n  - Back Office > Tools > Utilities > Delete Employee\n\n To obtain a bearer token, refer to https://developer.ukg.com/hcm/reference/post_signin-oauth2-t-tenant-name-access-token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenericWebhookEvent"
+              }
+            }
+          }
+        }
+      }
+    },
+    "EmployeeHireDateChangeEvent": {
+      "post": {
+        "summary": "Employee Hire Date Change Event",
+        "description": "Triggered when an employee's hire date is updated or deleted: \n\n- **Updates** – Updates to the HireDate data can happen by leveraging:\n  - Web > Change Status and Key Dates\n  - Web > Web Import Tool > Change Status and Key Dates business process\n  - Back Office > Manually update EE record\n\n- **Deletes** – Deletes to the HireDate data can occur if the EE is deleted from Pro:\n  - Web > Administration > Employee Admin > Employee Management > Delete Employee\n  - Back Office > Tools > Utilities > Delete Employee\n\n To obtain a bearer token, refer to https://developer.ukg.com/hcm/reference/post_signin-oauth2-t-tenant-name-access-token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenericWebhookEvent"
+              }
+            }
+          }
+        }
+      }
+    },
+    "EmployeeHourlyPayRateChangeEvent": {
+      "post": {
+        "summary": "Employee Hourly Pay Rate Change Event",
+        "description": "Triggered when an employee's hourly pay rate is inserted, updated, or deleted: \n\n- **Inserts** – The HourlyPayRate data for an EE will be inserted:\n  - Web > Web Import Tool New Hire process\n  - Web > Web Import Tool > Change Job and Salary business process\n  - Back Office > New Hire process\n  - Back Office > Import process\n\n- **Updates** – Updates to the HourlyPayRate data can happen by leveraging:\n  - Web > Change Job\n  - Web > Change Job and Salary\n  - Web > Web Import Tool > Change Job and Salary business process\n  - Web > Mass Update Tool\n  - Back Office > Manually update EE record\n  - Back Office > Import process\n\n> _**Note:** There are other actions that can be taken in Pro that adversely affect the EEs hourly pay rate. Quick examples include:_\n> - Changing an EEs scheduled work hours can recalculate their pay rate.\n> - If you have the Compensation Management module and issue pay rate changes via Salary Plan.\n\n- **Deletes** – Deletes to the HourlyPayRate data can occur if the EE is deleted from Pro:\n  - Web > Administration > Employee Admin > Employee Management > Delete Employee\n  - Back Office > Tools > Utilities > Delete Employee\n\n To obtain a bearer token, refer to https://developer.ukg.com/hcm/reference/post_signin-oauth2-t-tenant-name-access-token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenericWebhookEvent"
+              }
+            }
+          }
+        }
+      }
+    },
+    "EmployeeLicenseChangeEvent": {
+      "post": {
+        "summary": "Employee License Change Event",
+        "description": "Triggered when an employee's professional license info is added, updated, or deleted: \n\n- **Inserts**, **Updates**, and **Deletes** – The LicenseInfo for an EE can be inserted, updated, or deleted by leveraging:\n  - Back Office > Manually update EE record\n\n> _**Note:** Deletes can also occur if the EE is deleted from the system:_\n> - Web > Administration > Employee Admin > Employee Management > Delete Employee\n> - Back Office > Tools > Utilities > Delete Employee\n\n To obtain a bearer token, refer to https://developer.ukg.com/hcm/reference/post_signin-oauth2-t-tenant-name-access-token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenericWebhookEvent"
+              }
+            }
+          }
+        }
+      }
+    },
+    "EmployeeMaritalStatusChangeEvent": {
+      "post": {
+        "summary": "Employee Marital Status Change Event",
+        "description": "Triggered when an employee's marital status is added, changed, or deleted: \n\n- **Inserts** – The marital status for an EE will be inserted upon new hire:\n  - Web > Web Import Tool New Hire process\n  - Back Office > New Hire process\n  - Back Office > Import process\n\n- **Updates** – Updates to the marital status can happen by leveraging::\n  - Web > Change Private Info business process\n  - Web > Web Import Tool > Change Private Info business process\n  - Back Office > Manually update EE record\n  - Back Office > Import process\n\n- **Deletes** – Deletes to the marital status can occur if the EE is deleted from Pro.\n  - Web > Administration > Employee Admin > Employee Management > Delete Employee\n  - Back Office > Tools > Utilities > Delete Employee\n\n To obtain a bearer token, refer to https://developer.ukg.com/hcm/reference/post_signin-oauth2-t-tenant-name-access-token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenericWebhookEvent"
+              }
+            }
+          }
+        }
+      }
+    },
+    "EmployeeNumberChangeEvent": {
+      "post": {
+        "summary": "Employee Number Change Event",
+        "description": "Triggered when an employee's identifying number is changed: \n\n- **Inserts** – The EmployeeNumber data for an EE will be inserted upon new hire:\n  - Web > Web Import Tool New Hire process\n  - Back Office > New Hire process\n  - Back Office > Import process\n\n- **Updates** – Updates to the EmployeeNumber data can happen by leveraging:\n  - Web > Change Employee Number\n  - Back Office > Manually update EE record\n\n- **Deletes** – Deletes to the EmployeeNumber data can occur if the EE is deleted from Pro:\n  - Web > Administration > Employee Admin > Employee Management > Delete Employee\n  - Back Office > Tools > Utilities > Delete Employee\n\n To obtain a bearer token, refer to https://developer.ukg.com/hcm/reference/post_signin-oauth2-t-tenant-name-access-token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenericWebhookEvent"
+              }
+            }
+          }
+        }
+      }
+    },
+    "EmployeeOrgLevelUpdated": {
+      "post": {
+        "summary": "Employee Org Level Updated",
+        "description": "Triggered when an employee's organizational level changes: \n\n- **Inserts** – The Project data for an EE can be instered upon a new hire, and if not, can be done by performing a job change:\n  - Web > Web Import Tool New Hire process\n  - Web > Change Job\n  - Web > Change Job and Salary\n  - Web > Change Organization\n  - Web > Web Import Tool > Change Job and Salary business process\n  - Web > Mass Update Tool\n  - Back Office > New Hire process\n  - Back Office > Import process\n\n- **Updates** – Updates to the Project data can happen by leveraging:\n  - Web > Change Job\n  - Web > Change Job and Salary\n  - Web > Change Organization\n  - Web > Web Import Tool > Change Job and Salary business process\n  - Web > Mass Update Tool\n  - Back Office > Manually update EE record\n  - Back Office > Import process\n\n- **Deletes** – Deletes to the Project data can occur if the EE is deleted from Pro:\n  - Web > Administration > Employee Admin > Employee Management > Delete Employee\n  - Back Office > Tools > Utilities > Delete Employee\n\n To obtain a bearer token, refer to https://developer.ukg.com/hcm/reference/post_signin-oauth2-t-tenant-name-access-token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenericWebhookEvent"
+              }
+            }
+          }
+        }
+      }
+    },
+    "EmployeePayPeriodChangeEvent": {
+      "post": {
+        "summary": "Employee Pay Period Change Event",
+        "description": "Triggered when an employee's pay period changes: \n\n- **Inserts** – The PayGroup data for an EE will be inserted:\n  - Web > Web Import Tool New Hire process\n  - Back Office > New Hire process\n  - Back Office > Import process\n\n- **Updates** – Updates to the PayGroup data can happen by leveraging:\n  - Web > Change Job\n  - Web > Change Job and Salary\n  - Web > Change Salary\n  - Back Office > Manually update EE record\n\n- **Deletes** – Deletes to the PayGroup data can occur if the EE is deleted from Pro:\n  - Web > Administration > Employee Admin > Employee Management > Delete Employee\n  - Back Office > Tools > Utilities > Delete Employee\n\n To obtain a bearer token, refer to https://developer.ukg.com/hcm/reference/post_signin-oauth2-t-tenant-name-access-token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenericWebhookEvent"
+              }
+            }
+          }
+        }
+      }
+    },
+    "EmployeePersonNameChangeEvent": {
+      "post": {
+        "summary": "Employee Person Name Change Event",
+        "description": "Triggered when any of an employee's Person Name fields are changed: \n\n- Prefix\n- First Name\n- Middle Name\n- Last Name\n- Suffix\n- Preferred First Name\n- Former Last Name\n\nAdditionally, the following actions trigger an Employee Person Name Change Event:\n\n- **Inserts** – The PersonName record for an EE will be inserted upon new hire:\n  - Web > Web Import Tool New Hire Process\n  - Back Office > New Hire process\n  - Back Office > Import Process\n\n- **Updates** – Updates to the Person Name record can happen by leveraging:\n  - Web > Change Name, Address, Telephone business process\n  - Web > Web Import Tool > Change Name, Address, Telephone business process\n  - Back Office > Manually update EE record\n  - Back Office > Import process\n\n- **Deletes** – Deletes to the Person Name record can occur if the EE is deleted from UKG Pro:\n  - Web > Administration > Employee Admin > Employee Management > Delete Employee\n  - Back Office > Tools > Utilities > Delete Employee\n\n To obtain a bearer token, refer to https://developer.ukg.com/hcm/reference/post_signin-oauth2-t-tenant-name-access-token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenericWebhookEvent"
+              }
+            }
+          }
+        }
+      }
+    },
+    "EmployeePhoneChangeEvent": {
+      "post": {
+        "summary": "Employee Phone Change Event",
+        "description": "Triggered when an employee's phone number information is changed: \n\n- **Inserts** – The Phone data for an EE will be inserted upon new hire:\n  - Web > Web Import Tool New Hire process\n  - Back Office > New Hire process\n  - Back Office > Import process\n\n- **Updates** – Updates to the Phone data can happen by leveraging:\n  - Web > Change Name, Address, Telephone Business Process\n  - Web > Add/Change Phone Number\n  - Web > Web Import Tool > Change Name, Address, Telephone business process\n  - Web > Web Import Tool > Add/Change Phone Number\n  - Back Office > Manually update EE record\n  - Back Office > Import process\n\n- **Deletes** – Deletes to the Phone data can occur if the EE is deleted from Pro:\n  - Web > Administration > Employee Admin > Employee Management > Delete Employee\n  - Back Office > Tools > Utilities > Delete Employee\n\n To obtain a bearer token, refer to https://developer.ukg.com/hcm/reference/post_signin-oauth2-t-tenant-name-access-token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenericWebhookEvent"
+              }
+            }
+          }
+        }
+      }
+    },
+    "EmployeeProjectChangeEvent": {
+      "post": {
+        "summary": "Employee Project Change Event",
+        "description": "Triggered when an employee's project assignment is changed: \n\n- **Inserts** – The Project data for an EE can be instered upon a new hire, and if not, can be done by performing a job change:\n  - Web > Web Import Tool New Hire process\n  - Web > Change Job\n  - Web > Change Job and Salary\n  - Web > Change Organization\n  - Web > Web Import Tool > Change Job and Salary business process\n  - Web > Mass Update Tool\n  - Back Office > New Hire process\n  - Back Office > Import process\n\n- **Updates** – Updates to the Project data can happen by leveraging:\n  - Web > Change Job\n  - Web > Change Job and Salary\n  - Web > Change Organization\n  - Web > Web Import Tool > Change Job and Salary business process\n  - Web > Mass Update Tool\n  - Back Office > Manually update EE record\n  - Back Office > Import process\n\n- **Deletes** – Deletes to the Project data can occur if the EE is deleted from Pro:\n  - Web > Administration > Employee Admin > Employee Management > Delete Employee\n  - Back Office > Tools > Utilities > Delete Employee\n\n To obtain a bearer token, refer to https://developer.ukg.com/hcm/reference/post_signin-oauth2-t-tenant-name-access-token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenericWebhookEvent"
+              }
+            }
+          }
+        }
+      }
+    },
+    "EmployeeSkillChangeEvent": {
+      "post": {
+        "summary": "Employee Skill Change Event",
+        "description": "Triggered when an employee's skills are inserted, updated, or deleted: \n\n- **Inserts**, **Updates**, and **Deletes** – The SkillInfo for an EE can be inserted, updated, or deleted by leveraging:\n  - Web > Add/Change Skill business process\n  - Web > Web Import Tool > Add/Change Skill business process\n  - Back Office > Manually update EE record\n\n> _**Note:** Deletes can also occur if the EE is deleted from the system:_\n> - Web > Administration > Employee Admin > Employee Management > Delete Employee\n> - Back Office > Tools > Utilities > Delete Employee\n\n To obtain a bearer token, refer to https://developer.ukg.com/hcm/reference/post_signin-oauth2-t-tenant-name-access-token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenericWebhookEvent"
+              }
+            }
+          }
+        }
+      }
+    },
+    "EmployeeSupervisorUpdated": {
+      "post": {
+        "summary": "Employee Supervisor Updated",
+        "description": "Triggered when an employee's supervisor assignment is inserted, updated, or deleted: \n\n- **Inserts** – The Supervisor data for an EE can be inserted upon a new hire, and if not, can be done by performing a job change:\n  - Web > Web Import Tool New Hire process\n  - Web > Change Job\n  - Web > Change Job and Salary\n  - Web > Change Organization\n  - Web > Web Import Tool > Change Job and Salary business process\n  - Web > Mass Update Tool\n  - Back Office > New Hire process\n  - Back Office > Import process\n\n- **Updates** – Updates to the Project data can happen by leveraging:\n  - Web > Change Job\n  - Web > Change Job and Salary\n  - Web > Change Organization\n  - Web > Web Import Tool > Change Job and Salary business process\n  - Web > Mass Update Tool\n  - Web > Reassign Direct Reports\n  - Back Office > Manually update EE record\n  - Back Office > Import process\n\n- **Deletes** – Deletes to the Project data can occur if the EE is deleted from Pro:\n  - Web > Administration > Employee Admin > Employee Management > Delete Employee\n  - Back Office > Tools > Utilities > Delete Employee\n\n To obtain a bearer token, refer to https://developer.ukg.com/hcm/reference/post_signin-oauth2-t-tenant-name-access-token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenericWebhookEvent"
+              }
+            }
+          }
+        }
+      }
+    },
+    "EmployeeTerminationChangeEvent": {
+      "post": {
+        "summary": "Employee Termination Change Event",
+        "description": "Triggered when an employee's termination details are inserted, updated, or deleted: \n\n- **Inserts** – The Termination data for an EE will be inserted upon new hire:\n  - Web > Web Import Tool New Hire process\n  - Back Office > New Hire process\n  - Back Office > Import process\n\n- **Updates** – Updates to the Termination data can happen by leveraging:\n  - Web > Change Employee Number\n  - Back Office > Manually update EE record\n\n- **Deletes** – Deletes to the Termination data can occur if the EE is deleted from Pro:\n  - Web > Administration > Employee Admin > Employee Management > Delete Employee\n  - Back Office > Tools > Utilities > Delete Employee\n\n To obtain a bearer token, refer to https://developer.ukg.com/hcm/reference/post_signin-oauth2-t-tenant-name-access-token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenericWebhookEvent"
+              }
+            }
+          }
+        }
+      }
+    },
+    "EmployeeTypeChangeEvent": {
+      "post": {
+        "summary": "Employee Type Change Event",
+        "description": "Triggered when an employee's type (e.g., full-time, part-time) changes: \n\n- **Inserts** – The JobChange data for an EE will be inserted upon new hire:\n  - Web > Web Import Tool New Hire process\n  - Back Office > New Hire process\n  - Back Office > Import process\n\n- **Updates** – Updates to the JobChange data can happen by leveraging:\n  - Web > Change Job\n  - Web > Change Job and Salary\n  - Web > Change Salary\n  - Web > Change Organization\n  - Web > Web Import Tool > Change Job and Salary business process\n  - Web > Mass Update Tool\n  - Back Office > Manually update EE record\n  - Back Office > Import processs\n\n- **Deletes** – Deletes to the JobChange data can occur if the EE is deleted from Pro:\n  - Web > Administration > Employee Admin > Employee Management > Delete Employee\n  - Back Office > Tools > Utilities > Delete Employee\n\n To obtain a bearer token, refer to https://developer.ukg.com/hcm/reference/post_signin-oauth2-t-tenant-name-access-token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenericWebhookEvent"
+              }
+            }
+          }
+        }
+      }
+    },
+    "EmployeeUnionChangeEvent": {
+      "post": {
+        "summary": "Employee Union Change Event",
+        "description": "Triggered when an employee's union membership changes: \n\n- **Inserts** – The Project data for an EE can be instered upon a new hire, and if not, can be done by performing a job change:\n  - Web > Web Import Tool New Hire process\n  - Web > Change Job\n  - Web > Change Job and Salary\n  - Web > Change Organization\n  - Web > Web Import Tool > Change Job and Salary business process\n  - Web > Mass Update Tool\n  - Back Office > New Hire process\n  - Back Office > Import process\n\n- **Updates** – Updates to the Project data can happen by leveraging:\n  - Web > Change Job\n  - Web > Change Job and Salary\n  - Web > Change Organization\n  - Web > Web Import Tool > Change Job and Salary business process\n  - Web > Mass Update Tool\n  - Back Office > Manually update EE record\n  - Back Office > Import process\n\n- **Deletes** – Deletes to the Project data can occur if the EE is deleted from Pro:\n  - Web > Administration > Employee Admin > Employee Management > Delete Employee\n  - Back Office > Tools > Utilities > Delete Employee\n\n To obtain a bearer token, refer to https://developer.ukg.com/hcm/reference/post_signin-oauth2-t-tenant-name-access-token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenericWebhookEvent"
+              }
+            }
+          }
+        }
+      }
+    },
+    "EmployeeWorkLocationChangeEvent": {
+      "post": {
+        "summary": "Employee Work Location Change Event",
+        "description": "Triggered when an employee's work location changes: \n\n- **Inserts** – The WorkLocation data for an EE will be inserted:\n  - Web > Web Import Tool New Hire process\n  - Back Office > New Hire process\n  - Back Office > Import process\n\n- **Updates** – Updates to the WorkLocation data can happen by leveraging:\n  - Web > Change Work Location\n  - Web > Web Import Tool > Change Work Location\n  - Back Office > Manually update EE record\n\n- **Deletes** – Deletes to the WorkLocation data can occur if the EE is deleted from Pro:\n  - Web > Administration > Employee Admin > Employee Management > Delete Employee\n  - Back Office > Tools > Utilities > Delete Employee\n\n To obtain a bearer token, refer to https://developer.ukg.com/hcm/reference/post_signin-oauth2-t-tenant-name-access-token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenericWebhookEvent"
+              }
+            }
+          }
+        }
+      }
+    },
+    "EmploymentDateLastWorkedChangeEvent": {
+      "post": {
+        "summary": "Employment Date Last Worked Change Event",
+        "description": "Triggered when the employee's last date worked is updated: \n\n- **Inserts** – The Termination data for an EE will be inserted upon new hire:\n  - Web > Web Import Tool New Hire process\n  - Back Office > New Hire process\n  - Back Office > Import process\n\n- **Updates** – Updates to the Termination data can happen by leveraging:\n  - Web > Change Employee Number\n  - Back Office > Manually update EE record\n\n- **Deletes** – Deletes to the Termination data can occur if the EE is deleted from Pro:\n  - Web > Administration > Employee Admin > Employee Management > Delete Employee\n  - Back Office > Tools > Utilities > Delete Employee\n\n To obtain a bearer token, refer to https://developer.ukg.com/hcm/reference/post_signin-oauth2-t-tenant-name-access-token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenericWebhookEvent"
+              }
+            }
+          }
+        }
+      }
+    },
+    "EmploymentStatusChangeEvent": {
+      "post": {
+        "summary": "Employment Status Change Event",
+        "description": "Triggered when an employee's employment status is updated or deleted: \n\n- **Updates** – Updates to the `StatusChange` data can happen by leveraging:\n  - Web > Change Status and Key Dates\n  - Web > Employee Transfer\n  - Web > Termination\n  - Web > Rehire or Multi Company Hire\n  - Web > Web Import Tool > Change Status and Key Dates business process\n  - Web > Performing any web import that affects EE Status (New Hire, Rehire, MultiCo Hire, Transfer, Termination)\n  - Back Office > Manually update EE record\n\n- **Deletes** – Deletes to the StatusChange data can occur if the EE is deleted from Pro:\n  - Web > Administration > Employee Admin > Employee Management > Delete Employee\n  - Back Office > Tools > Utilities > Delete Employee\n\n To obtain a bearer token, refer to https://developer.ukg.com/hcm/reference/post_signin-oauth2-t-tenant-name-access-token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenericWebhookEvent"
+              }
+            }
+          }
+        }
+      }
+    },
+    "EmployeeJobDetailsChangeEvent": {
+      "post": {
+        "summary": "Employee Job Details Change Event",
+        "description": "Triggered when an employee's job is changed: \n\n- **Inserts** – The EmployeeJobDetailsChange data for an EE will be inserted upon new hire:\n  - Web > Web Import Tool New Hire process\n  - Back Office > New Hire process\n  - Back Office > Import process\n\n- **Updates** – Updates to the EmployeeJobDetailsChange data can happen by leveraging:\n  - Web > Change Job\n  - Web > Change Job and Salary\n  - Web > Change Salary\n  - Web > Change Organization\n  - Web > Web Import Tool > Change Job and Salary business process\n  - Web > Mass Update Tool\n  - Back Office > Manually update EE record\n  - Back Office > Import processs\n\n- **Deletes** – Deletes to the EmployeeJobDetailshange data can occur if the EE is deleted from Pro HCM:\n  - Web > Administration > Employee Admin > Employee Management > Delete Employee\n  - Back Office > Tools > Utilities > Delete Employee\n\n To obtain a bearer token, refer to https://developer.ukg.com/hcm/reference/post_signin-oauth2-t-tenant-name-access-token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenericWebhookEvent"
+              }
+            }
+          }
+        }
+      }
+    },
+    "JobChangeEvent": {
+      "post": {
+        "summary": "Job Change Event",
+        "description": "Triggered when a job code or job description is changed within the company: \n\n- Job Code\n- Job Description\n\nAdditionally, the following actions trigger an Employee Address Change Event:\n\n- **Inserts** – The JobChange data will be inserted upon any new job added under:\n  - System Configuration > Business Rules > Jobs\n\n- **Updates** – Updates to the JobChange data occur when any existing job is updated under\n  - System Configuration > Business Rules > Jobs\n\n- **Deletes** – Deletes to the JobChange data can occur if any job is deleted under:\n  - System Configuration > Business Rules > Jobs\n\n To obtain a bearer token, refer to https://developer.ukg.com/hcm/reference/post_signin-oauth2-t-tenant-name-access-token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JobChangeWebhookEvent"
+              }
+            }
+          }
+        }
+      }
+    },
+    "PayGroupChangeEvent": {
+      "post": {
+        "summary": "Pay Group Change Event",
+        "description": "Triggered when an employee's pay group is changed: \n\n- **Inserts** – The PayGroup data for an EE will be inserted:\n  - Web > Web Import Tool New Hire process\n  - Back Office > New Hire process\n  - Back Office > Import process\n\n- **Updates** – Updates to the PayGroup data can happen by leveraging:\n  - Web > Change Job\n  - Web > Change Job and Salary\n  - Web > Change Salary\n  - Back Office > Manually update EE record\n\n- **Deletes** – Deletes to the PayGroup data can occur if the EE is deleted from Pro:\n  - Web > Administration > Employee Admin > Employee Management > Delete Employee\n  - Back Office > Tools > Utilities > Delete Employee\n\n To obtain a bearer token, refer to https://developer.ukg.com/hcm/reference/post_signin-oauth2-t-tenant-name-access-token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenericWebhookEvent"
+              }
+            }
+          }
+        }
+      }
+    },
+    "PersonHiredEvent": {
+      "post": {
+        "summary": "Person Hired Event",
+        "description": "Triggered when a new employee is hired:\n\n- **Inserts** – Person Hired Event, can be done by performing the following changes:\n  - Web > Add Employee wizard\n  - Web > Add US/Canadian/International Employee wizard\n  - Web > Add Global Employee wizard\n  - Web > Process Hires\n  - Web > Web Import Tool New Hire process\n  - Back Office > Employee > New Hire\n  - Back Office > Import process\n\n To obtain a bearer token, refer to https://developer.ukg.com/hcm/reference/post_signin-oauth2-t-tenant-name-access-token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenericWebhookEvent"
+              }
+            }
+          }
+        }
+      }
+    },
+    "PersonRehiredEvent": {
+      "post": {
+        "summary": "Person Rehired Event",
+        "description": "Triggered when a previously terminated employee is rehired: \n\n- **Updates**\n  - Web > Add Employee (Hire/Rehire)\n    - When this event is generated, it also generates a Person Hired Event.\n  - Back Office > Employee > Rehire\n  - Web > Web Import Tool Employee Transfer Process\n  - Web > Web Import Tool New Hire process\n\n To obtain a bearer token, refer to https://developer.ukg.com/hcm/reference/post_signin-oauth2-t-tenant-name-access-token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenericWebhookEvent"
+              }
+            }
+          }
+        }
+      }
+    },
+    "PersonTerminatedEvent": {
+      "post": {
+        "summary": "Person Terminated Event",
+        "description": "Triggered when an employee is terminated through any of the following methods: \n\n- **Inserts**\n  - Web > Terminate Employee wizard\n  - Back Office > Employee > Terminate\n  - Web > Web Import Tool Termination Process\n\n To obtain a bearer token, refer to https://developer.ukg.com/hcm/reference/post_signin-oauth2-t-tenant-name-access-token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenericWebhookEvent"
+              }
+            }
+          }
+        }
+      }
+    },
+    "PersonTransferredEvent": {
+      "post": {
+        "summary": "Person Transferred Event",
+        "description": "Triggered by employee transfers via: \n\n- **Inserts** – Person Transferred Event, can be done by performing the following changes:\n  - Web > Transfer Employee wizard\n  - Web > Web Import Tool Employee Transfer Process\n  - Back Office > Employee > Company Transfer\n\n To obtain a bearer token, refer to https://developer.ukg.com/hcm/reference/post_signin-oauth2-t-tenant-name-access-token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenericWebhookEvent"
+              }
+            }
+          }
+        }
+      }
+    },
+    "PTOChangeEvent": {
+      "post": {
+        "summary": "PTO Change Event",
+        "description": "Triggered when there is an update or modification to an employee’s Paid Time Off (PTO) Benefit plans data: \n\n- **Inserts** – PTO Benefit plans data for an employee can be added during the new hire process. If not captured at that time, it can be inserted later through one of the following methods:\n  - Web > Web Import Tool (New Hire process)\n  - Back Office > New Hire process\n  - Back Office > Import process\n\n- **Updates** – Updates to PTO Benefit plans data can happen by leveraging:\n  - Web > Add/Change PTO Benefit plans\n  - Web > Web Import Tool > Add/Change PTO Benefit plans\n  - Web > Change Salary\n  - Back Office > Manually update EE record\n\n- **Deletes** – Deletes to PTO Benefit plans data can occur if the EE is deleted from Pro HCM:\n  - Web > Administration > Employee Admin > Employee Management > Delete Employee\n  - Back Office > Tools > Utilities > Delete Employee\n\n To obtain a bearer token, refer to https://developer.ukg.com/hcm/reference/post_signin-oauth2-t-tenant-name-access-token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenericWebhookEvent"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "GenericWebhookEvent": {
+        "type": "object",
+        "properties": {
+          "EventId": {
+            "type": "integer",
+            "description": "A unique identifier for an event, which can be used to correlate back to the source of record."
+          },
+          "EventTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date and time of an event."
+          },
+          "EventType": {
+            "type": "string",
+            "description": "The name of an event, such as `EmployeePersonNameChangeEvent`."
+          },
+          "Operation": {
+            "type": "string",
+            "description": "The type of operation, such as Insert, Update, or Delete."
+          },
+          "Payload": {
+            "type": "object",
+            "description": "The payload containing contextual data sent with an event.",
+            "properties": {
+              "CoId": {
+                "type": "string",
+                "description": "The company identifier, which can be used for API callbacks."
+              },
+              "EeId": {
+                "type": "string",
+                "description": "The employee identifier, which can be used for API callbacks."
+              },
+              "IntegrationRecordId": {
+                "type": [
+                  "null",
+                  "string"
+                ],
+                "description": "An identifier for an integration record, which can be used to correlate back to the source of record."
+              }
+            },
+            "required": [
+              "CoId",
+              "EeId",
+              "IntegrationRecordId"
+            ]
+          },
+          "Tenant": {
+            "type": "string",
+            "description": "A unique identifier for a tenant."
+          }
+        },
+        "required": [
+          "EventId",
+          "EventTime",
+          "EventType",
+          "Operation",
+          "Payload",
+          "Tenant"
+        ]
+      },
+      "JobChangeWebhookEvent": {
+        "type": "object",
+        "properties": {
+          "EventId": {
+            "type": "integer",
+            "description": "A unique identifier for an event, which can be used to correlate back to the source of record."
+          },
+          "EventTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date and time of an event."
+          },
+          "EventType": {
+            "type": "string",
+            "description": "The name of an event, such as `EmployeePersonNameChangeEvent`."
+          },
+          "Operation": {
+            "type": "string",
+            "description": "The type of operation, such as Insert, Update, or Delete."
+          },
+          "Payload": {
+            "type": "object",
+            "description": "The payload containing contextual data sent with an event.",
+            "properties": {
+              "JobCode": {
+                "type": "string",
+                "description": "The job identifier."
+              },
+              "IntegrationRecordId": {
+                "type": [
+                  "null",
+                  "string"
+                ],
+                "description": "An identifier for an integration record, which can be used to correlate back to the source of record."
+              }
+            },
+            "required": [
+              "JobCode",
+              "IntegrationRecordId"
+            ]
+          },
+          "Tenant": {
+            "type": "string",
+            "description": "A unique identifier for a tenant."
+          }
+        },
+        "required": [
+          "EventId",
+          "EventTime",
+          "EventType",
+          "Operation",
+          "Payload",
+          "Tenant"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "name": "Authorization",
+        "type": "apiKey",
+        "in": "header"
+      }
+    }
+  },
+  "x-readme": {
+    "explorer-enabled": false,
+    "proxy-enabled": true
+  },
+  "x-explorer-enabled": false,
+  "security": [
+    {
+      "Bearer": []
+    }
+  ]
+}
