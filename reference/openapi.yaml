@@ -39,6 +39,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+      x-internal: true
     post:
       summary: Create a pet
       operationId: createPets
