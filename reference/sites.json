@@ -9,9 +9,6 @@
       "url": "https://integrations.devirixapi.millimanintelliscript.com"
     }
   ],
-  "x-readme": {
-    "apply-tag-changes": true
-  },
   "paths": {
     "/v1/accounts/{account}/callbacks/unsubscribe": {
       "post": {
@@ -690,7 +687,7 @@
         }
       }
     },
-    "/v1/accounts/{account}/cases/{id}/orders": {
+    "/v1/accounts/{account}/cases/{trackingId}/orders": {
       "post": {
         "operationId": "PostSequentialCase",
         "parameters": [
@@ -703,7 +700,7 @@
             }
           },
           {
-            "name": "id",
+            "name": "trackingId",
             "in": "path",
             "required": true,
             "schema": {
@@ -842,7 +839,7 @@
             }
           },
           {
-            "name": "id",
+            "name": "trackingId",
             "in": "path",
             "required": true,
             "schema": {
@@ -881,7 +878,7 @@
         }
       }
     },
-    "/v1/accounts/{account}/cases/{id}": {
+    "/v1/accounts/{account}/cases/{trackingId}": {
       "get": {
         "operationId": "GetCaseDetail",
         "parameters": [
@@ -894,7 +891,7 @@
             }
           },
           {
-            "name": "id",
+            "name": "trackingId",
             "in": "path",
             "required": true,
             "schema": {
@@ -1040,7 +1037,7 @@
             }
           },
           {
-            "name": "id",
+            "name": "trackingId",
             "in": "path",
             "required": true,
             "schema": {
@@ -1303,7 +1300,7 @@
         }
       }
     },
-    "/v1/accounts/{account}/cases/{id}/prescription-history": {
+    "/v1/accounts/{account}/cases/{trackingId}/prescription-history": {
       "get": {
         "operationId": "Prescription History",
         "parameters": [
@@ -1316,7 +1313,7 @@
             }
           },
           {
-            "name": "id",
+            "name": "trackingId",
             "in": "path",
             "required": true,
             "schema": {
@@ -1360,7 +1357,7 @@
             }
           },
           {
-            "name": "id",
+            "name": "trackingId",
             "in": "path",
             "required": true,
             "schema": {
