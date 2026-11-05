@@ -5,6 +5,6 @@
 - v1accountsaccountcallbackssubscribe
 - v1accountsaccountcallbacksunsubscribe
 - v1accountsaccountcases
-- v1accountsaccountcasestrackingid
-- v1accountsaccountcasestrackingidorders
-- v1accountsaccountcasestrackingidprescription-history
+- v1accountsaccountcasesid
+- v1accountsaccountcasesidorders
+- v1accountsaccountcasesidprescription-history
