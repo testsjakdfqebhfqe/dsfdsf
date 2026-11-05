@@ -1,4 +1,0 @@
----
-title: EmployeeDateDeceasedChangeEvent
-hidden: false
----

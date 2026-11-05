@@ -1,4 +1,0 @@
----
-title: EmployeeSkillChangeEvent
-hidden: false
----

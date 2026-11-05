@@ -1,4 +1,0 @@
----
-title: PersonRehiredEvent
-hidden: false
----

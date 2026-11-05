@@ -1,4 +1,0 @@
----
-title: EmployeeDateOfBirthChangeEvent
-hidden: false
----

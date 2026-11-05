@@ -1,4 +1,0 @@
----
-title: EmployeeDeductionGroupChangeEvent
-hidden: false
----

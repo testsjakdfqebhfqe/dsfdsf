@@ -1,4 +1,0 @@
----
-title: EmployeeHourlyPayRateChangeEvent
-hidden: false
----

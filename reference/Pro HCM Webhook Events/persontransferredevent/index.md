@@ -1,4 +1,0 @@
----
-title: PersonTransferredEvent
-hidden: false
----

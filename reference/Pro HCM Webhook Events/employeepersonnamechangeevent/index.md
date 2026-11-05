@@ -1,4 +1,0 @@
----
-title: EmployeePersonNameChangeEvent
-hidden: false
----

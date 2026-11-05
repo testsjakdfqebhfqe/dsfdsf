@@ -1,4 +1,0 @@
----
-title: EmployeeEmailChangeEvent
-hidden: false
----

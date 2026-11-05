@@ -1,4 +1,0 @@
----
-title: EmployeeMaritalStatusChangeEvent
-hidden: false
----
