@@ -1,0 +1,4 @@
+---
+title: /healthcheck
+hidden: false
+---
