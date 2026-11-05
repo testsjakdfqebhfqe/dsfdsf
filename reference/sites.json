@@ -687,7 +687,7 @@
         }
       }
     },
-    "/v1/accounts/{account}/cases/{trackingId}/orders": {
+    "/v1/accounts/{account}/cases/{id}/orders": {
       "post": {
         "operationId": "PostSequentialCase",
         "parameters": [
@@ -700,7 +700,7 @@
             }
           },
           {
-            "name": "trackingId",
+            "name": "id",
             "in": "path",
             "required": true,
             "schema": {
@@ -839,7 +839,7 @@
             }
           },
           {
-            "name": "trackingId",
+            "name": "id",
             "in": "path",
             "required": true,
             "schema": {
@@ -878,7 +878,7 @@
         }
       }
     },
-    "/v1/accounts/{account}/cases/{trackingId}": {
+    "/v1/accounts/{account}/cases/{id}": {
       "get": {
         "operationId": "GetCaseDetail",
         "parameters": [
@@ -891,7 +891,7 @@
             }
           },
           {
-            "name": "trackingId",
+            "name": "id",
             "in": "path",
             "required": true,
             "schema": {
@@ -1037,7 +1037,7 @@
             }
           },
           {
-            "name": "trackingId",
+            "name": "id",
             "in": "path",
             "required": true,
             "schema": {
@@ -1300,7 +1300,7 @@
         }
       }
     },
-    "/v1/accounts/{account}/cases/{trackingId}/prescription-history": {
+    "/v1/accounts/{account}/cases/{id}/prescription-history": {
       "get": {
         "operationId": "Prescription History",
         "parameters": [
@@ -1313,7 +1313,7 @@
             }
           },
           {
-            "name": "trackingId",
+            "name": "id",
             "in": "path",
             "required": true,
             "schema": {
@@ -1357,7 +1357,7 @@
             }
           },
           {
-            "name": "trackingId",
+            "name": "id",
             "in": "path",
             "required": true,
             "schema": {
