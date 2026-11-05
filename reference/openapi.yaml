@@ -11,7 +11,6 @@ paths:
     get:
       summary: List all pets
       operationId: listPetss
-      x-internal: false
       tags:
         - pets
       parameters:
