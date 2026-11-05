@@ -1,4 +1,0 @@
----
-title: /healthcheck
-hidden: false
----
