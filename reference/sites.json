@@ -86,7 +86,7 @@
         }
       }
     },
-    "/pets/{petId}": {
+    "/pets/{Id}": {
       "get": {
         "summary": "Info for a specific pet",
         "operationId": "showPetById",
@@ -95,7 +95,7 @@
         ],
         "parameters": [
           {
-            "name": "petId",
+            "name": "Id",
             "in": "path",
             "required": true,
             "description": "The id of the pet to retrieve",
