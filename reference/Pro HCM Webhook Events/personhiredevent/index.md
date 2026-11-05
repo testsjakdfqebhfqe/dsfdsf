@@ -1,0 +1,4 @@
+---
+title: PersonHiredEvent
+hidden: false
+---
