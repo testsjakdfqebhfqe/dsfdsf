@@ -39,7 +39,7 @@
         "flows": {
           "authorizationCode": {
             "x-readme": {
-              "proxy-enabled": true
+              "proxy-enabled": false
             },
             "authorizationUrl": "https://489c-185-70-55-157.ngrok-free.app/oauth/authorize",
             "tokenUrl": "https://489c-185-70-55-157.ngrok-free.app/oauth/token",
