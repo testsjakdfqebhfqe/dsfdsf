@@ -11,7 +11,7 @@
   ],
   "x-readme": {
     "oauth-options": {
-      "usePkce": true
+      "usePkce": false
     }
   },
   "paths": {
