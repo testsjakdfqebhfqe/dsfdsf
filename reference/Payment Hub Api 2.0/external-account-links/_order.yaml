@@ -1,8 +1,0 @@
-- paymenthub_post_createexternalaccountlink
-- paymenthub_post_loadexternalaccountlinks
-- paymenthub_post_modifyexternalaccountlink
-- paymenthub_post_getexternalaccountlink
-- paymenthub_post_listexternalaccountlinks
-- paymenthub_post_removeexternalaccountlink
-- paymenthub_post_getexternalaccountlinkaccess
-- paymenthub_post_validateexternalaccountlink
