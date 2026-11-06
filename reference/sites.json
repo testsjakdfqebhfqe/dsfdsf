@@ -11,7 +11,8 @@
   ],
   "x-readme": {
     "oauth-options": {
-      "useInsecureClientAuthentication": true
+      "useInsecureClientAuthentication": true,
+      "usePkce": true
     }
   },
   "paths": {
