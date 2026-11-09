@@ -73,4 +73,4 @@ In order to check all benchmark rules, the AWS policy needs to be updated.
 
 ![image.png](https://raw.githubusercontent.com/Axonius/ax-docs-pub/refs/heads/main/Images/image\(1023\)\(836\).png)
 
-\<!-- Without these settings enabled, you will not be able to see the affected assets in the **Devices/Users** page. -->
+\<!--Without these settings enabled, you will not be able to see the affected assets in the **Devices/Users** page.-->
