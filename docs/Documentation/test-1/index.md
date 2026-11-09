@@ -5,7 +5,9 @@ hidden: false
 metadata:
   robots: index
 ---
-All of the Cloud Asset Compliance calculations are done as part of your discovery cycle using the same AWS accounts that were configured as part of the existing AWS adapters.
+{/*All of the Cloud Asset Compliance calculations are done as part of your discovery cycle using the same AWS accounts that were configured as part of the existing AWS adapters. */}
+
+{/* test */}
 
 ## Updated AWS Policy
 
