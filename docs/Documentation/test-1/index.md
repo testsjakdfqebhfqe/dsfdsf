@@ -5,7 +5,7 @@ hidden: false
 metadata:
   robots: index
 ---
-{/*All of the Cloud Asset Compliance calculations are done as part of your discovery cycle using the same AWS accounts that were configured as part of the existing AWS adapters. */}
+{/*All of the Cloud Asset Compliance calculations are done as part of your discovery cycle using the same AWS accounts that were configured as part of the existing AWS adapters.
 
 {/* test */}
 
@@ -73,4 +73,8 @@ In order to check all benchmark rules, the AWS policy needs to be updated.
 
 ![image.png](https://raw.githubusercontent.com/Axonius/ax-docs-pub/refs/heads/main/Images/image\(1023\)\(836\).png)
 
-\<!--Without these settings enabled, you will not be able to see the affected assets in the **Devices/Users** page.-->
+\{/\*
+
+Without these settings enabled, you will not be able to see the affected assets in the **Devices/Users** page.
+
+\*/\}
