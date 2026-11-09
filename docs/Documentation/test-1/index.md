@@ -75,6 +75,6 @@ In order to check all benchmark rules, the AWS policy needs to be updated.
 
 \{/\*
 
-Without these settings enabled, you will not be able to see the affected assets in the **Devices/Users** page.
+Without these settings enabled, you will not be able to see the affected assets in the Devices/Users page.
 
 \*/\}
