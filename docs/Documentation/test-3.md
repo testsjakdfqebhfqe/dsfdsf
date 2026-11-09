@@ -5,7 +5,7 @@ hidden: false
 metadata:
   robots: index
 ---
-{/* testikd */}
+{/* text */}
 
 <br />
 
