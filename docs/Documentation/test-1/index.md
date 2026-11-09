@@ -66,7 +66,7 @@ In order to check all benchmark rules, the AWS policy needs to be updated.
 
 ## Update Advanced Settings to view Affected Assets
 
-\{/\* The **Affected Assets** displays IAM Users, EC2 machines, and S3 buckets that are affected from AWS entities that failed the check of rules in the CIS benchmarks. In order to display this assets the following must be enabled in the [ Advanced Settings in the AWS Adapter](/docs/amazon-web-services-aws#configuring-aws-correlation-logic-and-retrieved-information):  \*/\}
+\<!-- _The&#x20;_**_Affected Assets_**_&#x20;displays IAM Users, EC2 machines, and S3 buckets that are affected from AWS entities that failed the check of rules in the CIS benchmarks. In order to display this assets the following must be enabled in the&#x20;_[ Advanced Settings in the AWS Adapter](/docs/amazon-web-services-aws#configuring-aws-correlation-logic-and-retrieved-information)_&#x20;-->_
 
 * Fetch information about IAM Users
 * Fetch information about S3
