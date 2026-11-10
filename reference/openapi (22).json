@@ -69,10 +69,29 @@
             "explode": false
           },
           {
-            "$ref": "#/components/parameters/PageParametersV2.pageNumber"
+            "name": "page[number]",
+            "in": "query",
+            "required": false,
+            "description": "The page of results that you want to retrieve. If not provided, the first page\nof results will be returned. Use in connection with `page[size]` to handle large result sets.\n\nExample: `page[number]=2&page[size]=25` will return the second page of result (results 26-50 based\non the `sort` value).",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1
+            },
+            "explode": false
           },
           {
-            "$ref": "#/components/parameters/PageParametersV2.pageSize"
+            "name": "page[size]",
+            "in": "query",
+            "required": false,
+            "description": "Sets the number of records to return per page. If not provided, the default is 25 records per\npage. Valid values for page size are any integer from 1 to 100.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1,
+              "maximum": 100
+            },
+            "explode": false
           },
           {
             "$ref": "#/components/parameters/CompanySortParameters"
@@ -168,10 +187,29 @@
         "description": "Retrieves detailed information about individual company records. The request body accepts one of two resource\ntypes, selected by the `type` field:\n\n- `EnrichByIdRequest`: enrich directly by ZoomInfo Company ID. Pass the IDs in `id`.\n- `EnrichRequest`: enrich by match criteria. Pass up to 25 entries in `inputs` (such as `name` or `website`)\n  and ZoomInfo returns the best match for each. The more detail you provide, the more likely the match is correct.\n  Use `requiredFields` to list the fields a match must contain.\n\nBest practice is to first use [Search Companies](ref:companies_searchcompanies) to identify the records you want\nto enrich, then enrich them with `EnrichByIdRequest`. If your workflow does not support a two-stage retrieval,\nuse `EnrichRequest`.\n\nWith either type, use `outputFields` to select which fields to return for each record. To see every available\noutput field, and whether your account has access to it, use the\n[Lookup Enrich](ref:lookupenrichinterface_lookupenrich) endpoint (`filter[entity]=company` and\n`filter[fieldType]=output`). If you do not have access to a field you need, contact your ZoomInfo Account Manager.\n\n`EnrichRequest` also resolves a visitor's IPv4 address to the associated company, commonly used to identify the\ncompanies behind website traffic. To use this path, submit `ipAddress` as the sole input for that record. If other\ncompany attributes are included, the request is matched on those attributes instead.\n\nEach record returned by this endpoint charges a credit to your account, unless the record is already under\nmanagement (see [Credit Usage and Limits](doc:credit-usage-and-limits)). No credit is charged if no match is found\nor if the request returns an error.",
         "parameters": [
           {
-            "$ref": "#/components/parameters/PageParametersV2.pageNumber"
+            "name": "page[number]",
+            "in": "query",
+            "required": false,
+            "description": "The page of results that you want to retrieve. If not provided, the first page\nof results will be returned. Use in connection with `page[size]` to handle large result sets.\n\nExample: `page[number]=2&page[size]=25` will return the second page of result (results 26-50 based\non the `sort` value).",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1
+            },
+            "explode": false
           },
           {
-            "$ref": "#/components/parameters/PageParametersV2.pageSize"
+            "name": "page[size]",
+            "in": "query",
+            "required": false,
+            "description": "Sets the number of records to return per page. If not provided, the default is 25 records per\npage. Valid values for page size are any integer from 1 to 100.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1,
+              "maximum": 100
+            },
+            "explode": false
           },
           {
             "$ref": "#/components/parameters/CompanySortParameters"
@@ -367,10 +405,29 @@
             "explode": false
           },
           {
-            "$ref": "#/components/parameters/PageParametersV2.pageNumber"
+            "name": "page[number]",
+            "in": "query",
+            "required": false,
+            "description": "The page of results that you want to retrieve. If not provided, the first page\nof results will be returned. Use in connection with `page[size]` to handle large result sets.\n\nExample: `page[number]=2&page[size]=25` will return the second page of result (results 26-50 based\non the `sort` value).",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1
+            },
+            "explode": false
           },
           {
-            "$ref": "#/components/parameters/PageParametersV2.pageSize"
+            "name": "page[size]",
+            "in": "query",
+            "required": false,
+            "description": "Sets the number of records to return per page. If not provided, the default is 25 records per\npage. Valid values for page size are any integer from 1 to 100.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1,
+              "maximum": 100
+            },
+            "explode": false
           },
           {
             "$ref": "#/components/parameters/ContactSortParameters"
@@ -477,10 +534,29 @@
             "explode": false
           },
           {
-            "$ref": "#/components/parameters/PageParametersV2.pageNumber"
+            "name": "page[number]",
+            "in": "query",
+            "required": false,
+            "description": "The page of results that you want to retrieve. If not provided, the first page\nof results will be returned. Use in connection with `page[size]` to handle large result sets.\n\nExample: `page[number]=2&page[size]=25` will return the second page of result (results 26-50 based\non the `sort` value).",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1
+            },
+            "explode": false
           },
           {
-            "$ref": "#/components/parameters/PageParametersV2.pageSize"
+            "name": "page[size]",
+            "in": "query",
+            "required": false,
+            "description": "Sets the number of records to return per page. If not provided, the default is 25 records per\npage. Valid values for page size are any integer from 1 to 100.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1,
+              "maximum": 100
+            },
+            "explode": false
           },
           {
             "$ref": "#/components/parameters/ContactSortParameters"
@@ -776,10 +852,29 @@
             "explode": false
           },
           {
-            "$ref": "#/components/parameters/PageParametersV2.pageNumber"
+            "name": "page[number]",
+            "in": "query",
+            "required": false,
+            "description": "The page of results that you want to retrieve. If not provided, the first page\nof results will be returned. Use in connection with `page[size]` to handle large result sets.\n\nExample: `page[number]=2&page[size]=25` will return the second page of result (results 26-50 based\non the `sort` value).",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1
+            },
+            "explode": false
           },
           {
-            "$ref": "#/components/parameters/PageParametersV2.pageSize"
+            "name": "page[size]",
+            "in": "query",
+            "required": false,
+            "description": "Sets the number of records to return per page. If not provided, the default is 25 records per\npage. Valid values for page size are any integer from 1 to 100.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1,
+              "maximum": 100
+            },
+            "explode": false
           },
           {
             "$ref": "#/components/parameters/ScoopSortParameters"
@@ -875,10 +970,29 @@
         "description": "Returns the Scoops that match the supplied Scoop IDs.\nUse `attributes.id` in the request body to pass up to 250 Scoop IDs.\nUse `outputFields` to select which Scoop fields are returned. Only Scoop output fields are accepted.",
         "parameters": [
           {
-            "$ref": "#/components/parameters/PageParametersV2.pageNumber"
+            "name": "page[number]",
+            "in": "query",
+            "required": false,
+            "description": "The page of results that you want to retrieve. If not provided, the first page\nof results will be returned. Use in connection with `page[size]` to handle large result sets.\n\nExample: `page[number]=2&page[size]=25` will return the second page of result (results 26-50 based\non the `sort` value).",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1
+            },
+            "explode": false
           },
           {
-            "$ref": "#/components/parameters/PageParametersV2.pageSize"
+            "name": "page[size]",
+            "in": "query",
+            "required": false,
+            "description": "Sets the number of records to return per page. If not provided, the default is 25 records per\npage. Valid values for page size are any integer from 1 to 100.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1,
+              "maximum": 100
+            },
+            "explode": false
           },
           {
             "$ref": "#/components/parameters/ScoopSortParameters"
@@ -985,10 +1099,29 @@
             "explode": false
           },
           {
-            "$ref": "#/components/parameters/PageParametersV2.pageNumber"
+            "name": "page[number]",
+            "in": "query",
+            "required": false,
+            "description": "The page of results that you want to retrieve. If not provided, the first page\nof results will be returned. Use in connection with `page[size]` to handle large result sets.\n\nExample: `page[number]=2&page[size]=25` will return the second page of result (results 26-50 based\non the `sort` value).",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1
+            },
+            "explode": false
           },
           {
-            "$ref": "#/components/parameters/PageParametersV2.pageSize"
+            "name": "page[size]",
+            "in": "query",
+            "required": false,
+            "description": "Sets the number of records to return per page. If not provided, the default is 25 records per\npage. Valid values for page size are any integer from 1 to 100.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1,
+              "maximum": 100
+            },
+            "explode": false
           },
           {
             "$ref": "#/components/parameters/NewsSortParameters"
@@ -1152,10 +1285,29 @@
         "description": "Returns the full record for each news article that matches the supplied article IDs.\nUse `id.in` in the request body to pass 1 to 250 article IDs.\nUse `outputFields` to select which news fields are returned. Only news output fields are accepted.\nUse `page[number]` and `page[size]` to page through the results, and `sort` to order them.",
         "parameters": [
           {
-            "$ref": "#/components/parameters/PageParametersV2.pageNumber"
+            "name": "page[number]",
+            "in": "query",
+            "required": false,
+            "description": "The page of results that you want to retrieve. If not provided, the first page\nof results will be returned. Use in connection with `page[size]` to handle large result sets.\n\nExample: `page[number]=2&page[size]=25` will return the second page of result (results 26-50 based\non the `sort` value).",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1
+            },
+            "explode": false
           },
           {
-            "$ref": "#/components/parameters/PageParametersV2.pageSize"
+            "name": "page[size]",
+            "in": "query",
+            "required": false,
+            "description": "Sets the number of records to return per page. If not provided, the default is 25 records per\npage. Valid values for page size are any integer from 1 to 100.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1,
+              "maximum": 100
+            },
+            "explode": false
           },
           {
             "$ref": "#/components/parameters/NewsSortParameters"
@@ -1317,10 +1469,29 @@
             "explode": false
           },
           {
-            "$ref": "#/components/parameters/PageParametersV2.pageNumber"
+            "name": "page[number]",
+            "in": "query",
+            "required": false,
+            "description": "The page of results that you want to retrieve. If not provided, the first page\nof results will be returned. Use in connection with `page[size]` to handle large result sets.\n\nExample: `page[number]=2&page[size]=25` will return the second page of result (results 26-50 based\non the `sort` value).",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1
+            },
+            "explode": false
           },
           {
-            "$ref": "#/components/parameters/PageParametersV2.pageSize"
+            "name": "page[size]",
+            "in": "query",
+            "required": false,
+            "description": "Sets the number of records to return per page. If not provided, the default is 25 records per\npage. Valid values for page size are any integer from 1 to 100.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1,
+              "maximum": 100
+            },
+            "explode": false
           },
           {
             "$ref": "#/components/parameters/AccountLevelIntentSortParameters"
@@ -1416,10 +1587,29 @@
         "description": "Returns the account-level intent signals that match the supplied IDs.\nUse `attributes.id` in the request body to pass up to 250 account-level intent IDs.\nUse `outputFields` to select which account-level intent fields are returned. Only account-level intent output fields are accepted.",
         "parameters": [
           {
-            "$ref": "#/components/parameters/PageParametersV2.pageNumber"
+            "name": "page[number]",
+            "in": "query",
+            "required": false,
+            "description": "The page of results that you want to retrieve. If not provided, the first page\nof results will be returned. Use in connection with `page[size]` to handle large result sets.\n\nExample: `page[number]=2&page[size]=25` will return the second page of result (results 26-50 based\non the `sort` value).",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1
+            },
+            "explode": false
           },
           {
-            "$ref": "#/components/parameters/PageParametersV2.pageSize"
+            "name": "page[size]",
+            "in": "query",
+            "required": false,
+            "description": "Sets the number of records to return per page. If not provided, the default is 25 records per\npage. Valid values for page size are any integer from 1 to 100.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1,
+              "maximum": 100
+            },
+            "explode": false
           },
           {
             "$ref": "#/components/parameters/AccountLevelIntentSortParameters"
@@ -1526,10 +1716,29 @@
             "explode": false
           },
           {
-            "$ref": "#/components/parameters/PageParametersV2.pageNumber"
+            "name": "page[number]",
+            "in": "query",
+            "required": false,
+            "description": "The page of results that you want to retrieve. If not provided, the first page\nof results will be returned. Use in connection with `page[size]` to handle large result sets.\n\nExample: `page[number]=2&page[size]=25` will return the second page of result (results 26-50 based\non the `sort` value).",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1
+            },
+            "explode": false
           },
           {
-            "$ref": "#/components/parameters/PageParametersV2.pageSize"
+            "name": "page[size]",
+            "in": "query",
+            "required": false,
+            "description": "Sets the number of records to return per page. If not provided, the default is 25 records per\npage. Valid values for page size are any integer from 1 to 100.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1,
+              "maximum": 100
+            },
+            "explode": false
           },
           {
             "$ref": "#/components/parameters/GtmAccountSortParameters"
@@ -1625,10 +1834,29 @@
         "description": "Returns the GTM accounts that match the supplied account IDs.\nGTM accounts are GTM data model records. Use `attributes.id` in the request body to pass up to 250 account IDs.\nUse `outputFields` to select which GTM account fields are returned. Only GTM account output fields are accepted.",
         "parameters": [
           {
-            "$ref": "#/components/parameters/PageParametersV2.pageNumber"
+            "name": "page[number]",
+            "in": "query",
+            "required": false,
+            "description": "The page of results that you want to retrieve. If not provided, the first page\nof results will be returned. Use in connection with `page[size]` to handle large result sets.\n\nExample: `page[number]=2&page[size]=25` will return the second page of result (results 26-50 based\non the `sort` value).",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1
+            },
+            "explode": false
           },
           {
-            "$ref": "#/components/parameters/PageParametersV2.pageSize"
+            "name": "page[size]",
+            "in": "query",
+            "required": false,
+            "description": "Sets the number of records to return per page. If not provided, the default is 25 records per\npage. Valid values for page size are any integer from 1 to 100.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1,
+              "maximum": 100
+            },
+            "explode": false
           },
           {
             "$ref": "#/components/parameters/GtmAccountSortParameters"
@@ -1735,10 +1963,29 @@
             "explode": false
           },
           {
-            "$ref": "#/components/parameters/PageParametersV2.pageNumber"
+            "name": "page[number]",
+            "in": "query",
+            "required": false,
+            "description": "The page of results that you want to retrieve. If not provided, the first page\nof results will be returned. Use in connection with `page[size]` to handle large result sets.\n\nExample: `page[number]=2&page[size]=25` will return the second page of result (results 26-50 based\non the `sort` value).",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1
+            },
+            "explode": false
           },
           {
-            "$ref": "#/components/parameters/PageParametersV2.pageSize"
+            "name": "page[size]",
+            "in": "query",
+            "required": false,
+            "description": "Sets the number of records to return per page. If not provided, the default is 25 records per\npage. Valid values for page size are any integer from 1 to 100.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1,
+              "maximum": 100
+            },
+            "explode": false
           },
           {
             "$ref": "#/components/parameters/GtmContactSortParameters"
@@ -2098,10 +2345,29 @@
         "description": "Returns the GTM contacts that match the supplied contact IDs.\nGTM contacts are GTM data model records. Use `attributes.id` in the request body to pass up to 250 contact IDs.\nUse `outputFields` to select which GTM contact fields are returned. Only GTM contact output fields are accepted.",
         "parameters": [
           {
-            "$ref": "#/components/parameters/PageParametersV2.pageNumber"
+            "name": "page[number]",
+            "in": "query",
+            "required": false,
+            "description": "The page of results that you want to retrieve. If not provided, the first page\nof results will be returned. Use in connection with `page[size]` to handle large result sets.\n\nExample: `page[number]=2&page[size]=25` will return the second page of result (results 26-50 based\non the `sort` value).",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1
+            },
+            "explode": false
           },
           {
-            "$ref": "#/components/parameters/PageParametersV2.pageSize"
+            "name": "page[size]",
+            "in": "query",
+            "required": false,
+            "description": "Sets the number of records to return per page. If not provided, the default is 25 records per\npage. Valid values for page size are any integer from 1 to 100.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1,
+              "maximum": 100
+            },
+            "explode": false
           },
           {
             "$ref": "#/components/parameters/GtmContactSortParameters"
@@ -2290,10 +2556,29 @@
             "explode": false
           },
           {
-            "$ref": "#/components/parameters/PageParametersV2.pageNumber"
+            "name": "page[number]",
+            "in": "query",
+            "required": false,
+            "description": "The page of results that you want to retrieve. If not provided, the first page\nof results will be returned. Use in connection with `page[size]` to handle large result sets.\n\nExample: `page[number]=2&page[size]=25` will return the second page of result (results 26-50 based\non the `sort` value).",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1
+            },
+            "explode": false
           },
           {
-            "$ref": "#/components/parameters/PageParametersV2.pageSize"
+            "name": "page[size]",
+            "in": "query",
+            "required": false,
+            "description": "Sets the number of records to return per page. If not provided, the default is 25 records per\npage. Valid values for page size are any integer from 1 to 100.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1,
+              "maximum": 100
+            },
+            "explode": false
           },
           {
             "$ref": "#/components/parameters/GtmOpportunitySortParameters"
@@ -2389,10 +2674,29 @@
         "description": "Returns the full record for each GTM opportunity that matches the supplied opportunity IDs.\nGTM opportunities are GTM data model records. Use `id.in` in the request body to pass 1 to 250 opportunity IDs.\nUse `outputFields` to select which GTM opportunity fields are returned. Only GTM opportunity output fields are accepted.\nUse `page[number]` and `page[size]` to page through the results, and `sort` to order them.",
         "parameters": [
           {
-            "$ref": "#/components/parameters/PageParametersV2.pageNumber"
+            "name": "page[number]",
+            "in": "query",
+            "required": false,
+            "description": "The page of results that you want to retrieve. If not provided, the first page\nof results will be returned. Use in connection with `page[size]` to handle large result sets.\n\nExample: `page[number]=2&page[size]=25` will return the second page of result (results 26-50 based\non the `sort` value).",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1
+            },
+            "explode": false
           },
           {
-            "$ref": "#/components/parameters/PageParametersV2.pageSize"
+            "name": "page[size]",
+            "in": "query",
+            "required": false,
+            "description": "Sets the number of records to return per page. If not provided, the default is 25 records per\npage. Valid values for page size are any integer from 1 to 100.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1,
+              "maximum": 100
+            },
+            "explode": false
           },
           {
             "$ref": "#/components/parameters/GtmOpportunitySortParameters"
@@ -2499,10 +2803,29 @@
             "explode": false
           },
           {
-            "$ref": "#/components/parameters/PageParametersV2.pageNumber"
+            "name": "page[number]",
+            "in": "query",
+            "required": false,
+            "description": "The page of results that you want to retrieve. If not provided, the first page\nof results will be returned. Use in connection with `page[size]` to handle large result sets.\n\nExample: `page[number]=2&page[size]=25` will return the second page of result (results 26-50 based\non the `sort` value).",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1
+            },
+            "explode": false
           },
           {
-            "$ref": "#/components/parameters/PageParametersV2.pageSize"
+            "name": "page[size]",
+            "in": "query",
+            "required": false,
+            "description": "Sets the number of records to return per page. If not provided, the default is 25 records per\npage. Valid values for page size are any integer from 1 to 100.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1,
+              "maximum": 100
+            },
+            "explode": false
           },
           {
             "$ref": "#/components/parameters/GtmUserSortParameters"
@@ -2598,10 +2921,29 @@
         "description": "Returns the GTM users that match the supplied GTM user IDs.\nUse `attributes.id` in the request body to pass up to 250 GTM user IDs.\nUse `outputFields` to select which GTM user fields are returned. Only GTM user output fields are accepted.",
         "parameters": [
           {
-            "$ref": "#/components/parameters/PageParametersV2.pageNumber"
+            "name": "page[number]",
+            "in": "query",
+            "required": false,
+            "description": "The page of results that you want to retrieve. If not provided, the first page\nof results will be returned. Use in connection with `page[size]` to handle large result sets.\n\nExample: `page[number]=2&page[size]=25` will return the second page of result (results 26-50 based\non the `sort` value).",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1
+            },
+            "explode": false
           },
           {
-            "$ref": "#/components/parameters/PageParametersV2.pageSize"
+            "name": "page[size]",
+            "in": "query",
+            "required": false,
+            "description": "Sets the number of records to return per page. If not provided, the default is 25 records per\npage. Valid values for page size are any integer from 1 to 100.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1,
+              "maximum": 100
+            },
+            "explode": false
           },
           {
             "$ref": "#/components/parameters/GtmUserSortParameters"
@@ -2708,10 +3050,29 @@
             "explode": false
           },
           {
-            "$ref": "#/components/parameters/PageParametersV2.pageNumber"
+            "name": "page[number]",
+            "in": "query",
+            "required": false,
+            "description": "The page of results that you want to retrieve. If not provided, the first page\nof results will be returned. Use in connection with `page[size]` to handle large result sets.\n\nExample: `page[number]=2&page[size]=25` will return the second page of result (results 26-50 based\non the `sort` value).",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1
+            },
+            "explode": false
           },
           {
-            "$ref": "#/components/parameters/PageParametersV2.pageSize"
+            "name": "page[size]",
+            "in": "query",
+            "required": false,
+            "description": "Sets the number of records to return per page. If not provided, the default is 25 records per\npage. Valid values for page size are any integer from 1 to 100.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1,
+              "maximum": 100
+            },
+            "explode": false
           },
           {
             "$ref": "#/components/parameters/EmailSortParameters"
@@ -2807,10 +3168,29 @@
         "description": "Returns the emails that match the supplied email IDs.\nUse `attributes.id` in the request body to pass up to 250 email IDs.\nUse `outputFields` to select which email fields are returned. Only email output fields are accepted.",
         "parameters": [
           {
-            "$ref": "#/components/parameters/PageParametersV2.pageNumber"
+            "name": "page[number]",
+            "in": "query",
+            "required": false,
+            "description": "The page of results that you want to retrieve. If not provided, the first page\nof results will be returned. Use in connection with `page[size]` to handle large result sets.\n\nExample: `page[number]=2&page[size]=25` will return the second page of result (results 26-50 based\non the `sort` value).",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1
+            },
+            "explode": false
           },
           {
-            "$ref": "#/components/parameters/PageParametersV2.pageSize"
+            "name": "page[size]",
+            "in": "query",
+            "required": false,
+            "description": "Sets the number of records to return per page. If not provided, the default is 25 records per\npage. Valid values for page size are any integer from 1 to 100.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1,
+              "maximum": 100
+            },
+            "explode": false
           },
           {
             "$ref": "#/components/parameters/EmailSortParameters"
@@ -2917,10 +3297,29 @@
             "explode": false
           },
           {
-            "$ref": "#/components/parameters/PageParametersV2.pageNumber"
+            "name": "page[number]",
+            "in": "query",
+            "required": false,
+            "description": "The page of results that you want to retrieve. If not provided, the first page\nof results will be returned. Use in connection with `page[size]` to handle large result sets.\n\nExample: `page[number]=2&page[size]=25` will return the second page of result (results 26-50 based\non the `sort` value).",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1
+            },
+            "explode": false
           },
           {
-            "$ref": "#/components/parameters/PageParametersV2.pageSize"
+            "name": "page[size]",
+            "in": "query",
+            "required": false,
+            "description": "Sets the number of records to return per page. If not provided, the default is 25 records per\npage. Valid values for page size are any integer from 1 to 100.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1,
+              "maximum": 100
+            },
+            "explode": false
           },
           {
             "$ref": "#/components/parameters/MeetingSortParameters"
@@ -3016,10 +3415,29 @@
         "description": "Returns the meetings that match the supplied meeting IDs.\nUse `attributes.id` in the request body to pass up to 250 meeting IDs.\nUse `outputFields` to select which meeting fields are returned. Only meeting output fields are accepted.",
         "parameters": [
           {
-            "$ref": "#/components/parameters/PageParametersV2.pageNumber"
+            "name": "page[number]",
+            "in": "query",
+            "required": false,
+            "description": "The page of results that you want to retrieve. If not provided, the first page\nof results will be returned. Use in connection with `page[size]` to handle large result sets.\n\nExample: `page[number]=2&page[size]=25` will return the second page of result (results 26-50 based\non the `sort` value).",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1
+            },
+            "explode": false
           },
           {
-            "$ref": "#/components/parameters/PageParametersV2.pageSize"
+            "name": "page[size]",
+            "in": "query",
+            "required": false,
+            "description": "Sets the number of records to return per page. If not provided, the default is 25 records per\npage. Valid values for page size are any integer from 1 to 100.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1,
+              "maximum": 100
+            },
+            "explode": false
           },
           {
             "$ref": "#/components/parameters/MeetingSortParameters"
@@ -3126,10 +3544,29 @@
             "explode": false
           },
           {
-            "$ref": "#/components/parameters/PageParametersV2.pageNumber"
+            "name": "page[number]",
+            "in": "query",
+            "required": false,
+            "description": "The page of results that you want to retrieve. If not provided, the first page\nof results will be returned. Use in connection with `page[size]` to handle large result sets.\n\nExample: `page[number]=2&page[size]=25` will return the second page of result (results 26-50 based\non the `sort` value).",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1
+            },
+            "explode": false
           },
           {
-            "$ref": "#/components/parameters/PageParametersV2.pageSize"
+            "name": "page[size]",
+            "in": "query",
+            "required": false,
+            "description": "Sets the number of records to return per page. If not provided, the default is 25 records per\npage. Valid values for page size are any integer from 1 to 100.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1,
+              "maximum": 100
+            },
+            "explode": false
           },
           {
             "$ref": "#/components/parameters/ContentInteractionSortParameters"
@@ -3225,10 +3662,29 @@
         "description": "Returns the content interactions that match the supplied content interaction IDs.\nUse `attributes.id` in the request body to pass up to 250 content interaction IDs.\nUse `outputFields` to select which content interaction fields are returned. Only content interaction output fields are accepted.",
         "parameters": [
           {
-            "$ref": "#/components/parameters/PageParametersV2.pageNumber"
+            "name": "page[number]",
+            "in": "query",
+            "required": false,
+            "description": "The page of results that you want to retrieve. If not provided, the first page\nof results will be returned. Use in connection with `page[size]` to handle large result sets.\n\nExample: `page[number]=2&page[size]=25` will return the second page of result (results 26-50 based\non the `sort` value).",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1
+            },
+            "explode": false
           },
           {
-            "$ref": "#/components/parameters/PageParametersV2.pageSize"
+            "name": "page[size]",
+            "in": "query",
+            "required": false,
+            "description": "Sets the number of records to return per page. If not provided, the default is 25 records per\npage. Valid values for page size are any integer from 1 to 100.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1,
+              "maximum": 100
+            },
+            "explode": false
           },
           {
             "$ref": "#/components/parameters/ContentInteractionSortParameters"
@@ -13129,11 +13585,15 @@
           },
           {
             "type": "array",
-            "items": {}
+            "items": {
+              "$ref": "#/components/schemas/CustomFieldResponseValue"
+            }
           },
           {
             "type": "object",
-            "unevaluatedProperties": {}
+            "unevaluatedProperties": {
+              "$ref": "#/components/schemas/CustomFieldResponseValue"
+            }
           }
         ],
         "description": "A custom-field response value. Objects have string keys and may contain nested JSON values; arrays may contain any of these value types."
