@@ -83,6 +83,14 @@
                 "schema": {
                   "$ref": "#/components/schemas/CompanySearchResponseV2"
                 }
+              },
+              "application/json": {
+                "examples": {
+                  "OK": {
+                    "summary": "OK",
+                    "value": " "
+                  }
+                }
               }
             }
           },
