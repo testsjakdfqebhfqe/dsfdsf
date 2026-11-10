@@ -8260,13 +8260,6 @@
             "$ref": "#/components/schemas/NoMatchCompanyV2"
           }
         ],
-        "discriminator": {
-          "propertyName": "type",
-          "mapping": {
-            "Company": "#/components/schemas/EnrichCompanyV2",
-            "NoMatch": "#/components/schemas/NoMatchCompanyV2"
-          }
-        },
         "description": "Represents the possible resource types returned in a company enrich response, including both a successful company match and a no-match result. Used to encapsulate the response resource for company enrichment."
       },
       "CompanyEnrichResponseV2": {
@@ -8473,13 +8466,6 @@
             "$ref": "#/components/schemas/CompaniesEnrichByIdsResource"
           }
         ],
-        "discriminator": {
-          "propertyName": "type",
-          "mapping": {
-            "EnrichRequest": "#/components/schemas/CompaniesEnrichByCriteriaRequestResourceV2",
-            "EnrichByIdRequest": "#/components/schemas/CompaniesEnrichByIdsResource"
-          }
-        },
         "description": "Represents the request resource types accepted by Enrich company: matching on criteria, or enriching directly by ZoomInfo Company ID."
       },
       "CompaniesEnrichRequest": {
@@ -8603,13 +8589,6 @@
             "$ref": "#/components/schemas/NoMatchCompanyResult"
           }
         ],
-        "discriminator": {
-          "propertyName": "type",
-          "mapping": {
-            "CompanyMatch": "#/components/schemas/MatchCompanyResource",
-            "NoMatch": "#/components/schemas/NoMatchCompanyResult"
-          }
-        },
         "description": "Represents the possible resource types returned in a company match response, including both a successful match and a no-match result."
       },
       "CompanyMatchResponse": {
@@ -9415,13 +9394,6 @@
             "$ref": "#/components/schemas/NoMatchContactV2"
           }
         ],
-        "discriminator": {
-          "propertyName": "type",
-          "mapping": {
-            "Contact": "#/components/schemas/EnrichContactV2",
-            "NoMatch": "#/components/schemas/NoMatchContactV2"
-          }
-        },
         "description": "Represents the possible resource types returned in a contact enrich response, including both a successful contact match and a no-match result. Used to encapsulate the response resource for contact enrichment."
       },
       "ContactEnrichResponseV2": {
@@ -9598,13 +9570,6 @@
             "$ref": "#/components/schemas/ContactsEnrichByIdsResource"
           }
         ],
-        "discriminator": {
-          "propertyName": "type",
-          "mapping": {
-            "EnrichRequest": "#/components/schemas/ContactsEnrichByCriteriaRequestResourceV2",
-            "EnrichByIdRequest": "#/components/schemas/ContactsEnrichByIdsResource"
-          }
-        },
         "description": "Represents the request resource types accepted by Enrich Contacts: matching on criteria, or enriching directly by ZoomInfo Contact ID."
       },
       "ContactsEnrichRequest": {
@@ -9787,13 +9752,6 @@
             "$ref": "#/components/schemas/NoMatchContactResult"
           }
         ],
-        "discriminator": {
-          "propertyName": "type",
-          "mapping": {
-            "ContactMatch": "#/components/schemas/MatchContactResource",
-            "NoMatch": "#/components/schemas/NoMatchContactResult"
-          }
-        },
         "description": "Represents the possible resource types returned in a contact match response, including both a successful match and a no-match result."
       },
       "ContactMatchResponse": {
@@ -14616,15 +14574,6 @@
             "$ref": "#/components/schemas/CompanyMatchOutputLookUp"
           }
         ],
-        "discriminator": {
-          "propertyName": "type",
-          "mapping": {
-            "ContactMatchInput": "#/components/schemas/ContactMatchInputLookUp",
-            "ContactMatchOutput": "#/components/schemas/ContactMatchOutputLookUp",
-            "CompanyMatchInput": "#/components/schemas/CompanyMatchInputLookUp",
-            "CompanyMatchOutput": "#/components/schemas/CompanyMatchOutputLookUp"
-          }
-        },
         "description": "Represents the possible resource types returned in a lookup match input/output response."
       },
       "LookupMatchResponse": {
