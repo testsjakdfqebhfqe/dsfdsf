@@ -45,6 +45,9 @@
     },
     {
       "name": "Content Interactions"
+    },
+    {
+      "name": "Lookup"
     }
   ],
   "paths": {
@@ -82,14 +85,6 @@
               "application/vnd.api+json": {
                 "schema": {
                   "$ref": "#/components/schemas/CompanySearchResponseV2"
-                }
-              },
-              "application/json": {
-                "examples": {
-                  "OK": {
-                    "summary": "OK",
-                    "value": " "
-                  }
                 }
               }
             }
@@ -265,6 +260,95 @@
         "x-api-role-requirement": "ANY_REQUIRED"
       }
     },
+    "/data/v2/companies/match": {
+      "post": {
+        "operationId": "Companies_matchCompany",
+        "summary": "Match Contacts",
+        "description": "Resolves up to 25 companies to their ZoomInfo Contact IDs using the provided id, name, or other\nidentifying criteria. Unlike Enrich, Match does not charge credits and does not return enrichment data — it\nonly returns the match status, ZoomInfo identifiers, and match insights for each input.\n\nMatch does not place any resolved contact under management.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyMatchResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Companies"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyMatchRequest"
+              }
+            }
+          },
+          "description": "The request body containing company match criteria."
+        },
+        "security": [
+          {
+            "OAuth2Auth": [
+              "api:data:company"
+            ]
+          }
+        ],
+        "x-additional-content-types": [
+          "application/json"
+        ],
+        "x-api-roles": [
+          "fea:zia",
+          "fea:api"
+        ],
+        "x-api-role-requirement": "ANY_REQUIRED"
+      }
+    },
     "/data/v2/contacts/search": {
       "post": {
         "operationId": "Contacts_searchContact",
@@ -382,6 +466,17 @@
         "description": "Retrieves detailed information about individual contact records. The request body accepts one of two resource\ntypes, selected by the `type` field:\n\n- `EnrichByIdRequest`: enrich directly by ZoomInfo Contact ID. Pass the IDs in `id`.\n- `EnrichRequest`: enrich by match criteria. Pass up to 25 entries in `inputs` (such as `email`, `firstName` and\n  `lastName`, or `company`) and ZoomInfo returns the best match for each. The more detail you provide, the more\n  likely the match is correct.\n\nBest practice is to first use [Search Contacts](ref:contacts_searchcontact) to identify the records you want\nto enrich, then enrich them with `EnrichByIdRequest`. If your workflow does not support a two-stage retrieval,\nuse `EnrichRequest`.\n\nWith either type, use `outputFields` to select which fields to return for each record. To see every available\noutput field, and whether your account has access to it, use the\n[Lookup Enrich](ref:lookupenrichinterface_lookupenrich) endpoint (`filter[entity]=contact` and\n`filter[fieldType]=output`). If you do not have access to a field you need, contact your ZoomInfo Account Manager.\n\nWith `EnrichRequest`, use `requiredFields` to list the fields a record must have in order to be returned. For\nexample, if you include `jobTitle` in `requiredFields`, a contact with no job title on record is not returned, even\nif it is a perfect match for the input criteria.\n\nEach record returned by this endpoint charges a credit to your account, unless the record is already under\nmanagement (see [Credit Usage and Limits](doc:credit-usage-and-limits)). No credit is charged if no match is found\nor if the request returns an error.",
         "parameters": [
           {
+            "name": "filter[contactAccuracyScoreMin]",
+            "in": "query",
+            "required": false,
+            "description": "The minimum accuracy score threshold for match results, indicating\nthe likelihood that a contact is reachable and still employed. When applied, sets a quality\nthreshold, returning only contacts whose score meets or exceeds this value. Applied to all\ninputs in the request.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "explode": false
+          },
+          {
             "$ref": "#/components/parameters/PageParametersV2.pageNumber"
           },
           {
@@ -456,6 +551,195 @@
             }
           },
           "description": "The request body containing contact enrich criteria."
+        },
+        "security": [
+          {
+            "OAuth2Auth": [
+              "api:data:contact"
+            ]
+          }
+        ],
+        "x-additional-content-types": [
+          "application/json"
+        ],
+        "x-api-roles": [
+          "fea:zia",
+          "fea:api"
+        ],
+        "x-api-role-requirement": "ANY_REQUIRED"
+      }
+    },
+    "/data/v2/contacts/match": {
+      "post": {
+        "operationId": "Contacts_matchContact",
+        "summary": "Match Contacts",
+        "description": "Resolves up to 25 contacts to their ZoomInfo Contact IDs using the provided name, company, email, or other\nidentifying criteria. Unlike Enrich, Match does not charge credits and does not return enrichment data — it\nonly returns the match status, ZoomInfo identifiers, and match insights for each input.\n\nMatch does not place any resolved contact under management.",
+        "parameters": [
+          {
+            "name": "filter[contactAccuracyScoreMin]",
+            "in": "query",
+            "required": false,
+            "description": "The minimum accuracy score threshold for match results, indicating\nthe likelihood that a contact is reachable and still employed. When applied, sets a quality\nthreshold, returning only contacts whose score meets or exceeds this value. Applied to all\ninputs in the request.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "explode": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContactMatchResponse"
+                },
+                "examples": {
+                  "Match a Contact by Name and Company": {
+                    "summary": "Match a Contact by Name and Company",
+                    "description": "Resolves a single contact to a ZoomInfo Contact ID using name and company criteria. No credit is charged and the record is not placed under management.",
+                    "value": {
+                      "data": [
+                        {
+                          "attributes": {
+                            "company": {
+                              "id": 346572700
+                            }
+                          },
+                          "id": "344589814",
+                          "meta": {
+                            "input": {
+                              "company": {
+                                "name": "zoominfo"
+                              },
+                              "firstName": "henry",
+                              "lastName": "schuck"
+                            },
+                            "matchInsights": {
+                              "matchScore": 4
+                            },
+                            "matchStatus": "FULL_MATCH"
+                          },
+                          "type": "ContactMatch"
+                        }
+                      ]
+                    }
+                  },
+                  "No Match Found for a Contact": {
+                    "summary": "No Match Found for a Contact",
+                    "description": "No ZoomInfo record could be resolved for the provided input criteria. The `meta` object still reports the match status, the input criteria that were used, and any available insights.",
+                    "value": {
+                      "data": [
+                        {
+                          "id": "0",
+                          "meta": {
+                            "input": {
+                              "email": "unknown@example.com"
+                            },
+                            "matchStatus": "NO_MATCH"
+                          },
+                          "type": "NoMatch"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Contacts"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContactMatchRequest"
+              },
+              "examples": {
+                "Match a Contact by Name and Company": {
+                  "summary": "Match a Contact by Name and Company",
+                  "description": "Resolves a single contact to a ZoomInfo Contact ID using name and company criteria. No credit is charged and the record is not placed under management.",
+                  "value": {
+                    "data": {
+                      "attributes": {
+                        "inputs": [
+                          {
+                            "company": {
+                              "name": "zoominfo"
+                            },
+                            "firstName": "henry",
+                            "lastName": "schuck"
+                          }
+                        ]
+                      },
+                      "type": "ContactMatch"
+                    }
+                  }
+                },
+                "No Match Found for a Contact": {
+                  "summary": "No Match Found for a Contact",
+                  "description": "No ZoomInfo record could be resolved for the provided input criteria. The `meta` object still reports the match status, the input criteria that were used, and any available insights.",
+                  "value": {
+                    "data": {
+                      "attributes": {
+                        "inputs": [
+                          {
+                            "email": "unknown@example.com"
+                          }
+                        ]
+                      },
+                      "type": "ContactMatch"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "description": "The request body containing contact match criteria."
         },
         "security": [
           {
@@ -1499,7 +1783,7 @@
                               }
                             },
                             "matchInsights": {
-                              "personId": "123456",
+                              "personId": 123456,
                               "personEmail": "person@example.com",
                               "companyName": "Example Company",
                               "companyDomain": "example.com"
@@ -1514,8 +1798,7 @@
                               "lastEngagementTimestamp": "2026-09-15T14:00:00Z",
                               "nextMeetingScheduledTimestamp": "2026-09-21T15:00:00Z",
                               "nextMeetingStatus": "scheduled",
-                              "createdAt": "2026-09-16T10:00:00Z",
-                              "citations": []
+                              "createdAt": "2026-09-16T10:00:00Z"
                             },
                             "doNotEmail": false,
                             "doNotCallHomePhone": false,
@@ -3033,6 +3316,301 @@
         ],
         "x-api-role-requirement": "ANY_REQUIRED"
       }
+    },
+    "/data/v2/lookup/match": {
+      "get": {
+        "operationId": "LookupMatchInterface_lookupMatch",
+        "summary": "Lookup Match Fields",
+        "description": "Returns lookup match fields based on entity and field type filters.",
+        "parameters": [
+          {
+            "name": "filter[entity]",
+            "in": "query",
+            "required": true,
+            "description": "The entity type to filter by. Options are 'contact' or 'company'.",
+            "schema": {
+              "$ref": "#/components/schemas/MatchEntityNameEnum"
+            },
+            "explode": false
+          },
+          {
+            "name": "filter[fieldType]",
+            "in": "query",
+            "required": true,
+            "description": "The field type to filter by. Options are 'input' or 'output'.",
+            "schema": {
+              "$ref": "#/components/schemas/FieldTypeEnum"
+            },
+            "explode": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LookupMatchResponse"
+                },
+                "examples": {
+                  "Look up contact input fields for Match": {
+                    "summary": "Look up contact input fields for Match",
+                    "description": "This example demonstrates how to look up the input criteria accepted by the Match Contacts endpoint using filter[entity]=contact&filter[fieldType]=input. The response includes field types, names, and descriptions for the v2 Match contact criteria.",
+                    "value": {
+                      "data": [
+                        {
+                          "attributes": {
+                            "fieldType": "Long",
+                            "fieldName": "id",
+                            "description": "Unique ZoomInfo identifier for the contact."
+                          },
+                          "id": "contact_match_input_1",
+                          "type": "ContactMatchInput"
+                        },
+                        {
+                          "attributes": {
+                            "fieldType": "String",
+                            "fieldName": "email",
+                            "description": "Contact email address used to match the contact."
+                          },
+                          "id": "contact_match_input_2",
+                          "type": "ContactMatchInput"
+                        },
+                        {
+                          "attributes": {
+                            "fieldType": "String",
+                            "fieldName": "firstName",
+                            "description": "Contact first name."
+                          },
+                          "id": "contact_match_input_3",
+                          "type": "ContactMatchInput"
+                        },
+                        {
+                          "attributes": {
+                            "fieldType": "String",
+                            "fieldName": "lastName",
+                            "description": "Contact last name."
+                          },
+                          "id": "contact_match_input_4",
+                          "type": "ContactMatchInput"
+                        },
+                        {
+                          "attributes": {
+                            "fieldType": "Object",
+                            "fieldName": "company",
+                            "description": "Company criteria used to narrow the match to a specific company (id and/or name)."
+                          },
+                          "id": "contact_match_input_5",
+                          "type": "ContactMatchInput"
+                        }
+                      ]
+                    }
+                  },
+                  "Look up contact output fields for Match": {
+                    "summary": "Look up contact output fields for Match",
+                    "description": "This example demonstrates how to look up the fields always returned in a Match Contacts response using filter[entity]=contact&filter[fieldType]=output. Unlike Enrich, these fields are not selectable -- they are always included when present.",
+                    "value": {
+                      "data": [
+                        {
+                          "attributes": {
+                            "fieldType": "String",
+                            "fieldName": "matchStatus",
+                            "description": "Indicates whether a matching contact was found (e.g., FULL_MATCH, NO_MATCH, CONTACT_MATCH_ONLY)."
+                          },
+                          "id": "contact_match_output_1",
+                          "type": "ContactMatchOutput"
+                        },
+                        {
+                          "attributes": {
+                            "fieldType": "Integer",
+                            "fieldName": "matchScore",
+                            "description": "Confidence tier for the match result, from 1 (lowest) to 5 (highest)."
+                          },
+                          "id": "contact_match_output_2",
+                          "type": "ContactMatchOutput"
+                        },
+                        {
+                          "attributes": {
+                            "fieldType": "Object",
+                            "fieldName": "matchedOnFields",
+                            "description": "Maps each input field that contributed to the match to a value describing how it matched."
+                          },
+                          "id": "contact_match_output_3",
+                          "type": "ContactMatchOutput"
+                        },
+                        {
+                          "attributes": {
+                            "fieldType": "Object",
+                            "fieldName": "company",
+                            "description": "The ZoomInfo company associated with the matched contact, if any."
+                          },
+                          "id": "contact_match_output_4",
+                          "type": "ContactMatchOutput"
+                        }
+                      ]
+                    }
+                  },
+                  "Look up company input fields for Match": {
+                    "summary": "Look up company input fields for Match",
+                    "description": "This example demonstrates how to look up the input criteria accepted by the Match Companies endpoint using filter[entity]=company&filter[fieldType]=input. The response includes field types, names, and descriptions for the v2 Match company criteria.",
+                    "value": {
+                      "data": [
+                        {
+                          "attributes": {
+                            "fieldType": "Long",
+                            "fieldName": "id",
+                            "description": "Unique ZoomInfo identifier for the company."
+                          },
+                          "id": "company_match_input_1",
+                          "type": "CompanyMatchInput"
+                        },
+                        {
+                          "attributes": {
+                            "fieldType": "String",
+                            "fieldName": "name",
+                            "description": "Company name."
+                          },
+                          "id": "company_match_input_2",
+                          "type": "CompanyMatchInput"
+                        },
+                        {
+                          "attributes": {
+                            "fieldType": "String",
+                            "fieldName": "website",
+                            "description": "Company website URL in http://www.example.com format."
+                          },
+                          "id": "company_match_input_3",
+                          "type": "CompanyMatchInput"
+                        },
+                        {
+                          "attributes": {
+                            "fieldType": "String",
+                            "fieldName": "ticker",
+                            "description": "Company stock ticker symbol."
+                          },
+                          "id": "company_match_input_4",
+                          "type": "CompanyMatchInput"
+                        },
+                        {
+                          "attributes": {
+                            "fieldType": "String",
+                            "fieldName": "phone",
+                            "description": "Phone number of the company headquarters."
+                          },
+                          "id": "company_match_input_5",
+                          "type": "CompanyMatchInput"
+                        }
+                      ]
+                    }
+                  },
+                  "Look up company output fields for Match": {
+                    "summary": "Look up company output fields for Match",
+                    "description": "This example demonstrates how to look up the fields always returned in a Match Companies response using filter[entity]=company&filter[fieldType]=output. Unlike Enrich, these fields are not selectable -- they are always included when present.",
+                    "value": {
+                      "data": [
+                        {
+                          "attributes": {
+                            "fieldType": "String",
+                            "fieldName": "matchStatus",
+                            "description": "Indicates whether a matching company was found (e.g., FULL_MATCH, NO_MATCH)."
+                          },
+                          "id": "company_match_output_1",
+                          "type": "CompanyMatchOutput"
+                        },
+                        {
+                          "attributes": {
+                            "fieldType": "Integer",
+                            "fieldName": "matchScore",
+                            "description": "Confidence tier for the match result, from 1 (lowest) to 5 (highest)."
+                          },
+                          "id": "company_match_output_2",
+                          "type": "CompanyMatchOutput"
+                        },
+                        {
+                          "attributes": {
+                            "fieldType": "Object",
+                            "fieldName": "matchedOnFields",
+                            "description": "Maps each input field that contributed to the match to a value describing how it matched."
+                          },
+                          "id": "company_match_output_3",
+                          "type": "CompanyMatchOutput"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Lookup"
+        ],
+        "security": [
+          {
+            "OAuth2Auth": [
+              "api:data:contact",
+              "api:data:company"
+            ]
+          }
+        ],
+        "x-api-roles": [
+          "fea:zia",
+          "fea:api"
+        ],
+        "x-api-role-requirement": "ANY_REQUIRED",
+        "x-api-scope-requirement": "ANY_REQUIRED"
+      }
     }
   },
   "security": [
@@ -3654,11 +4232,13 @@
             "description": "Ultimate parent company identifier."
           },
           "ultimateParentCompanyRevenue": {
-            "type": "string",
+            "type": "integer",
+            "format": "int64",
             "description": "Ultimate parent company revenue."
           },
           "ultimateParentCompanyEmployeeCount": {
-            "type": "string",
+            "type": "integer",
+            "format": "int64",
             "description": "Ultimate parent company employee count."
           },
           "immediateParentCompanyId": {
@@ -3709,11 +4289,7 @@
             "pattern": "Company"
           },
           "attributes": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CompanySearchResponseAttributesV2"
-              }
-            ],
+            "$ref": "#/components/schemas/CompanySearchResponseAttributesV2",
             "description": "The attributes defining the resource"
           }
         },
@@ -3739,6 +4315,22 @@
         },
         "description": "Pagination details for the current page and the total number of pages."
       },
+      "CollectionDefaultsAttributes": {
+        "type": "object",
+        "properties": {
+          "defaultFilters": {
+            "type": "object",
+            "unevaluatedProperties": {},
+            "description": "The default filters added to the request, as operator to value, such as `{\"employees\": {\"gte\": 1, \"lte\": 500000}}`. In the defaults lookup the keys are field names; in the `meta` of a search response they are the request properties of the collections that add a default (the endpoint's own and the joins the request uses), each holding its field filters. A filter the request sends, with any operator, replaces its default entirely and is not listed. Omitted when no default filter applies."
+          },
+          "sort": {
+            "type": "string",
+            "description": "The sort applied when the request sends no `sort`, in the same syntax as the `sort` query parameter, such as `-scoreInLast2Weeks`. Only on the collection of the endpoint itself. Omitted when the endpoint has no default sort."
+          }
+        },
+        "description": "The defaults a search applies to one collection when the request does not supply them.",
+        "x-class-extra-annotation": "@com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL)"
+      },
       "ResultMeta": {
         "type": "object",
         "required": [
@@ -3754,6 +4346,11 @@
           "page": {
             "$ref": "#/components/schemas/Page",
             "description": "Paging information for the current result set"
+          },
+          "defaults": {
+            "$ref": "#/components/schemas/CollectionDefaultsAttributes",
+            "description": "The defaults the search applied to this request, which the request did not supply. Omitted when no default applies.",
+            "x-field-extra-annotation": "@com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL)"
           }
         },
         "description": "Result metadata containing pagination details and the total number of matching records."
@@ -3798,19 +4395,11 @@
             "description": "The primary data of the document"
           },
           "meta": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ResultMeta"
-              }
-            ],
+            "$ref": "#/components/schemas/ResultMeta",
             "description": "Non-standard meta information about the document"
           },
           "links": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Links"
-              }
-            ],
+            "$ref": "#/components/schemas/Links",
             "description": "Links related to the primary data"
           }
         },
@@ -4862,6 +5451,10 @@
           "companyTags": {
             "$ref": "#/components/schemas/ExactStringNoExistsFilterOperations",
             "description": "Matches companies that belong to the specified company tags. Values are tag IDs from the companyTags lookup."
+          },
+          "excludeDefunctCompanies": {
+            "$ref": "#/components/schemas/SimpleBooleanFilterOperations",
+            "description": "Flag indicating whether to exclude defunct companies from the search results."
           }
         },
         "description": "Filters available when searching for companies, including company identity, size, revenue, industry, technology, funding, and location."
@@ -4890,6 +5483,10 @@
           "country": {
             "$ref": "#/components/schemas/ExactStringFilterOperations",
             "description": "Country of the contact's work address."
+          },
+          "continent": {
+            "$ref": "#/components/schemas/ExactStringFilterOperations",
+            "description": "Continent of the contact's work address. Values come from the continent picklist of the contacts collection, such as continent.europe."
           },
           "department": {
             "$ref": "#/components/schemas/ExactStringFilterOperations",
@@ -4932,7 +5529,7 @@
             "description": "Metro area of the contact's work address."
           },
           "mobilePhone": {
-            "$ref": "#/components/schemas/ShortAndMediumTextFilterOperations",
+            "$ref": "#/components/schemas/ExactStringFilterOperations",
             "description": "Contact mobile phone."
           },
           "phone": {
@@ -5214,7 +5811,7 @@
             "description": "Matched phone number of the person."
           },
           "companyId": {
-            "$ref": "#/components/schemas/ExactStringFilterOperations",
+            "$ref": "#/components/schemas/int64ExactNumberFilterOperations",
             "description": "Identifier of the matched company."
           },
           "companyPhone": {
@@ -5226,7 +5823,7 @@
             "description": "Matched email address of the person."
           },
           "personId": {
-            "$ref": "#/components/schemas/ExactStringFilterOperations",
+            "$ref": "#/components/schemas/int64ExactNumberFilterOperations",
             "description": "Identifier of the matched person."
           },
           "personFreemail": {
@@ -5568,7 +6165,7 @@
           },
           "custom": {
             "type": "object",
-            "additionalProperties": {
+            "unevaluatedProperties": {
               "$ref": "#/components/schemas/CustomFieldFilterOperations"
             },
             "description": "Filter by tenant-defined custom fields, keyed by the exact names available to the tenant.",
@@ -5711,7 +6308,7 @@
               },
               "custom": {
                 "type": "object",
-                "additionalProperties": {
+                "unevaluatedProperties": {
                   "$ref": "#/components/schemas/CustomFieldFilterOperations"
                 },
                 "description": "Filter by tenant-defined custom fields, keyed by the exact names available to the tenant.",
@@ -5732,7 +6329,7 @@
           },
           "custom": {
             "type": "object",
-            "additionalProperties": {
+            "unevaluatedProperties": {
               "$ref": "#/components/schemas/CustomFieldFilterOperations"
             },
             "description": "Filter by tenant-defined custom fields. Keys are the exact custom field names available to the tenant. Each field accepts an operator object; supported operators and value types depend on that field. Combine custom filters using the enclosing and, or, and not operations.",
@@ -6022,7 +6619,7 @@
           },
           "custom": {
             "type": "object",
-            "additionalProperties": {
+            "unevaluatedProperties": {
               "$ref": "#/components/schemas/CustomFieldFilterOperations"
             },
             "description": "Filter by tenant-defined custom fields. Keys are the exact custom field names available to the tenant. Each field accepts an operator object; supported operators and value types depend on that field. Combine custom filters using the enclosing and, or, and not operations.",
@@ -6351,7 +6948,7 @@
             "description": "Matched phone number of the person."
           },
           "companyId": {
-            "$ref": "#/components/schemas/ExactStringFilterOperations",
+            "$ref": "#/components/schemas/int64ExactNumberFilterOperations",
             "description": "Identifier of the matched company."
           },
           "companyPhone": {
@@ -6363,7 +6960,7 @@
             "description": "Matched email address of the person."
           },
           "personId": {
-            "$ref": "#/components/schemas/ExactStringFilterOperations",
+            "$ref": "#/components/schemas/int64ExactNumberFilterOperations",
             "description": "Identifier of the matched person."
           },
           "personFreemail": {
@@ -6411,42 +7008,6 @@
         },
         "description": "Filters for a contact's AI assessments and engagement details, matching the GraphQL contactInsight object. Combine predicates using the enclosing contact's and, or, and not operations."
       },
-      "float64ExactNumberFilterOperations": {
-        "type": "object",
-        "properties": {
-          "eq": {
-            "type": "number",
-            "format": "double",
-            "description": "Matches records where the field equals this value."
-          },
-          "notEq": {
-            "type": "number",
-            "format": "double",
-            "description": "Matches records where the field does not equal this value."
-          },
-          "in": {
-            "type": "array",
-            "items": {
-              "type": "number",
-              "format": "double"
-            },
-            "description": "Matches records where the field equals any value in the list."
-          },
-          "notIn": {
-            "type": "array",
-            "items": {
-              "type": "number",
-              "format": "double"
-            },
-            "description": "Matches records where the field does not equal any value in the list."
-          },
-          "exists": {
-            "type": "boolean",
-            "description": "Matches records where the field is present (true) or absent (false)."
-          }
-        },
-        "description": "Filter operations for exact numeric fields."
-      },
       "GtmContactPersonHasMovedFilter": {
         "type": "object",
         "properties": {
@@ -6459,7 +7020,7 @@
             "description": "Filter by the ZoomInfo-identified current company the contact moved to."
           },
           "newZiCompanyId": {
-            "$ref": "#/components/schemas/float64ExactNumberFilterOperations",
+            "$ref": "#/components/schemas/int64ExactNumberFilterOperations",
             "description": "Filter by the ZoomInfo company ID for the new company."
           },
           "status": {
@@ -6475,7 +7036,7 @@
             "description": "Filter by the company the contact moved from, based on the CRM-associated company at evaluation."
           },
           "previousZiCompanyId": {
-            "$ref": "#/components/schemas/float64ExactNumberFilterOperations",
+            "$ref": "#/components/schemas/int64ExactNumberFilterOperations",
             "description": "Filter by the ZoomInfo company ID for the previous company."
           }
         },
@@ -6494,7 +7055,7 @@
           },
           "custom": {
             "type": "object",
-            "additionalProperties": {
+            "unevaluatedProperties": {
               "$ref": "#/components/schemas/CustomFieldFilterOperations"
             },
             "description": "Filter by tenant-defined custom fields. Keys are the exact custom field names available to the tenant. Each field accepts an operator object; supported operators and value types depend on that field. Combine custom filters using the enclosing and, or, and not operations.",
@@ -7038,6 +7599,10 @@
               "companyTags": {
                 "$ref": "#/components/schemas/ExactStringNoExistsFilterOperations",
                 "description": "Matches companies that belong to the specified company tags. Values are tag IDs from the companyTags lookup."
+              },
+              "excludeDefunctCompanies": {
+                "$ref": "#/components/schemas/SimpleBooleanFilterOperations",
+                "description": "Flag indicating whether to exclude defunct companies from the search results."
               }
             },
             "description": "Filter by attributes of the ZoomInfo company the contact moved to."
@@ -7352,6 +7917,10 @@
               "companyTags": {
                 "$ref": "#/components/schemas/ExactStringNoExistsFilterOperations",
                 "description": "Matches companies that belong to the specified company tags. Values are tag IDs from the companyTags lookup."
+              },
+              "excludeDefunctCompanies": {
+                "$ref": "#/components/schemas/SimpleBooleanFilterOperations",
+                "description": "Flag indicating whether to exclude defunct companies from the search results."
               }
             },
             "description": "Filter by attributes of the ZoomInfo company the contact moved from."
@@ -7372,7 +7941,7 @@
           },
           "custom": {
             "type": "object",
-            "additionalProperties": {
+            "unevaluatedProperties": {
               "$ref": "#/components/schemas/CustomFieldFilterOperations"
             },
             "description": "Filter by tenant-defined custom fields. Keys are the exact custom field names available to the tenant. Each field accepts an operator object; supported operators and value types depend on that field. Combine custom filters using the enclosing and, or, and not operations.",
@@ -7916,6 +8485,10 @@
               "companyTags": {
                 "$ref": "#/components/schemas/ExactStringNoExistsFilterOperations",
                 "description": "Matches companies that belong to the specified company tags. Values are tag IDs from the companyTags lookup."
+              },
+              "excludeDefunctCompanies": {
+                "$ref": "#/components/schemas/SimpleBooleanFilterOperations",
+                "description": "Flag indicating whether to exclude defunct companies from the search results."
               }
             },
             "description": "Filter by attributes of the ZoomInfo company the contact moved to."
@@ -8230,6 +8803,10 @@
               "companyTags": {
                 "$ref": "#/components/schemas/ExactStringNoExistsFilterOperations",
                 "description": "Matches companies that belong to the specified company tags. Values are tag IDs from the companyTags lookup."
+              },
+              "excludeDefunctCompanies": {
+                "$ref": "#/components/schemas/SimpleBooleanFilterOperations",
+                "description": "Flag indicating whether to exclude defunct companies from the search results."
               }
             },
             "description": "Filter by attributes of the ZoomInfo company the contact moved from."
@@ -8258,7 +8835,7 @@
           },
           "custom": {
             "type": "object",
-            "additionalProperties": {
+            "unevaluatedProperties": {
               "$ref": "#/components/schemas/CustomFieldFilterOperations"
             },
             "description": "Filter by tenant-defined custom fields. Keys are the exact custom field names available to the tenant. Each field accepts an operator object; supported operators and value types depend on that field. Combine custom filters using the enclosing and, or, and not operations.",
@@ -8548,7 +9125,7 @@
           },
           "custom": {
             "type": "object",
-            "additionalProperties": {
+            "unevaluatedProperties": {
               "$ref": "#/components/schemas/CustomFieldFilterOperations"
             },
             "description": "Filter by tenant-defined custom fields, keyed by the exact names available to the tenant.",
@@ -8687,7 +9264,7 @@
               },
               "custom": {
                 "type": "object",
-                "additionalProperties": {
+                "unevaluatedProperties": {
                   "$ref": "#/components/schemas/CustomFieldFilterOperations"
                 },
                 "description": "Filter by tenant-defined custom fields, keyed by the exact names available to the tenant.",
@@ -9274,99 +9851,51 @@
             "description": "Specifies the fields to include in the response."
           },
           "companies": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CompanySearchRequestAttrsPublic"
-              }
-            ],
+            "$ref": "#/components/schemas/CompanySearchRequestAttrsPublic",
             "description": "Filter by ZoomInfo companies."
           },
           "contacts": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ContactSearchRequestAttrsPublic"
-              }
-            ],
+            "$ref": "#/components/schemas/ContactSearchRequestAttrsPublic",
             "description": "Filter by ZoomInfo contacts."
           },
           "accountLevelIntent": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AccountLevelIntentSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/AccountLevelIntentSearchRequestAttributes",
             "description": "Filter by account-level intent signals."
           },
           "news": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/NewsSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/NewsSearchRequestAttributes",
             "description": "Filter by company news articles."
           },
           "scoops": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ScoopSearchRequestAttrs"
-              }
-            ],
+            "$ref": "#/components/schemas/ScoopSearchRequestAttrs",
             "description": "Filter by ZoomInfo Scoops."
           },
           "gtmAccounts": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmAccountSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmAccountSearchRequestAttributes",
             "description": "Filter by GTM accounts."
           },
           "gtmContacts": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmContactSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmContactSearchRequestAttributes",
             "description": "Filter by GTM contacts."
           },
           "gtmOpportunities": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmOpportunitySearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmOpportunitySearchRequestAttributes",
             "description": "Filter by GTM opportunities."
           },
           "gtmUsers": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmUserSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmUserSearchRequestAttributes",
             "description": "Filter by related GTM users through the configured relationship for the searched collection. GTM account and opportunity searches match team members. Use the nested owner filter to match the record owner."
           },
           "emails": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EmailSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/EmailSearchRequestAttributes",
             "description": "Filter by emails."
           },
           "meetings": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/MeetingSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/MeetingSearchRequestAttributes",
             "description": "Filter by meetings."
           },
           "contentInteractions": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ContentInteractionSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/ContentInteractionSearchRequestAttributes",
             "description": "Filter by content interactions."
           }
         },
@@ -9386,11 +9915,7 @@
             "pattern": "SearchRequest"
           },
           "attributes": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CompaniesSearchRequestAttrs"
-              }
-            ],
+            "$ref": "#/components/schemas/CompaniesSearchRequestAttrs",
             "description": "The attributes defining the resource"
           }
         },
@@ -9403,11 +9928,7 @@
         ],
         "properties": {
           "data": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CompaniesSearchResource"
-              }
-            ],
+            "$ref": "#/components/schemas/CompaniesSearchResource",
             "description": "The primary data of the document"
           }
         },
@@ -9519,19 +10040,11 @@
         ],
         "properties": {
           "matchStatus": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CompanyMatchStatus"
-              }
-            ],
+            "$ref": "#/components/schemas/CompanyMatchStatus",
             "description": "The match status for the company enrich operation, indicating whether a match was found and the type of match."
           },
           "input": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CompanyEnrichRequestCriteria"
-              }
-            ],
+            "$ref": "#/components/schemas/CompanyEnrichRequestCriteria",
             "description": "The input criteria that was used to perform the company enrich match. This provides traceability for the match result."
           },
           "warnings": {
@@ -9563,19 +10076,11 @@
             "pattern": "Company"
           },
           "attributes": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CompanySearchResponseAttributesV2"
-              }
-            ],
+            "$ref": "#/components/schemas/CompanySearchResponseAttributesV2",
             "description": "The attributes defining the resource"
           },
           "meta": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CompanyAttributeMeta"
-              }
-            ],
+            "$ref": "#/components/schemas/CompanyAttributeMeta",
             "description": "Non-standard meta information about the resource"
           }
         },
@@ -9599,11 +10104,7 @@
             "pattern": "NoMatch"
           },
           "meta": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CompanyAttributeMeta"
-              }
-            ],
+            "$ref": "#/components/schemas/CompanyAttributeMeta",
             "description": "Non-standard meta information about the resource"
           }
         },
@@ -9642,19 +10143,11 @@
             "description": "The primary data of the document"
           },
           "meta": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ResultMeta"
-              }
-            ],
+            "$ref": "#/components/schemas/ResultMeta",
             "description": "Non-standard meta information about the document"
           },
           "links": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Links"
-              }
-            ],
+            "$ref": "#/components/schemas/Links",
             "description": "Links related to the primary data"
           }
         },
@@ -9838,15 +10331,35 @@
             "pattern": "EnrichRequest"
           },
           "attributes": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CompaniesEnrichByCriteriaRequestAttributesV2"
-              }
-            ],
+            "$ref": "#/components/schemas/CompaniesEnrichByCriteriaRequestAttributesV2",
             "description": "The attributes defining the resource"
           }
         },
         "description": "Contact enrich by match criteria request resource."
+      },
+      "Int64Id": {
+        "type": "integer",
+        "format": "int64",
+        "description": "A number Id."
+      },
+      "Int64IdInFilterOperations": {
+        "type": "object",
+        "required": [
+          "in"
+        ],
+        "properties": {
+          "in": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Int64Id"
+            },
+            "minItems": 1,
+            "maxItems": 250,
+            "description": "Matches records where the field equals one of these values."
+          }
+        },
+        "description": "Filter operations for fields that support list only.",
+        "additionalProperties": false
       },
       "CompaniesEnrichRequestAttrs": {
         "type": "object",
@@ -9940,24 +10453,8 @@
             "description": "Specifies the fields to include in the response."
           },
           "id": {
-            "type": "object",
-            "required": [
-              "in"
-            ],
-            "properties": {
-              "in": {
-                "type": "array",
-                "items": {
-                  "type": "integer",
-                  "format": "int64"
-                },
-                "minItems": 1,
-                "maxItems": 250,
-                "description": "Matches records where the field equals one of these values."
-              }
-            },
-            "description": "Unique identifier for the dataset.",
-            "additionalProperties": false
+            "$ref": "#/components/schemas/Int64IdInFilterOperations",
+            "description": "Unique identifier for the dataset."
           }
         },
         "description": "Enrich criteria for the Company dataset."
@@ -9976,11 +10473,7 @@
             "pattern": "EnrichByIdRequest"
           },
           "attributes": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CompaniesEnrichRequestAttrs"
-              }
-            ],
+            "$ref": "#/components/schemas/CompaniesEnrichRequestAttrs",
             "description": "The attributes defining the resource"
           }
         },
@@ -10012,15 +10505,195 @@
         ],
         "properties": {
           "data": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CompaniesEnrichRequestResourceUnionV2"
-              }
-            ],
+            "$ref": "#/components/schemas/CompaniesEnrichRequestResourceUnionV2",
             "description": "The primary data of the document"
           }
         },
         "description": "Company enrich request."
+      },
+      "MatchScore": {
+        "type": "integer",
+        "enum": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "description": "Confidence tier for a match result, from 1 (lowest) to 5 (highest). Reserved for future use; scale is not finalized.",
+        "x-enumDescriptions": {
+          "ONE": "Lowest match confidence tier.",
+          "TWO": "Match confidence tier 2.",
+          "THREE": "Match confidence tier 3.",
+          "FOUR": "Match confidence tier 4.",
+          "FIVE": "Highest match confidence tier."
+        }
+      },
+      "MatchInsights": {
+        "type": "object",
+        "properties": {
+          "matchScore": {
+            "$ref": "#/components/schemas/MatchScore",
+            "description": "Confidence tier for the match result, from 1 (lowest) to 5 (highest)."
+          }
+        },
+        "description": "Insights describing how a match result was determined."
+      },
+      "CompanyMatchAttributeMeta": {
+        "type": "object",
+        "required": [
+          "matchStatus",
+          "input"
+        ],
+        "properties": {
+          "matchStatus": {
+            "$ref": "#/components/schemas/CompanyMatchStatus",
+            "description": "Indicates whether a matching record was found."
+          },
+          "input": {
+            "$ref": "#/components/schemas/CompanyEnrichRequestCriteria",
+            "description": "The input criteria used to attempt this match."
+          },
+          "matchInsights": {
+            "$ref": "#/components/schemas/MatchInsights",
+            "description": "Insights describing how the match was determined."
+          }
+        },
+        "description": "Metadata describing the result of a COMPANY match, including match status, insights, and the input criteria used."
+      },
+      "MatchCompanyResource": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier of the resource"
+          },
+          "type": {
+            "type": "string",
+            "description": "The type identifier of the resource",
+            "default": "CompanyMatch",
+            "pattern": "CompanyMatch"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/CompanyMatchAttributeMeta",
+            "description": "Non-standard meta information about the resource"
+          }
+        },
+        "description": "A matching company was identified from the provided input criteria. The match status can be found within the meta object."
+      },
+      "NoMatchCompanyResult": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier of the resource"
+          },
+          "type": {
+            "type": "string",
+            "description": "The type identifier of the resource",
+            "default": "NoMatch",
+            "pattern": "NoMatch"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/CompanyMatchAttributeMeta",
+            "description": "Non-standard meta information about the resource"
+          }
+        },
+        "description": "There was no matching company found for the provided input criteria. Details are available in the meta object, including the match status and match insights."
+      },
+      "CompanyMatchResponseResourceUnion": {
+        "type": "object",
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/MatchCompanyResource"
+          },
+          {
+            "$ref": "#/components/schemas/NoMatchCompanyResult"
+          }
+        ],
+        "discriminator": {
+          "propertyName": "type",
+          "mapping": {
+            "CompanyMatch": "#/components/schemas/MatchCompanyResource",
+            "NoMatch": "#/components/schemas/NoMatchCompanyResult"
+          }
+        },
+        "description": "Represents the possible resource types returned in a company match response, including both a successful match and a no-match result."
+      },
+      "CompanyMatchResponse": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CompanyMatchResponseResourceUnion"
+            },
+            "description": "The primary data of the document"
+          }
+        },
+        "description": "A list of company match results for the criteria specified in the request."
+      },
+      "CompanyMatchRequestAttributes": {
+        "type": "object",
+        "required": [
+          "inputs"
+        ],
+        "properties": {
+          "inputs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CompanyEnrichRequestCriteria"
+            },
+            "minItems": 1,
+            "maxItems": 25,
+            "description": "List of criteria to match against. Up to 25 inputs per request."
+          }
+        },
+        "description": "Company match request attributes. Unlike Enrich, Match does not accept `outputFields` or\n`requiredFields` — it does not charge credits or return enrichment data, only match metadata\nand ZoomInfo identifiers."
+      },
+      "CompanyMatchRequestResource": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "The type of the resource",
+            "default": "CompanyMatch",
+            "pattern": "CompanyMatch"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/CompanyMatchRequestAttributes",
+            "description": "The attributes defining the resource"
+          }
+        },
+        "description": "Company match request resource."
+      },
+      "CompanyMatchRequest": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/CompanyMatchRequestResource",
+            "description": "The primary data of the document"
+          }
+        },
+        "description": "Contact match request."
       },
       "ContactSort": {
         "type": "string",
@@ -10089,7 +10762,8 @@
         "type": "object",
         "properties": {
           "personID": {
-            "type": "string",
+            "type": "integer",
+            "format": "int64",
             "description": "Person identifier associated with the education entry, as supplied by the source."
           },
           "sequence": {
@@ -10097,27 +10771,15 @@
             "description": "Sequence value supplied for the education entry."
           },
           "degree": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ContactEducationDegree"
-              }
-            ],
+            "$ref": "#/components/schemas/ContactEducationDegree",
             "description": "Degree name and classification."
           },
           "concentration": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ContactEducationValue"
-              }
-            ],
+            "$ref": "#/components/schemas/ContactEducationValue",
             "description": "Area of study."
           },
           "institution": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ContactEducationValue"
-              }
-            ],
+            "$ref": "#/components/schemas/ContactEducationValue",
             "description": "Educational institution."
           },
           "date": {
@@ -10283,6 +10945,10 @@
             "type": "string",
             "description": "Country of the contact's work address."
           },
+          "continent": {
+            "type": "string",
+            "description": "Continent of the contact's work address, such as continent.europe."
+          },
           "state": {
             "type": "string",
             "description": "State or province of the contact's work address."
@@ -10375,11 +11041,7 @@
             "description": "Professional brief about the contact."
           },
           "globalAccountAi": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ContactGlobalAccountAi"
-              }
-            ],
+            "$ref": "#/components/schemas/ContactGlobalAccountAi",
             "description": "AI-generated professional context and background information."
           },
           "validDate": {
@@ -10429,11 +11091,7 @@
             "description": "Get last Education information."
           },
           "company": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CompanySummary"
-              }
-            ],
+            "$ref": "#/components/schemas/CompanySummary",
             "description": "Contact's company data for search request."
           }
         },
@@ -10459,11 +11117,7 @@
             "pattern": "Contact"
           },
           "attributes": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ContactSearchResponseAttributesV2"
-              }
-            ],
+            "$ref": "#/components/schemas/ContactSearchResponseAttributesV2",
             "description": "The attributes defining the resource"
           }
         },
@@ -10483,19 +11137,11 @@
             "description": "The primary data of the document"
           },
           "meta": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ResultMeta"
-              }
-            ],
+            "$ref": "#/components/schemas/ResultMeta",
             "description": "Non-standard meta information about the document"
           },
           "links": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Links"
-              }
-            ],
+            "$ref": "#/components/schemas/Links",
             "description": "Links related to the primary data"
           }
         },
@@ -10520,6 +11166,7 @@
                 "companyState",
                 "companyStreet",
                 "contactAccuracyScore",
+                "continent",
                 "country",
                 "degree",
                 "department",
@@ -10572,99 +11219,51 @@
             "description": "Specifies the fields to include in the response. To request company-related fields for a contact, use camel-case field names corresponding to the company object (e.g., companyName, companyId). Fields of the globalAccountAi object follow the same pattern (e.g., globalAccountAiContextSummary)."
           },
           "companies": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CompanySearchRequestAttrsPublic"
-              }
-            ],
+            "$ref": "#/components/schemas/CompanySearchRequestAttrsPublic",
             "description": "Filter by ZoomInfo companies."
           },
           "contacts": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ContactSearchRequestAttrsPublic"
-              }
-            ],
+            "$ref": "#/components/schemas/ContactSearchRequestAttrsPublic",
             "description": "Filter by ZoomInfo contacts."
           },
           "accountLevelIntent": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AccountLevelIntentSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/AccountLevelIntentSearchRequestAttributes",
             "description": "Filter by account-level intent signals."
           },
           "news": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/NewsSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/NewsSearchRequestAttributes",
             "description": "Filter by company news articles."
           },
           "scoops": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ScoopSearchRequestAttrs"
-              }
-            ],
+            "$ref": "#/components/schemas/ScoopSearchRequestAttrs",
             "description": "Filter by ZoomInfo Scoops."
           },
           "gtmAccounts": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmAccountSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmAccountSearchRequestAttributes",
             "description": "Filter by GTM accounts."
           },
           "gtmContacts": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmContactSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmContactSearchRequestAttributes",
             "description": "Filter by GTM contacts."
           },
           "gtmOpportunities": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmOpportunitySearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmOpportunitySearchRequestAttributes",
             "description": "Filter by GTM opportunities."
           },
           "gtmUsers": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmUserSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmUserSearchRequestAttributes",
             "description": "Filter by related GTM users through the configured relationship for the searched collection. GTM account and opportunity searches match team members. Use the nested owner filter to match the record owner."
           },
           "emails": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EmailSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/EmailSearchRequestAttributes",
             "description": "Filter by emails."
           },
           "meetings": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/MeetingSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/MeetingSearchRequestAttributes",
             "description": "Filter by meetings."
           },
           "contentInteractions": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ContentInteractionSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/ContentInteractionSearchRequestAttributes",
             "description": "Filter by content interactions."
           }
         },
@@ -10684,11 +11283,7 @@
             "pattern": "SearchRequest"
           },
           "attributes": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ContactsSearchRequestAttrs"
-              }
-            ],
+            "$ref": "#/components/schemas/ContactsSearchRequestAttrs",
             "description": "The attributes defining the resource"
           }
         },
@@ -10701,11 +11296,7 @@
         ],
         "properties": {
           "data": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ContactsSearchResource"
-              }
-            ],
+            "$ref": "#/components/schemas/ContactsSearchResource",
             "description": "The primary data of the document"
           }
         },
@@ -10807,11 +11398,7 @@
             "description": "The date after which the contact's profile was last validated (uses YYYY-MM-DD format). When applied, restricts results to include only contacts whose profile data was verified or validated on or after the specified date."
           },
           "company": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CommonEnrichRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/CommonEnrichRequestAttributes",
             "description": "Company criteria used to narrow the match to a specific company."
           }
         },
@@ -10825,19 +11412,11 @@
         ],
         "properties": {
           "matchStatus": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ContactMatchStatus"
-              }
-            ],
+            "$ref": "#/components/schemas/ContactMatchStatus",
             "description": "The match status for the contact enrich operation, indicating whether a match was found and the type of match."
           },
           "input": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ContactEnrichRequestCriteria"
-              }
-            ],
+            "$ref": "#/components/schemas/ContactEnrichRequestCriteria",
             "description": "The input criteria that was used to perform the contact enrich match. This provides traceability for the match result."
           },
           "warnings": {
@@ -10869,19 +11448,11 @@
             "pattern": "Contact"
           },
           "attributes": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ContactSearchResponseAttributesV2"
-              }
-            ],
+            "$ref": "#/components/schemas/ContactSearchResponseAttributesV2",
             "description": "The attributes defining the resource"
           },
           "meta": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ContactAttributeMeta"
-              }
-            ],
+            "$ref": "#/components/schemas/ContactAttributeMeta",
             "description": "Non-standard meta information about the resource"
           }
         },
@@ -10905,11 +11476,7 @@
             "pattern": "NoMatch"
           },
           "meta": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ContactAttributeMeta"
-              }
-            ],
+            "$ref": "#/components/schemas/ContactAttributeMeta",
             "description": "Non-standard meta information about the resource"
           }
         },
@@ -10948,19 +11515,11 @@
             "description": "The primary data of the document"
           },
           "meta": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ResultMeta"
-              }
-            ],
+            "$ref": "#/components/schemas/ResultMeta",
             "description": "Non-standard meta information about the document"
           },
           "links": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Links"
-              }
-            ],
+            "$ref": "#/components/schemas/Links",
             "description": "Links related to the primary data"
           }
         },
@@ -11015,11 +11574,7 @@
             "description": "The date after which the contact's profile was last validated (uses YYYY-MM-DD format). When applied, restricts results to include only contacts whose profile data was verified or validated on or after the specified date."
           },
           "company": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CommonEnrichRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/CommonEnrichRequestAttributes",
             "description": "Company criteria used to narrow the match to a specific company."
           }
         },
@@ -11047,6 +11602,7 @@
                 "companyState",
                 "companyStreet",
                 "contactAccuracyScore",
+                "continent",
                 "country",
                 "degree",
                 "department",
@@ -11124,11 +11680,7 @@
             "pattern": "EnrichRequest"
           },
           "attributes": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ContactsEnrichByCriteriaRequestAttributesV2"
-              }
-            ],
+            "$ref": "#/components/schemas/ContactsEnrichByCriteriaRequestAttributesV2",
             "description": "The attributes defining the resource"
           }
         },
@@ -11156,6 +11708,7 @@
                 "companyState",
                 "companyStreet",
                 "contactAccuracyScore",
+                "continent",
                 "country",
                 "degree",
                 "department",
@@ -11208,24 +11761,8 @@
             "description": "Specifies the fields to include in the response. To request company-related fields for a contact, use camel-case field names corresponding to the company object (e.g., companyName, companyId). Fields of the globalAccountAi object follow the same pattern (e.g., globalAccountAiContextSummary)."
           },
           "id": {
-            "type": "object",
-            "required": [
-              "in"
-            ],
-            "properties": {
-              "in": {
-                "type": "array",
-                "items": {
-                  "type": "integer",
-                  "format": "int64"
-                },
-                "minItems": 1,
-                "maxItems": 250,
-                "description": "Matches records where the field equals one of these values."
-              }
-            },
-            "description": "Unique identifier for the dataset.",
-            "additionalProperties": false
+            "$ref": "#/components/schemas/Int64IdInFilterOperations",
+            "description": "Unique identifier for the dataset."
           }
         },
         "description": "Enrich criteria for the Contact dataset."
@@ -11244,11 +11781,7 @@
             "pattern": "EnrichByIdRequest"
           },
           "attributes": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ContactsEnrichRequestAttrs"
-              }
-            ],
+            "$ref": "#/components/schemas/ContactsEnrichRequestAttrs",
             "description": "The attributes defining the resource"
           }
         },
@@ -11280,15 +11813,254 @@
         ],
         "properties": {
           "data": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ContactsEnrichRequestResourceUnionV2"
-              }
-            ],
+            "$ref": "#/components/schemas/ContactsEnrichRequestResourceUnionV2",
             "description": "The primary data of the document"
           }
         },
         "description": "Contact enrich request."
+      },
+      "ContactMatchCompanyResult": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The unique ZoomInfo identifier for the company associated with the matched contact."
+          }
+        },
+        "description": "The ZoomInfo company associated with a matched contact."
+      },
+      "ContactMatchResponseAttributes": {
+        "type": "object",
+        "properties": {
+          "company": {
+            "$ref": "#/components/schemas/ContactMatchCompanyResult",
+            "description": "The company associated with the matched contact. Populated when the match includes company information."
+          }
+        },
+        "description": "Response attributes for a contact match result.",
+        "x-class-extra-annotation": "@com.fasterxml.jackson.annotation.JsonIgnoreProperties(ignoreUnknown = true)"
+      },
+      "ContactMatchRequestCriteria": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The unique ZoomInfo identifier for the contact. When applied, filters the result set to return only the specific contact record matching this ID."
+          },
+          "firstName": {
+            "type": "string",
+            "maxLength": 500,
+            "description": "The first name of the contact. When applied, filters contacts whose first name matches the specified value."
+          },
+          "lastName": {
+            "type": "string",
+            "maxLength": 500,
+            "description": "The last name of the contact. When applied, filters contacts whose last name matches the specified value."
+          },
+          "email": {
+            "type": "string",
+            "maxLength": 500,
+            "description": "The primary email address for the contact (format: example@example.com). When applied, filters contacts associated with the specified email address."
+          },
+          "phone": {
+            "type": "string",
+            "maxLength": 500,
+            "description": "The direct dial or mobile phone number for the contact. When applied, filters contacts matching the specified phone number."
+          },
+          "jobTitle": {
+            "type": "string",
+            "maxLength": 500,
+            "description": "The professional job title of the contact at their current place of employment. When applied, filters contacts by their professional job title."
+          },
+          "hashedEmail": {
+            "type": "string",
+            "maxLength": 128,
+            "description": "A cryptographically hashed version of the contact's email address (supporting MD5, SHA1, SHA256, and SHA512) for secure matching without exposing plaintext PII. When applied, allows you to query or match contact records using this hashed value."
+          },
+          "socialUrl": {
+            "type": "string",
+            "maxLength": 2048,
+            "description": "Associated social media and professional network profile URLs for the contact (e.g., LinkedIn, Twitter, Facebook). When applied, filters contacts associated with a specific profile URL."
+          },
+          "lastUpdatedDateAfter": {
+            "type": "string",
+            "format": "date",
+            "description": "The date after which the contact's profile was last updated (uses YYYY-MM-DD format). When applied, restricts results to include only contacts whose profiles have been updated on or after the specified date."
+          },
+          "lastValidatedDateAfter": {
+            "type": "string",
+            "format": "date",
+            "description": "The date after which the contact's profile was last validated (uses YYYY-MM-DD format). When applied, restricts results to include only contacts whose profile data was verified or validated on or after the specified date."
+          },
+          "company": {
+            "$ref": "#/components/schemas/CommonEnrichRequestAttributes",
+            "description": "Company criteria used to narrow the match to a specific company."
+          }
+        },
+        "description": "Input criteria used to resolve a single contact to a ZoomInfo Contact ID. Identical to the contact\nenrich criteria."
+      },
+      "ContactMatchAttributeMeta": {
+        "type": "object",
+        "required": [
+          "matchStatus",
+          "input"
+        ],
+        "properties": {
+          "matchStatus": {
+            "$ref": "#/components/schemas/ContactMatchStatus",
+            "description": "Indicates whether a matching record was found."
+          },
+          "input": {
+            "$ref": "#/components/schemas/ContactMatchRequestCriteria",
+            "description": "The input criteria used to attempt this match."
+          },
+          "matchInsights": {
+            "$ref": "#/components/schemas/MatchInsights",
+            "description": "Insights describing how the match was determined."
+          }
+        },
+        "description": "Metadata describing the result of a contact match, including match status, insights, and the input criteria used."
+      },
+      "MatchContactResource": {
+        "type": "object",
+        "required": [
+          "id",
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier for the resource"
+          },
+          "type": {
+            "type": "string",
+            "description": "The type of the resource",
+            "default": "ContactMatch",
+            "pattern": "ContactMatch"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/ContactMatchResponseAttributes",
+            "description": "The attributes defining the resource"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ContactMatchAttributeMeta",
+            "description": "Non-standard meta information about the resource"
+          }
+        },
+        "description": "A matching contact was identified from the provided input criteria. The associated company, if any, is in the attributes object; the match status can be found within the meta object."
+      },
+      "NoMatchContactResult": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier of the resource"
+          },
+          "type": {
+            "type": "string",
+            "description": "The type identifier of the resource",
+            "default": "NoMatch",
+            "pattern": "NoMatch"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ContactMatchAttributeMeta",
+            "description": "Non-standard meta information about the resource"
+          }
+        },
+        "description": "There was no matching contact found for the provided input criteria. Details are available in the meta object, including the match status and match insights."
+      },
+      "ContactMatchResponseResourceUnion": {
+        "type": "object",
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/MatchContactResource"
+          },
+          {
+            "$ref": "#/components/schemas/NoMatchContactResult"
+          }
+        ],
+        "discriminator": {
+          "propertyName": "type",
+          "mapping": {
+            "ContactMatch": "#/components/schemas/MatchContactResource",
+            "NoMatch": "#/components/schemas/NoMatchContactResult"
+          }
+        },
+        "description": "Represents the possible resource types returned in a contact match response, including both a successful match and a no-match result."
+      },
+      "ContactMatchResponse": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ContactMatchResponseResourceUnion"
+            },
+            "description": "The primary data of the document"
+          }
+        },
+        "description": "A list of contact match results for the criteria specified in the request."
+      },
+      "ContactMatchRequestAttributes": {
+        "type": "object",
+        "required": [
+          "inputs"
+        ],
+        "properties": {
+          "inputs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ContactMatchRequestCriteria"
+            },
+            "minItems": 1,
+            "maxItems": 25,
+            "description": "List of criteria to match against. Up to 25 inputs per request."
+          }
+        },
+        "description": "Contact match request attributes. Unlike Enrich, Match does not accept `outputFields` or\n`requiredFields` — it does not charge credits or return enrichment data, only match metadata\nand ZoomInfo identifiers."
+      },
+      "ContactMatchRequestResource": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "The type of the resource",
+            "default": "ContactMatch",
+            "pattern": "ContactMatch"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/ContactMatchRequestAttributes",
+            "description": "The attributes defining the resource"
+          }
+        },
+        "description": "Contact match request resource."
+      },
+      "ContactMatchRequest": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ContactMatchRequestResource",
+            "description": "The primary data of the document"
+          }
+        },
+        "description": "Contact match request."
       },
       "ScoopSort": {
         "type": "string",
@@ -11393,11 +12165,7 @@
             "description": "Types associated with a scoop."
           },
           "company": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CompanySummary"
-              }
-            ],
+            "$ref": "#/components/schemas/CompanySummary",
             "description": "Company associated with the scoop."
           },
           "contacts": {
@@ -11433,11 +12201,7 @@
             "pattern": "Scoop"
           },
           "attributes": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ScoopSearchResponseAttrs"
-              }
-            ],
+            "$ref": "#/components/schemas/ScoopSearchResponseAttrs",
             "description": "The attributes defining the resource"
           }
         },
@@ -11457,19 +12221,11 @@
             "description": "The primary data of the document"
           },
           "meta": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ResultMeta"
-              }
-            ],
+            "$ref": "#/components/schemas/ResultMeta",
             "description": "Non-standard meta information about the document"
           },
           "links": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Links"
-              }
-            ],
+            "$ref": "#/components/schemas/Links",
             "description": "Links related to the primary data"
           }
         },
@@ -11512,99 +12268,51 @@
             "description": "Specifies the fields to include in the response. To request fields of the company object or the contacts, use camel-case names prefixed with the object name (e.g., companyName, contactsFirstName)."
           },
           "companies": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CompanySearchRequestAttrsPublic"
-              }
-            ],
+            "$ref": "#/components/schemas/CompanySearchRequestAttrsPublic",
             "description": "Filter by ZoomInfo companies."
           },
           "contacts": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ContactSearchRequestAttrsPublic"
-              }
-            ],
+            "$ref": "#/components/schemas/ContactSearchRequestAttrsPublic",
             "description": "Filter by ZoomInfo contacts."
           },
           "accountLevelIntent": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AccountLevelIntentSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/AccountLevelIntentSearchRequestAttributes",
             "description": "Filter by account-level intent signals."
           },
           "news": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/NewsSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/NewsSearchRequestAttributes",
             "description": "Filter by company news articles."
           },
           "scoops": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ScoopSearchRequestAttrs"
-              }
-            ],
+            "$ref": "#/components/schemas/ScoopSearchRequestAttrs",
             "description": "Filter by ZoomInfo Scoops."
           },
           "gtmAccounts": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmAccountSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmAccountSearchRequestAttributes",
             "description": "Filter by GTM accounts."
           },
           "gtmContacts": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmContactSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmContactSearchRequestAttributes",
             "description": "Filter by GTM contacts."
           },
           "gtmOpportunities": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmOpportunitySearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmOpportunitySearchRequestAttributes",
             "description": "Filter by GTM opportunities."
           },
           "gtmUsers": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmUserSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmUserSearchRequestAttributes",
             "description": "Filter by related GTM users through the configured relationship for the searched collection. GTM account and opportunity searches match team members. Use the nested owner filter to match the record owner."
           },
           "emails": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EmailSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/EmailSearchRequestAttributes",
             "description": "Filter by emails."
           },
           "meetings": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/MeetingSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/MeetingSearchRequestAttributes",
             "description": "Filter by meetings."
           },
           "contentInteractions": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ContentInteractionSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/ContentInteractionSearchRequestAttributes",
             "description": "Filter by content interactions."
           }
         },
@@ -11624,11 +12332,7 @@
             "pattern": "SearchRequest"
           },
           "attributes": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ScoopV2SearchRequestAttrs"
-              }
-            ],
+            "$ref": "#/components/schemas/ScoopV2SearchRequestAttrs",
             "description": "The attributes defining the resource"
           }
         },
@@ -11641,21 +12345,36 @@
         ],
         "properties": {
           "data": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ScoopV2SearchResource"
-              }
-            ],
+            "$ref": "#/components/schemas/ScoopV2SearchResource",
             "description": "The primary data of the document"
           }
         },
         "description": "Scoops search request."
       },
-      "ScoopV2Id": {
+      "StringId": {
         "type": "string",
         "minLength": 1,
         "pattern": "^\\s*\\S[\\s\\S]*$",
-        "description": "A Scoop ID containing at least one non-whitespace character."
+        "description": "A string Id containing at least one non-whitespace character."
+      },
+      "StringIdInFilterOperations": {
+        "type": "object",
+        "required": [
+          "in"
+        ],
+        "properties": {
+          "in": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StringId"
+            },
+            "minItems": 1,
+            "maxItems": 250,
+            "description": "Matches records where the field equals one of these values."
+          }
+        },
+        "description": "Filter operations for fields that support list only.",
+        "additionalProperties": false
       },
       "ScoopV2EnrichRequestAttrs": {
         "type": "object",
@@ -11697,23 +12416,8 @@
             "description": "Specifies the fields to include in the response. To request fields of the company object or the contacts, use camel-case names prefixed with the object name (e.g., companyName, contactsFirstName)."
           },
           "id": {
-            "type": "object",
-            "required": [
-              "in"
-            ],
-            "properties": {
-              "in": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/ScoopV2Id"
-                },
-                "minItems": 1,
-                "maxItems": 250,
-                "description": "Matches records where the field equals one of these values."
-              }
-            },
-            "description": "Unique identifier for the dataset.",
-            "additionalProperties": false
+            "$ref": "#/components/schemas/StringIdInFilterOperations",
+            "description": "Unique identifier for the dataset."
           }
         },
         "description": "Enrich criteria for the Scoops dataset."
@@ -11732,11 +12436,7 @@
             "pattern": "EnrichRequest"
           },
           "attributes": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ScoopV2EnrichRequestAttrs"
-              }
-            ],
+            "$ref": "#/components/schemas/ScoopV2EnrichRequestAttrs",
             "description": "The attributes defining the resource"
           }
         },
@@ -11749,11 +12449,7 @@
         ],
         "properties": {
           "data": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ScoopV2EnrichResource"
-              }
-            ],
+            "$ref": "#/components/schemas/ScoopV2EnrichResource",
             "description": "The primary data of the document"
           }
         },
@@ -11824,11 +12520,7 @@
             "pattern": "News"
           },
           "attributes": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/NewsResponseAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/NewsResponseAttributes",
             "description": "The attributes defining the resource"
           }
         },
@@ -11848,19 +12540,11 @@
             "description": "The primary data of the document"
           },
           "meta": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ResultMeta"
-              }
-            ],
+            "$ref": "#/components/schemas/ResultMeta",
             "description": "Non-standard meta information about the document"
           },
           "links": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Links"
-              }
-            ],
+            "$ref": "#/components/schemas/Links",
             "description": "Links related to the primary data"
           }
         },
@@ -11893,99 +12577,51 @@
             "description": "Specifies the fields to include in the response. To request fields of the companies, use camel-case names prefixed with the object name (e.g., companiesName, companiesIndustry)."
           },
           "companies": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CompanySearchRequestAttrsPublic"
-              }
-            ],
+            "$ref": "#/components/schemas/CompanySearchRequestAttrsPublic",
             "description": "Filter by ZoomInfo companies."
           },
           "contacts": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ContactSearchRequestAttrsPublic"
-              }
-            ],
+            "$ref": "#/components/schemas/ContactSearchRequestAttrsPublic",
             "description": "Filter by ZoomInfo contacts."
           },
           "accountLevelIntent": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AccountLevelIntentSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/AccountLevelIntentSearchRequestAttributes",
             "description": "Filter by account-level intent signals."
           },
           "news": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/NewsSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/NewsSearchRequestAttributes",
             "description": "Filter by company news articles."
           },
           "scoops": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ScoopSearchRequestAttrs"
-              }
-            ],
+            "$ref": "#/components/schemas/ScoopSearchRequestAttrs",
             "description": "Filter by ZoomInfo Scoops."
           },
           "gtmAccounts": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmAccountSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmAccountSearchRequestAttributes",
             "description": "Filter by GTM accounts."
           },
           "gtmContacts": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmContactSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmContactSearchRequestAttributes",
             "description": "Filter by GTM contacts."
           },
           "gtmOpportunities": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmOpportunitySearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmOpportunitySearchRequestAttributes",
             "description": "Filter by GTM opportunities."
           },
           "gtmUsers": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmUserSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmUserSearchRequestAttributes",
             "description": "Filter by related GTM users through the configured relationship for the searched collection. GTM account and opportunity searches match team members. Use the nested owner filter to match the record owner."
           },
           "emails": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EmailSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/EmailSearchRequestAttributes",
             "description": "Filter by emails."
           },
           "meetings": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/MeetingSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/MeetingSearchRequestAttributes",
             "description": "Filter by meetings."
           },
           "contentInteractions": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ContentInteractionSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/ContentInteractionSearchRequestAttributes",
             "description": "Filter by content interactions."
           }
         },
@@ -12005,11 +12641,7 @@
             "pattern": "SearchRequest"
           },
           "attributes": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/NewsSearchRequestAttrs"
-              }
-            ],
+            "$ref": "#/components/schemas/NewsSearchRequestAttrs",
             "description": "The attributes defining the resource"
           }
         },
@@ -12022,11 +12654,7 @@
         ],
         "properties": {
           "data": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/NewsSearchResourceV2"
-              }
-            ],
+            "$ref": "#/components/schemas/NewsSearchResourceV2",
             "description": "The primary data of the document"
           }
         },
@@ -12062,23 +12690,8 @@
             "description": "Specifies the fields to include in the response. To request fields of the companies, use camel-case names prefixed with the object name (e.g., companiesName, companiesIndustry)."
           },
           "id": {
-            "type": "object",
-            "required": [
-              "in"
-            ],
-            "properties": {
-              "in": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                },
-                "minItems": 1,
-                "maxItems": 250,
-                "description": "Matches records where the field equals one of these values."
-              }
-            },
-            "description": "Unique identifier for the dataset.",
-            "additionalProperties": false
+            "$ref": "#/components/schemas/StringIdInFilterOperations",
+            "description": "Unique identifier for the dataset."
           }
         },
         "description": "Enrich criteria for the news dataset."
@@ -12097,11 +12710,7 @@
             "pattern": "EnrichRequest"
           },
           "attributes": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/NewsEnrichRequestAttrs"
-              }
-            ],
+            "$ref": "#/components/schemas/NewsEnrichRequestAttrs",
             "description": "The attributes defining the resource"
           }
         },
@@ -12114,11 +12723,7 @@
         ],
         "properties": {
           "data": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/NewsEnrichResourceV2"
-              }
-            ],
+            "$ref": "#/components/schemas/NewsEnrichResourceV2",
             "description": "The primary data of the document"
           }
         },
@@ -12368,12 +12973,6 @@
         },
         "description": "Account-level intent search request."
       },
-      "AccountLevelIntentId": {
-        "type": "string",
-        "minLength": 1,
-        "pattern": "^\\s*\\S[\\s\\S]*$",
-        "description": "An account-level intent ID containing at least one non-whitespace character."
-      },
       "AccountLevelIntentEnrichRequestAttrs": {
         "type": "object",
         "required": [
@@ -12408,23 +13007,8 @@
             "description": "Specifies the fields to include in the response. To request fields of the company object, use camel-case names prefixed with the object name (e.g., companyId, companyName)."
           },
           "id": {
-            "type": "object",
-            "required": [
-              "in"
-            ],
-            "properties": {
-              "in": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/AccountLevelIntentId"
-                },
-                "minItems": 1,
-                "maxItems": 250,
-                "description": "Matches records where the field equals one of these values."
-              }
-            },
-            "description": "Unique identifier for the dataset.",
-            "additionalProperties": false
+            "$ref": "#/components/schemas/StringIdInFilterOperations",
+            "description": "Unique identifier for the dataset."
           }
         },
         "description": "Enrich criteria for the account-level intent dataset."
@@ -12443,11 +13027,7 @@
             "pattern": "EnrichRequest"
           },
           "attributes": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AccountLevelIntentEnrichRequestAttrs"
-              }
-            ],
+            "$ref": "#/components/schemas/AccountLevelIntentEnrichRequestAttrs",
             "description": "The attributes defining the resource"
           }
         },
@@ -12460,11 +13040,7 @@
         ],
         "properties": {
           "data": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AccountLevelIntentEnrichResource"
-              }
-            ],
+            "$ref": "#/components/schemas/AccountLevelIntentEnrichResource",
             "description": "The primary data of the document"
           }
         },
@@ -12549,20 +13125,22 @@
             "type": "boolean"
           },
           {
+            "type": "null"
+          },
+          {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/CustomFieldValue"
+              "$ref": "#/components/schemas/CustomFieldResponseValue"
             }
           },
           {
             "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/CustomFieldValue"
+            "unevaluatedProperties": {
+              "$ref": "#/components/schemas/CustomFieldResponseValue"
             }
           }
         ],
-        "nullable": true,
-        "description": "A custom-field response value: a scalar, null, a flat list of scalars, or a flat object whose values are scalars."
+        "description": "A custom-field response value. Objects have string keys and may contain nested JSON values; arrays may contain any of these value types."
       },
       "GtmUserSummary": {
         "type": "object",
@@ -12639,7 +13217,8 @@
             "description": "Matched location of the person."
           },
           "companyId": {
-            "type": "string",
+            "type": "integer",
+            "format": "int64",
             "description": "Identifier of the matched company."
           },
           "companyPhone": {
@@ -12651,7 +13230,8 @@
             "description": "Matched email address of the person."
           },
           "personId": {
-            "type": "string",
+            "type": "integer",
+            "format": "int64",
             "description": "Identifier of the matched person."
           },
           "personFreemail": {
@@ -12729,11 +13309,7 @@
             "description": "ZoomInfo company identifier associated with the engagement snapshot."
           },
           "snapshotCompany": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CompanySummary"
-              }
-            ],
+            "$ref": "#/components/schemas/CompanySummary",
             "description": "Summary of the company associated with the engagement snapshot."
           }
         },
@@ -12744,57 +13320,33 @@
         "properties": {
           "custom": {
             "type": "object",
-            "additionalProperties": {
+            "unevaluatedProperties": {
               "$ref": "#/components/schemas/CustomFieldResponseValue"
             },
             "description": "All available scalar custom fields for this tenant, keyed by their custom field names. Values retain their JSON types, including null. An empty object is returned when no custom fields are available."
           },
           "owner": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmUserSummary"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmUserSummary",
             "description": "Summary of the account owner."
           },
           "sourceCreatedBy": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmUserSummary"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmUserSummary",
             "description": "Summary of the user who created this account in the external system."
           },
           "sourceLastUpdatedBy": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmUserSummary"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmUserSummary",
             "description": "Summary of the user who last updated this account in the external system."
           },
           "matchInsights": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmAccountMatchInsights"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmAccountMatchInsights",
             "description": "Details used to match this account to ZoomInfo records."
           },
           "unifiedProfile": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmAccountSummary"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmAccountSummary",
             "description": "Summary of the unified profile associated with this account."
           },
           "recentEngagementSnapshot": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/RecentEngagementSnapshot"
-              }
-            ],
+            "$ref": "#/components/schemas/RecentEngagementSnapshot",
             "description": "Company information from the account's recent engagement snapshot."
           },
           "ownershipType": {
@@ -13088,11 +13640,7 @@
             "description": "Primary industry classification"
           },
           "company": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CompanySummary"
-              }
-            ],
+            "$ref": "#/components/schemas/CompanySummary",
             "description": "Associated company details."
           }
         },
@@ -13118,11 +13666,7 @@
             "pattern": "GtmAccount"
           },
           "attributes": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmAccountSearchResponseAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmAccountSearchResponseAttributes",
             "description": "The attributes defining the resource"
           }
         },
@@ -13142,19 +13686,11 @@
             "description": "The primary data of the document"
           },
           "meta": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ResultMeta"
-              }
-            ],
+            "$ref": "#/components/schemas/ResultMeta",
             "description": "Non-standard meta information about the document"
           },
           "links": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Links"
-              }
-            ],
+            "$ref": "#/components/schemas/Links",
             "description": "Links related to the primary data"
           }
         },
@@ -13298,99 +13834,51 @@
             "description": "Specifies the fields to include in the response. To request fields of nested objects, use camel-case names prefixed with the object name (e.g., ownerFirstName, companyName, unifiedProfileAccountName, matchInsightsCompanyName)."
           },
           "companies": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CompanySearchRequestAttrsPublic"
-              }
-            ],
+            "$ref": "#/components/schemas/CompanySearchRequestAttrsPublic",
             "description": "Filter by ZoomInfo companies."
           },
           "contacts": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ContactSearchRequestAttrsPublic"
-              }
-            ],
+            "$ref": "#/components/schemas/ContactSearchRequestAttrsPublic",
             "description": "Filter by ZoomInfo contacts."
           },
           "accountLevelIntent": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AccountLevelIntentSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/AccountLevelIntentSearchRequestAttributes",
             "description": "Filter by account-level intent signals."
           },
           "news": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/NewsSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/NewsSearchRequestAttributes",
             "description": "Filter by company news articles."
           },
           "scoops": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ScoopSearchRequestAttrs"
-              }
-            ],
+            "$ref": "#/components/schemas/ScoopSearchRequestAttrs",
             "description": "Filter by ZoomInfo Scoops."
           },
           "gtmAccounts": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmAccountSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmAccountSearchRequestAttributes",
             "description": "Filter by GTM accounts."
           },
           "gtmContacts": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmContactSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmContactSearchRequestAttributes",
             "description": "Filter by GTM contacts."
           },
           "gtmOpportunities": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmOpportunitySearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmOpportunitySearchRequestAttributes",
             "description": "Filter by GTM opportunities."
           },
           "gtmUsers": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmUserSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmUserSearchRequestAttributes",
             "description": "Filter by related GTM users through the configured relationship for the searched collection. GTM account and opportunity searches match team members. Use the nested owner filter to match the record owner."
           },
           "emails": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EmailSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/EmailSearchRequestAttributes",
             "description": "Filter by emails."
           },
           "meetings": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/MeetingSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/MeetingSearchRequestAttributes",
             "description": "Filter by meetings."
           },
           "contentInteractions": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ContentInteractionSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/ContentInteractionSearchRequestAttributes",
             "description": "Filter by content interactions."
           }
         },
@@ -13410,11 +13898,7 @@
             "pattern": "SearchRequest"
           },
           "attributes": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmAccountSearchRequestAttrs"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmAccountSearchRequestAttrs",
             "description": "The attributes defining the resource"
           }
         },
@@ -13427,11 +13911,7 @@
         ],
         "properties": {
           "data": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmAccountSearchResource"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmAccountSearchResource",
             "description": "The primary data of the document"
           }
         },
@@ -13578,23 +14058,8 @@
             "description": "Specifies the fields to include in the response. To request fields of nested objects, use camel-case names prefixed with the object name (e.g., ownerFirstName, companyName, unifiedProfileAccountName, matchInsightsCompanyName)."
           },
           "id": {
-            "type": "object",
-            "required": [
-              "in"
-            ],
-            "properties": {
-              "in": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                },
-                "minItems": 1,
-                "maxItems": 250,
-                "description": "Matches records where the field equals one of these values."
-              }
-            },
-            "description": "Unique identifier for the dataset.",
-            "additionalProperties": false
+            "$ref": "#/components/schemas/StringIdInFilterOperations",
+            "description": "Unique identifier for the dataset."
           }
         },
         "description": "Enrich criteria for the GTM accounts dataset."
@@ -13613,11 +14078,7 @@
             "pattern": "EnrichRequest"
           },
           "attributes": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmAccountEnrichRequestAttrs"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmAccountEnrichRequestAttrs",
             "description": "The attributes defining the resource"
           }
         },
@@ -13630,11 +14091,7 @@
         ],
         "properties": {
           "data": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmAccountEnrichResource"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmAccountEnrichResource",
             "description": "The primary data of the document"
           }
         },
@@ -13692,8 +14149,8 @@
             "description": "ZoomInfo-identified current company the contact moved to. Expected to be null when Person Has Moved Status is no."
           },
           "newZiCompanyId": {
-            "type": "number",
-            "format": "double",
+            "type": "integer",
+            "format": "int64",
             "description": "ZoomInfo company ID for the new company. Expected to be null when status is no or when the company cannot be matched to a ZoomInfo company. Use the ID for routing, deduplication, and joins when present."
           },
           "status": {
@@ -13710,8 +14167,8 @@
             "description": "Company the contact moved from, based on the CRM-associated company at evaluation. Expected to be null when Person Has Moved Status is no."
           },
           "previousZiCompanyId": {
-            "type": "number",
-            "format": "double",
+            "type": "integer",
+            "format": "int64",
             "description": "ZoomInfo company ID for the previous company. Expected to be null when status is no or when the company cannot be matched to a ZoomInfo company. Use the ID for routing, deduplication, and joins when present."
           }
         },
@@ -13751,11 +14208,7 @@
             "description": "Job title of the user."
           },
           "manager": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmUserSummary"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmUserSummary",
             "description": "Summary of the user's immediate manager, without further relationship traversal."
           }
         },
@@ -13801,7 +14254,8 @@
             "description": "Matched on location of the person."
           },
           "companyId": {
-            "type": "string",
+            "type": "integer",
+            "format": "int64",
             "description": "Unique identifier for the matched company."
           },
           "companyPhone": {
@@ -13813,7 +14267,8 @@
             "description": "Matched on email address of the person."
           },
           "personId": {
-            "type": "string",
+            "type": "integer",
+            "format": "int64",
             "description": "Unique identifier for the matched person."
           },
           "personFreemail": {
@@ -13843,14 +14298,6 @@
           "contactBuyerFitRationale": {
             "type": "string",
             "description": "AI explanation of the buyer-fit assessment."
-          },
-          "citations": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "additionalProperties": {}
-            },
-            "description": "JSON evidence references supporting the insight. Entries contain identifiers to resolve against the named sources; the list may be empty."
           },
           "nextMeetingScheduledTimestamp": {
             "type": "string",
@@ -13886,41 +14333,25 @@
         "properties": {
           "custom": {
             "type": "object",
-            "additionalProperties": {
+            "unevaluatedProperties": {
               "$ref": "#/components/schemas/CustomFieldResponseValue"
             },
             "description": "All available scalar custom fields for this tenant, keyed by their custom field names. Values retain their JSON types, including null. An empty object is returned when no custom fields are available."
           },
           "personHasMoved": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmContactPersonHasMoved"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmContactPersonHasMoved",
             "description": "Company-move details based on CRM employment and ZoomInfo Job Resume data. May be null when no evaluation is available."
           },
           "owner": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmUserWithManagerSummary"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmUserWithManagerSummary",
             "description": "Summary of the contact owner, resolved through the owner relationship, including the immediate manager."
           },
           "matchInsights": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmContactMatchInsights"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmContactMatchInsights",
             "description": "Details used to match this CRM contact to ZoomInfo records."
           },
           "contactInsight": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmContactInsight"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmContactInsight",
             "description": "AI buyer-fit, deal-role, and engagement assessments for this contact."
           },
           "linkedinContactProfileUrl": {
@@ -14171,11 +14602,7 @@
             "pattern": "GtmContact"
           },
           "attributes": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmContactSearchResponseAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmContactSearchResponseAttributes",
             "description": "The attributes defining the resource"
           }
         },
@@ -14195,19 +14622,11 @@
             "description": "The primary data of the document"
           },
           "meta": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ResultMeta"
-              }
-            ],
+            "$ref": "#/components/schemas/ResultMeta",
             "description": "Non-standard meta information about the document"
           },
           "links": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Links"
-              }
-            ],
+            "$ref": "#/components/schemas/Links",
             "description": "Links related to the primary data"
           }
         },
@@ -14224,7 +14643,6 @@
                 "assistantPhone",
                 "companyName",
                 "companyWebsite",
-                "contactInsightCitations",
                 "contactInsightContactBuyerFit",
                 "contactInsightContactBuyerFitRationale",
                 "contactInsightContactRole",
@@ -14321,99 +14739,51 @@
             "description": "Specifies the fields to include in the response. To request fields of nested objects, use camel-case names prefixed with the object name (e.g., ownerFirstName, personHasMovedNewCompany, matchInsightsPersonTitle, contactInsightEngagementCount)."
           },
           "companies": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CompanySearchRequestAttrsPublic"
-              }
-            ],
+            "$ref": "#/components/schemas/CompanySearchRequestAttrsPublic",
             "description": "Filter by ZoomInfo companies."
           },
           "contacts": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ContactSearchRequestAttrsPublic"
-              }
-            ],
+            "$ref": "#/components/schemas/ContactSearchRequestAttrsPublic",
             "description": "Filter by ZoomInfo contacts."
           },
           "accountLevelIntent": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AccountLevelIntentSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/AccountLevelIntentSearchRequestAttributes",
             "description": "Filter by account-level intent signals."
           },
           "news": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/NewsSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/NewsSearchRequestAttributes",
             "description": "Filter by company news articles."
           },
           "scoops": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ScoopSearchRequestAttrs"
-              }
-            ],
+            "$ref": "#/components/schemas/ScoopSearchRequestAttrs",
             "description": "Filter by ZoomInfo Scoops."
           },
           "gtmAccounts": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmAccountSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmAccountSearchRequestAttributes",
             "description": "Filter by GTM accounts."
           },
           "gtmContacts": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmContactSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmContactSearchRequestAttributes",
             "description": "Filter by GTM contacts."
           },
           "gtmOpportunities": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmOpportunitySearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmOpportunitySearchRequestAttributes",
             "description": "Filter by GTM opportunities."
           },
           "gtmUsers": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmUserSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmUserSearchRequestAttributes",
             "description": "Filter by related GTM users through the configured relationship for the searched collection. GTM account and opportunity searches match team members. Use the nested owner filter to match the record owner."
           },
           "emails": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EmailSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/EmailSearchRequestAttributes",
             "description": "Filter by emails."
           },
           "meetings": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/MeetingSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/MeetingSearchRequestAttributes",
             "description": "Filter by meetings."
           },
           "contentInteractions": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ContentInteractionSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/ContentInteractionSearchRequestAttributes",
             "description": "Filter by content interactions."
           }
         },
@@ -14433,11 +14803,7 @@
             "pattern": "SearchRequest"
           },
           "attributes": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmContactSearchRequestAttrs"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmContactSearchRequestAttrs",
             "description": "The attributes defining the resource"
           }
         },
@@ -14450,11 +14816,7 @@
         ],
         "properties": {
           "data": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmContactSearchResource"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmContactSearchResource",
             "description": "The primary data of the document"
           }
         },
@@ -14474,7 +14836,6 @@
                 "assistantPhone",
                 "companyName",
                 "companyWebsite",
-                "contactInsightCitations",
                 "contactInsightContactBuyerFit",
                 "contactInsightContactBuyerFitRationale",
                 "contactInsightContactRole",
@@ -14571,23 +14932,8 @@
             "description": "Specifies the fields to include in the response. To request fields of nested objects, use camel-case names prefixed with the object name (e.g., ownerFirstName, personHasMovedNewCompany, matchInsightsPersonTitle, contactInsightEngagementCount)."
           },
           "id": {
-            "type": "object",
-            "required": [
-              "in"
-            ],
-            "properties": {
-              "in": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                },
-                "minItems": 1,
-                "maxItems": 250,
-                "description": "Matches records where the field equals one of these values."
-              }
-            },
-            "description": "Unique identifier for the dataset.",
-            "additionalProperties": false
+            "$ref": "#/components/schemas/StringIdInFilterOperations",
+            "description": "Unique identifier for the dataset."
           }
         },
         "description": "Enrich criteria for the GTM contacts dataset."
@@ -14606,11 +14952,7 @@
             "pattern": "EnrichRequest"
           },
           "attributes": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmContactEnrichRequestAttrs"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmContactEnrichRequestAttrs",
             "description": "The attributes defining the resource"
           }
         },
@@ -14623,11 +14965,7 @@
         ],
         "properties": {
           "data": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmContactEnrichResource"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmContactEnrichResource",
             "description": "The primary data of the document"
           }
         },
@@ -14699,7 +15037,7 @@
           },
           {
             "type": "object",
-            "additionalProperties": {}
+            "unevaluatedProperties": {}
           }
         ],
         "description": "JSON content returned by an engagement insight. Objects and arrays may contain nested JSON values."
@@ -14734,11 +15072,7 @@
             "description": "One-line summaries of signals of friction, risk, or stalled progress."
           },
           "headwinds": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EngagementJsonValue"
-              }
-            ],
+            "$ref": "#/components/schemas/EngagementJsonValue",
             "description": "Structured JSON signals of friction, risk, or stalled progress. Content is defined by the source and may evolve."
           },
           "opportunitySentiment": {
@@ -14746,11 +15080,7 @@
             "description": "Aggregate stakeholder sentiment toward the product or solution, independent of deal-process signals."
           },
           "tailwinds": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EngagementJsonValue"
-              }
-            ],
+            "$ref": "#/components/schemas/EngagementJsonValue",
             "description": "Structured JSON signals of positive momentum, milestone achievement, or acceleration. Content is defined by the source and may evolve."
           },
           "tailwindSummaries": {
@@ -14761,11 +15091,7 @@
             "description": "One-line summaries of the positive momentum signals."
           },
           "keyStakeholders": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EngagementJsonValue"
-              }
-            ],
+            "$ref": "#/components/schemas/EngagementJsonValue",
             "description": "Key stakeholders and their product sentiment as JSON. Content is defined by the source and may evolve."
           },
           "assessedAt": {
@@ -14788,32 +15114,20 @@
         "type": "object",
         "properties": {
           "owner": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmUserSummary"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmUserSummary",
             "description": "Summary of the opportunity owner."
           },
           "opportunityDealMomentum": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmOpportunityDealMomentum"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmOpportunityDealMomentum",
             "description": "AI-generated assessment of the opportunity's momentum and stakeholder sentiment."
           },
           "recentEngagementSnapshot": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/RecentEngagementSnapshot"
-              }
-            ],
+            "$ref": "#/components/schemas/RecentEngagementSnapshot",
             "description": "Company information associated with the opportunity's recent engagement snapshot."
           },
           "custom": {
             "type": "object",
-            "additionalProperties": {
+            "unevaluatedProperties": {
               "$ref": "#/components/schemas/CustomFieldResponseValue"
             },
             "description": "All available scalar custom fields for this tenant, keyed by their custom field names. Values retain their JSON types, including null. An empty object is returned when no custom fields are available."
@@ -15008,11 +15322,7 @@
             "pattern": "GtmOpportunity"
           },
           "attributes": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmOpportunitySearchResponseAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmOpportunitySearchResponseAttributes",
             "description": "The attributes defining the resource"
           }
         },
@@ -15032,19 +15342,11 @@
             "description": "The primary data of the document"
           },
           "meta": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ResultMeta"
-              }
-            ],
+            "$ref": "#/components/schemas/ResultMeta",
             "description": "Non-standard meta information about the document"
           },
           "links": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Links"
-              }
-            ],
+            "$ref": "#/components/schemas/Links",
             "description": "Links related to the primary data"
           }
         },
@@ -15124,99 +15426,51 @@
             "description": "Specifies the fields to include in the response. To request fields of nested objects, use camel-case names prefixed with the object name (e.g., ownerFirstName, opportunityDealMomentumOpportunityPhase, recentEngagementSnapshotSnapshotCompanyId)."
           },
           "companies": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CompanySearchRequestAttrsPublic"
-              }
-            ],
+            "$ref": "#/components/schemas/CompanySearchRequestAttrsPublic",
             "description": "Filter by ZoomInfo companies."
           },
           "contacts": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ContactSearchRequestAttrsPublic"
-              }
-            ],
+            "$ref": "#/components/schemas/ContactSearchRequestAttrsPublic",
             "description": "Filter by ZoomInfo contacts."
           },
           "accountLevelIntent": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AccountLevelIntentSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/AccountLevelIntentSearchRequestAttributes",
             "description": "Filter by account-level intent signals."
           },
           "news": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/NewsSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/NewsSearchRequestAttributes",
             "description": "Filter by company news articles."
           },
           "scoops": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ScoopSearchRequestAttrs"
-              }
-            ],
+            "$ref": "#/components/schemas/ScoopSearchRequestAttrs",
             "description": "Filter by ZoomInfo Scoops."
           },
           "gtmAccounts": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmAccountSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmAccountSearchRequestAttributes",
             "description": "Filter by GTM accounts."
           },
           "gtmContacts": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmContactSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmContactSearchRequestAttributes",
             "description": "Filter by GTM contacts."
           },
           "gtmOpportunities": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmOpportunitySearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmOpportunitySearchRequestAttributes",
             "description": "Filter by GTM opportunities."
           },
           "gtmUsers": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmUserSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmUserSearchRequestAttributes",
             "description": "Filter by related GTM users through the configured relationship for the searched collection. GTM account and opportunity searches match team members. Use the nested owner filter to match the record owner."
           },
           "emails": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EmailSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/EmailSearchRequestAttributes",
             "description": "Filter by emails."
           },
           "meetings": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/MeetingSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/MeetingSearchRequestAttributes",
             "description": "Filter by meetings."
           },
           "contentInteractions": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ContentInteractionSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/ContentInteractionSearchRequestAttributes",
             "description": "Filter by content interactions."
           }
         },
@@ -15236,11 +15490,7 @@
             "pattern": "SearchRequest"
           },
           "attributes": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmOpportunitySearchRequestAttrs"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmOpportunitySearchRequestAttrs",
             "description": "The attributes defining the resource"
           }
         },
@@ -15253,11 +15503,7 @@
         ],
         "properties": {
           "data": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmOpportunitySearchResource"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmOpportunitySearchResource",
             "description": "The primary data of the document"
           }
         },
@@ -15340,23 +15586,8 @@
             "description": "Specifies the fields to include in the response. To request fields of nested objects, use camel-case names prefixed with the object name (e.g., ownerFirstName, opportunityDealMomentumOpportunityPhase, recentEngagementSnapshotSnapshotCompanyId)."
           },
           "id": {
-            "type": "object",
-            "required": [
-              "in"
-            ],
-            "properties": {
-              "in": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                },
-                "minItems": 1,
-                "maxItems": 250,
-                "description": "Matches records where the field equals one of these values."
-              }
-            },
-            "description": "Unique identifier for the dataset.",
-            "additionalProperties": false
+            "$ref": "#/components/schemas/StringIdInFilterOperations",
+            "description": "Unique identifier for the dataset."
           }
         },
         "description": "Enrich criteria for the GTM opportunities dataset. Pass the opportunity IDs in `id.in`."
@@ -15375,11 +15606,7 @@
             "pattern": "EnrichRequest"
           },
           "attributes": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmOpportunityEnrichRequestAttrs"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmOpportunityEnrichRequestAttrs",
             "description": "The attributes defining the resource"
           }
         },
@@ -15392,11 +15619,7 @@
         ],
         "properties": {
           "data": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmOpportunityEnrichResource"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmOpportunityEnrichResource",
             "description": "The primary data of the document"
           }
         },
@@ -15431,11 +15654,7 @@
         "type": "object",
         "properties": {
           "manager": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmUserSummary"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmUserSummary",
             "description": "Basic details of the user's immediate manager, without further relationship traversal."
           },
           "id": {
@@ -15557,7 +15776,7 @@
           },
           "custom": {
             "type": "object",
-            "additionalProperties": {
+            "unevaluatedProperties": {
               "$ref": "#/components/schemas/CustomFieldResponseValue"
             },
             "description": "Tenant-defined custom fields, keyed by their exact names. Values retain their JSON types."
@@ -15585,11 +15804,7 @@
             "pattern": "GtmUser"
           },
           "attributes": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmUserSearchResponseAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmUserSearchResponseAttributes",
             "description": "The attributes defining the resource"
           }
         },
@@ -15609,19 +15824,11 @@
             "description": "The primary data of the document"
           },
           "meta": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ResultMeta"
-              }
-            ],
+            "$ref": "#/components/schemas/ResultMeta",
             "description": "Non-standard meta information about the document"
           },
           "links": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Links"
-              }
-            ],
+            "$ref": "#/components/schemas/Links",
             "description": "Links related to the primary data"
           }
         },
@@ -15675,99 +15882,51 @@
             "description": "Specifies the fields to include in the response. To request fields of the manager object, use camel-case names prefixed with the object name (e.g., managerId, managerFirstName)."
           },
           "companies": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CompanySearchRequestAttrsPublic"
-              }
-            ],
+            "$ref": "#/components/schemas/CompanySearchRequestAttrsPublic",
             "description": "Filter by ZoomInfo companies."
           },
           "contacts": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ContactSearchRequestAttrsPublic"
-              }
-            ],
+            "$ref": "#/components/schemas/ContactSearchRequestAttrsPublic",
             "description": "Filter by ZoomInfo contacts."
           },
           "accountLevelIntent": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AccountLevelIntentSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/AccountLevelIntentSearchRequestAttributes",
             "description": "Filter by account-level intent signals."
           },
           "news": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/NewsSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/NewsSearchRequestAttributes",
             "description": "Filter by company news articles."
           },
           "scoops": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ScoopSearchRequestAttrs"
-              }
-            ],
+            "$ref": "#/components/schemas/ScoopSearchRequestAttrs",
             "description": "Filter by ZoomInfo Scoops."
           },
           "gtmAccounts": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmAccountSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmAccountSearchRequestAttributes",
             "description": "Filter by GTM accounts."
           },
           "gtmContacts": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmContactSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmContactSearchRequestAttributes",
             "description": "Filter by GTM contacts."
           },
           "gtmOpportunities": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmOpportunitySearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmOpportunitySearchRequestAttributes",
             "description": "Filter by GTM opportunities."
           },
           "gtmUsers": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmUserSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmUserSearchRequestAttributes",
             "description": "Filter by related GTM users through the configured relationship for the searched collection. GTM account and opportunity searches match team members. Use the nested owner filter to match the record owner."
           },
           "emails": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EmailSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/EmailSearchRequestAttributes",
             "description": "Filter by emails."
           },
           "meetings": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/MeetingSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/MeetingSearchRequestAttributes",
             "description": "Filter by meetings."
           },
           "contentInteractions": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ContentInteractionSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/ContentInteractionSearchRequestAttributes",
             "description": "Filter by content interactions."
           }
         },
@@ -15787,11 +15946,7 @@
             "pattern": "SearchRequest"
           },
           "attributes": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmUserSearchRequestAttrs"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmUserSearchRequestAttrs",
             "description": "The attributes defining the resource"
           }
         },
@@ -15804,21 +15959,11 @@
         ],
         "properties": {
           "data": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmUserSearchResource"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmUserSearchResource",
             "description": "The primary data of the document"
           }
         },
         "description": "GTM users search request."
-      },
-      "GtmUserId": {
-        "type": "string",
-        "minLength": 1,
-        "pattern": "^\\s*\\S[\\s\\S]*$",
-        "description": "A GTM user ID containing at least one non-whitespace character."
       },
       "GtmUserEnrichRequestAttrs": {
         "type": "object",
@@ -15871,23 +16016,8 @@
             "description": "Specifies the fields to include in the response. To request fields of the manager object, use camel-case names prefixed with the object name (e.g., managerId, managerFirstName)."
           },
           "id": {
-            "type": "object",
-            "required": [
-              "in"
-            ],
-            "properties": {
-              "in": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/GtmUserId"
-                },
-                "minItems": 1,
-                "maxItems": 250,
-                "description": "Matches records where the field equals one of these values."
-              }
-            },
-            "description": "Unique identifier for the dataset.",
-            "additionalProperties": false
+            "$ref": "#/components/schemas/StringIdInFilterOperations",
+            "description": "Unique identifier for the dataset."
           }
         },
         "description": "Enrich criteria for the GTM users dataset."
@@ -15906,11 +16036,7 @@
             "pattern": "EnrichRequest"
           },
           "attributes": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmUserEnrichRequestAttrs"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmUserEnrichRequestAttrs",
             "description": "The attributes defining the resource"
           }
         },
@@ -15923,11 +16049,7 @@
         ],
         "properties": {
           "data": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmUserEnrichResource"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmUserEnrichResource",
             "description": "The primary data of the document"
           }
         },
@@ -15960,11 +16082,7 @@
             "description": "The mail system the email was sent or received through, such as Office 365, Google, or Salesforce."
           },
           "recentEngagementSnapshot": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/RecentEngagementSnapshot"
-              }
-            ],
+            "$ref": "#/components/schemas/RecentEngagementSnapshot",
             "description": "Company information associated with the email's recent engagement snapshot."
           },
           "trackers": {
@@ -16094,11 +16212,7 @@
             "pattern": "Email"
           },
           "attributes": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EmailSearchResponseAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/EmailSearchResponseAttributes",
             "description": "The attributes defining the resource"
           }
         },
@@ -16118,19 +16232,11 @@
             "description": "The primary data of the document"
           },
           "meta": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ResultMeta"
-              }
-            ],
+            "$ref": "#/components/schemas/ResultMeta",
             "description": "Non-standard meta information about the document"
           },
           "links": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Links"
-              }
-            ],
+            "$ref": "#/components/schemas/Links",
             "description": "Links related to the primary data"
           }
         },
@@ -16177,99 +16283,51 @@
             "description": "Specifies the fields to include in the response. To request fields of the recentEngagementSnapshot object, use camel-case names prefixed with the object name (e.g., recentEngagementSnapshotSnapshotCompanyId)."
           },
           "companies": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CompanySearchRequestAttrsPublic"
-              }
-            ],
+            "$ref": "#/components/schemas/CompanySearchRequestAttrsPublic",
             "description": "Filter by ZoomInfo companies."
           },
           "contacts": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ContactSearchRequestAttrsPublic"
-              }
-            ],
+            "$ref": "#/components/schemas/ContactSearchRequestAttrsPublic",
             "description": "Filter by ZoomInfo contacts."
           },
           "accountLevelIntent": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AccountLevelIntentSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/AccountLevelIntentSearchRequestAttributes",
             "description": "Filter by account-level intent signals."
           },
           "news": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/NewsSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/NewsSearchRequestAttributes",
             "description": "Filter by company news articles."
           },
           "scoops": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ScoopSearchRequestAttrs"
-              }
-            ],
+            "$ref": "#/components/schemas/ScoopSearchRequestAttrs",
             "description": "Filter by ZoomInfo Scoops."
           },
           "gtmAccounts": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmAccountSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmAccountSearchRequestAttributes",
             "description": "Filter by GTM accounts."
           },
           "gtmContacts": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmContactSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmContactSearchRequestAttributes",
             "description": "Filter by GTM contacts."
           },
           "gtmOpportunities": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmOpportunitySearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmOpportunitySearchRequestAttributes",
             "description": "Filter by GTM opportunities."
           },
           "gtmUsers": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmUserSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmUserSearchRequestAttributes",
             "description": "Filter by related GTM users through the configured relationship for the searched collection. GTM account and opportunity searches match team members. Use the nested owner filter to match the record owner."
           },
           "emails": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EmailSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/EmailSearchRequestAttributes",
             "description": "Filter by emails."
           },
           "meetings": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/MeetingSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/MeetingSearchRequestAttributes",
             "description": "Filter by meetings."
           },
           "contentInteractions": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ContentInteractionSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/ContentInteractionSearchRequestAttributes",
             "description": "Filter by content interactions."
           }
         },
@@ -16289,11 +16347,7 @@
             "pattern": "SearchRequest"
           },
           "attributes": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EmailSearchRequestAttrs"
-              }
-            ],
+            "$ref": "#/components/schemas/EmailSearchRequestAttrs",
             "description": "The attributes defining the resource"
           }
         },
@@ -16306,21 +16360,11 @@
         ],
         "properties": {
           "data": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EmailSearchResource"
-              }
-            ],
+            "$ref": "#/components/schemas/EmailSearchResource",
             "description": "The primary data of the document"
           }
         },
         "description": "Emails search request."
-      },
-      "EmailId": {
-        "type": "string",
-        "minLength": 1,
-        "pattern": "^\\s*\\S[\\s\\S]*$",
-        "description": "An email ID containing at least one non-whitespace character."
       },
       "EmailEnrichRequestAttrs": {
         "type": "object",
@@ -16366,23 +16410,8 @@
             "description": "Specifies the fields to include in the response. To request fields of the recentEngagementSnapshot object, use camel-case names prefixed with the object name (e.g., recentEngagementSnapshotSnapshotCompanyId)."
           },
           "id": {
-            "type": "object",
-            "required": [
-              "in"
-            ],
-            "properties": {
-              "in": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/EmailId"
-                },
-                "minItems": 1,
-                "maxItems": 250,
-                "description": "Matches records where the field equals one of these values."
-              }
-            },
-            "description": "Unique identifier for the dataset.",
-            "additionalProperties": false
+            "$ref": "#/components/schemas/StringIdInFilterOperations",
+            "description": "Unique identifier for the dataset."
           }
         },
         "description": "Enrich criteria for the emails dataset."
@@ -16401,11 +16430,7 @@
             "pattern": "EnrichRequest"
           },
           "attributes": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EmailEnrichRequestAttrs"
-              }
-            ],
+            "$ref": "#/components/schemas/EmailEnrichRequestAttrs",
             "description": "The attributes defining the resource"
           }
         },
@@ -16418,11 +16443,7 @@
         ],
         "properties": {
           "data": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EmailEnrichResource"
-              }
-            ],
+            "$ref": "#/components/schemas/EmailEnrichResource",
             "description": "The primary data of the document"
           }
         },
@@ -16484,7 +16505,7 @@
             "type": "array",
             "items": {
               "type": "object",
-              "additionalProperties": {}
+              "unevaluatedProperties": {}
             },
             "description": "JSON array of key participant objects identified by AI."
           },
@@ -16496,14 +16517,6 @@
             "type": "string",
             "format": "date-time",
             "description": "Timestamp when the insight record was created."
-          },
-          "citations": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EngagementJsonValue"
-              }
-            ],
-            "description": "Supporting evidence for the insight, containing identifiers for the source meeting."
           },
           "shortSummary": {
             "type": "string",
@@ -16558,19 +16571,11 @@
         "type": "object",
         "properties": {
           "meetingInsight": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/MeetingInsight"
-              }
-            ],
+            "$ref": "#/components/schemas/MeetingInsight",
             "description": "AI-generated insights about the meeting."
           },
           "recentEngagementSnapshot": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/RecentEngagementSnapshot"
-              }
-            ],
+            "$ref": "#/components/schemas/RecentEngagementSnapshot",
             "description": "Company information associated with the meeting's recent engagement snapshot."
           },
           "trackers": {
@@ -16767,11 +16772,7 @@
             "description": "Unique identifier assigned to the meeting recording by the recording platform"
           },
           "gtmContact": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmContactSummary"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmContactSummary",
             "description": "Associated GTM contact."
           }
         },
@@ -16797,11 +16798,7 @@
             "pattern": "Meeting"
           },
           "attributes": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/MeetingSearchResponseAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/MeetingSearchResponseAttributes",
             "description": "The attributes defining the resource"
           }
         },
@@ -16821,19 +16818,11 @@
             "description": "The primary data of the document"
           },
           "meta": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ResultMeta"
-              }
-            ],
+            "$ref": "#/components/schemas/ResultMeta",
             "description": "Non-standard meta information about the document"
           },
           "links": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Links"
-              }
-            ],
+            "$ref": "#/components/schemas/Links",
             "description": "Links related to the primary data"
           }
         },
@@ -16873,7 +16862,6 @@
                 "location",
                 "meetingId",
                 "meetingInsightBlockersAndRisks",
-                "meetingInsightCitations",
                 "meetingInsightCreatedAt",
                 "meetingInsightDecisionsAndCommitments",
                 "meetingInsightKeyParticipants",
@@ -16915,99 +16903,51 @@
             "description": "Specifies the fields to include in the response. To request fields of nested objects, use camel-case names prefixed with the object name (e.g., meetingInsightSummary, gtmContactEmail, recentEngagementSnapshotSnapshotCompanyId)."
           },
           "companies": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CompanySearchRequestAttrsPublic"
-              }
-            ],
+            "$ref": "#/components/schemas/CompanySearchRequestAttrsPublic",
             "description": "Filter by ZoomInfo companies."
           },
           "contacts": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ContactSearchRequestAttrsPublic"
-              }
-            ],
+            "$ref": "#/components/schemas/ContactSearchRequestAttrsPublic",
             "description": "Filter by ZoomInfo contacts."
           },
           "accountLevelIntent": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AccountLevelIntentSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/AccountLevelIntentSearchRequestAttributes",
             "description": "Filter by account-level intent signals."
           },
           "news": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/NewsSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/NewsSearchRequestAttributes",
             "description": "Filter by company news articles."
           },
           "scoops": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ScoopSearchRequestAttrs"
-              }
-            ],
+            "$ref": "#/components/schemas/ScoopSearchRequestAttrs",
             "description": "Filter by ZoomInfo Scoops."
           },
           "gtmAccounts": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmAccountSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmAccountSearchRequestAttributes",
             "description": "Filter by GTM accounts."
           },
           "gtmContacts": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmContactSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmContactSearchRequestAttributes",
             "description": "Filter by GTM contacts."
           },
           "gtmOpportunities": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmOpportunitySearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmOpportunitySearchRequestAttributes",
             "description": "Filter by GTM opportunities."
           },
           "gtmUsers": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmUserSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmUserSearchRequestAttributes",
             "description": "Filter by related GTM users through the configured relationship for the searched collection. GTM account and opportunity searches match team members. Use the nested owner filter to match the record owner."
           },
           "emails": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EmailSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/EmailSearchRequestAttributes",
             "description": "Filter by emails."
           },
           "meetings": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/MeetingSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/MeetingSearchRequestAttributes",
             "description": "Filter by meetings."
           },
           "contentInteractions": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ContentInteractionSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/ContentInteractionSearchRequestAttributes",
             "description": "Filter by content interactions."
           }
         },
@@ -17027,11 +16967,7 @@
             "pattern": "SearchRequest"
           },
           "attributes": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/MeetingSearchRequestAttrs"
-              }
-            ],
+            "$ref": "#/components/schemas/MeetingSearchRequestAttrs",
             "description": "The attributes defining the resource"
           }
         },
@@ -17044,11 +16980,7 @@
         ],
         "properties": {
           "data": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/MeetingSearchResource"
-              }
-            ],
+            "$ref": "#/components/schemas/MeetingSearchResource",
             "description": "The primary data of the document"
           }
         },
@@ -17091,7 +17023,6 @@
                 "location",
                 "meetingId",
                 "meetingInsightBlockersAndRisks",
-                "meetingInsightCitations",
                 "meetingInsightCreatedAt",
                 "meetingInsightDecisionsAndCommitments",
                 "meetingInsightKeyParticipants",
@@ -17133,23 +17064,8 @@
             "description": "Specifies the fields to include in the response. To request fields of nested objects, use camel-case names prefixed with the object name (e.g., meetingInsightSummary, gtmContactEmail, recentEngagementSnapshotSnapshotCompanyId)."
           },
           "id": {
-            "type": "object",
-            "required": [
-              "in"
-            ],
-            "properties": {
-              "in": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                },
-                "minItems": 1,
-                "maxItems": 250,
-                "description": "Matches records where the field equals one of these values."
-              }
-            },
-            "description": "Unique identifier for the dataset.",
-            "additionalProperties": false
+            "$ref": "#/components/schemas/StringIdInFilterOperations",
+            "description": "Unique identifier for the dataset."
           }
         },
         "description": "Enrich criteria for the meetings dataset."
@@ -17168,11 +17084,7 @@
             "pattern": "EnrichRequest"
           },
           "attributes": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/MeetingEnrichRequestAttrs"
-              }
-            ],
+            "$ref": "#/components/schemas/MeetingEnrichRequestAttrs",
             "description": "The attributes defining the resource"
           }
         },
@@ -17185,11 +17097,7 @@
         ],
         "properties": {
           "data": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/MeetingEnrichResource"
-              }
-            ],
+            "$ref": "#/components/schemas/MeetingEnrichResource",
             "description": "The primary data of the document"
           }
         },
@@ -17254,35 +17162,19 @@
         "type": "object",
         "properties": {
           "gtmAccount": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmAccountSummary"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmAccountSummary",
             "description": "Summary of the associated GTM account."
           },
           "gtmUser": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmUserSummary"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmUserSummary",
             "description": "Summary of the associated GTM user."
           },
           "gtmContact": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmContactSummary"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmContactSummary",
             "description": "Summary of the associated GTM contact."
           },
           "company": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CompanySummary"
-              }
-            ],
+            "$ref": "#/components/schemas/CompanySummary",
             "description": "Summary of the associated ZoomInfo company."
           },
           "actionPerformedAt": {
@@ -17292,7 +17184,7 @@
           },
           "trackers": {
             "type": "object",
-            "additionalProperties": {},
+            "unevaluatedProperties": {},
             "description": "JSON string containing tracked keywords, phrases, next steps, and other monitored elements detected within the entity"
           },
           "sourceInstanceUrl": {
@@ -17543,11 +17435,7 @@
             "pattern": "ContentInteraction"
           },
           "attributes": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ContentInteractionSearchResponseAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/ContentInteractionSearchResponseAttributes",
             "description": "The attributes defining the resource"
           }
         },
@@ -17567,19 +17455,11 @@
             "description": "The primary data of the document"
           },
           "meta": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ResultMeta"
-              }
-            ],
+            "$ref": "#/components/schemas/ResultMeta",
             "description": "Non-standard meta information about the document"
           },
           "links": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Links"
-              }
-            ],
+            "$ref": "#/components/schemas/Links",
             "description": "Links related to the primary data"
           }
         },
@@ -17686,99 +17566,51 @@
             "description": "Specifies the fields to include in the response. To request fields of nested objects, use camel-case names prefixed with the object name (e.g., companyName, gtmAccountAccountName, gtmUserFirstName, gtmContactEmail)."
           },
           "companies": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CompanySearchRequestAttrsPublic"
-              }
-            ],
+            "$ref": "#/components/schemas/CompanySearchRequestAttrsPublic",
             "description": "Filter by ZoomInfo companies."
           },
           "contacts": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ContactSearchRequestAttrsPublic"
-              }
-            ],
+            "$ref": "#/components/schemas/ContactSearchRequestAttrsPublic",
             "description": "Filter by ZoomInfo contacts."
           },
           "accountLevelIntent": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AccountLevelIntentSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/AccountLevelIntentSearchRequestAttributes",
             "description": "Filter by account-level intent signals."
           },
           "news": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/NewsSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/NewsSearchRequestAttributes",
             "description": "Filter by company news articles."
           },
           "scoops": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ScoopSearchRequestAttrs"
-              }
-            ],
+            "$ref": "#/components/schemas/ScoopSearchRequestAttrs",
             "description": "Filter by ZoomInfo Scoops."
           },
           "gtmAccounts": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmAccountSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmAccountSearchRequestAttributes",
             "description": "Filter by GTM accounts."
           },
           "gtmContacts": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmContactSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmContactSearchRequestAttributes",
             "description": "Filter by GTM contacts."
           },
           "gtmOpportunities": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmOpportunitySearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmOpportunitySearchRequestAttributes",
             "description": "Filter by GTM opportunities."
           },
           "gtmUsers": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GtmUserSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/GtmUserSearchRequestAttributes",
             "description": "Filter by related GTM users through the configured relationship for the searched collection. GTM account and opportunity searches match team members. Use the nested owner filter to match the record owner."
           },
           "emails": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EmailSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/EmailSearchRequestAttributes",
             "description": "Filter by emails."
           },
           "meetings": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/MeetingSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/MeetingSearchRequestAttributes",
             "description": "Filter by meetings."
           },
           "contentInteractions": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ContentInteractionSearchRequestAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/ContentInteractionSearchRequestAttributes",
             "description": "Filter by content interactions."
           }
         },
@@ -17798,11 +17630,7 @@
             "pattern": "SearchRequest"
           },
           "attributes": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ContentInteractionSearchRequestAttrs"
-              }
-            ],
+            "$ref": "#/components/schemas/ContentInteractionSearchRequestAttrs",
             "description": "The attributes defining the resource"
           }
         },
@@ -17815,11 +17643,7 @@
         ],
         "properties": {
           "data": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ContentInteractionSearchResource"
-              }
-            ],
+            "$ref": "#/components/schemas/ContentInteractionSearchResource",
             "description": "The primary data of the document"
           }
         },
@@ -17929,23 +17753,8 @@
             "description": "Specifies the fields to include in the response. To request fields of nested objects, use camel-case names prefixed with the object name (e.g., companyName, gtmAccountAccountName, gtmUserFirstName, gtmContactEmail)."
           },
           "id": {
-            "type": "object",
-            "required": [
-              "in"
-            ],
-            "properties": {
-              "in": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                },
-                "minItems": 1,
-                "maxItems": 250,
-                "description": "Matches records where the field equals one of these values."
-              }
-            },
-            "description": "Unique identifier for the dataset.",
-            "additionalProperties": false
+            "$ref": "#/components/schemas/StringIdInFilterOperations",
+            "description": "Unique identifier for the dataset."
           }
         },
         "description": "Enrich criteria for the content interactions dataset."
@@ -17964,11 +17773,7 @@
             "pattern": "EnrichRequest"
           },
           "attributes": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ContentInteractionEnrichRequestAttrs"
-              }
-            ],
+            "$ref": "#/components/schemas/ContentInteractionEnrichRequestAttrs",
             "description": "The attributes defining the resource"
           }
         },
@@ -17981,15 +17786,199 @@
         ],
         "properties": {
           "data": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ContentInteractionEnrichResource"
-              }
-            ],
+            "$ref": "#/components/schemas/ContentInteractionEnrichResource",
             "description": "The primary data of the document"
           }
         },
         "description": "Content interactions enrich request."
+      },
+      "MatchEntityNameEnum": {
+        "type": "string",
+        "enum": [
+          "contact",
+          "company"
+        ],
+        "description": "All possible entity types for the Match lookup.",
+        "x-enumDescriptions": {
+          "contact": "Returns a list of fields you can use as input criteria for the Match Contacts endpoint.",
+          "company": "Returns a list of fields you can use as input criteria for the Match Companies endpoint."
+        }
+      },
+      "FieldTypeEnum": {
+        "type": "string",
+        "enum": [
+          "input",
+          "output"
+        ],
+        "x-enumDescriptions": {
+          "input": "Returns a list of fields you can use as input for supported entity types.",
+          "output": "Returns a list of fields you can use as output for supported entity types."
+        }
+      },
+      "MatchFieldAttributes": {
+        "type": "object",
+        "required": [
+          "fieldName",
+          "description"
+        ],
+        "properties": {
+          "fieldType": {
+            "type": "string",
+            "description": "The type of the input lookup field e.g: Long or String"
+          },
+          "fieldName": {
+            "type": "string",
+            "description": "The name of the lookup field"
+          },
+          "description": {
+            "type": "string",
+            "description": "The description of the lookup field"
+          }
+        },
+        "description": "Common attributes for a Match lookup field. Unlike Enrich/Search lookups, Match fields have no per-field access gating, so accessGranted is omitted."
+      },
+      "ContactMatchInputLookUp": {
+        "type": "object",
+        "required": [
+          "id",
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier for the resource"
+          },
+          "type": {
+            "type": "string",
+            "description": "The type of the resource",
+            "default": "ContactMatchInput",
+            "pattern": "ContactMatchInput"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/MatchFieldAttributes",
+            "description": "The attributes defining the resource"
+          }
+        },
+        "description": "Model for the contact match input lookup."
+      },
+      "ContactMatchOutputLookUp": {
+        "type": "object",
+        "required": [
+          "id",
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier for the resource"
+          },
+          "type": {
+            "type": "string",
+            "description": "The type of the resource",
+            "default": "ContactMatchOutput",
+            "pattern": "ContactMatchOutput"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/MatchFieldAttributes",
+            "description": "The attributes defining the resource"
+          }
+        },
+        "description": "Model for the contact match output lookup."
+      },
+      "CompanyMatchInputLookUp": {
+        "type": "object",
+        "required": [
+          "id",
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier for the resource"
+          },
+          "type": {
+            "type": "string",
+            "description": "The type of the resource",
+            "default": "CompanyMatchInput",
+            "pattern": "CompanyMatchInput"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/MatchFieldAttributes",
+            "description": "The attributes defining the resource"
+          }
+        },
+        "description": "Model for the company match input lookup."
+      },
+      "CompanyMatchOutputLookUp": {
+        "type": "object",
+        "required": [
+          "id",
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier for the resource"
+          },
+          "type": {
+            "type": "string",
+            "description": "The type of the resource",
+            "default": "CompanyMatchOutput",
+            "pattern": "CompanyMatchOutput"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/MatchFieldAttributes",
+            "description": "The attributes defining the resource"
+          }
+        },
+        "description": "Model for the company match output lookup."
+      },
+      "LookupMatchInputOutputResponseResourceUnion": {
+        "type": "object",
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/ContactMatchInputLookUp"
+          },
+          {
+            "$ref": "#/components/schemas/ContactMatchOutputLookUp"
+          },
+          {
+            "$ref": "#/components/schemas/CompanyMatchInputLookUp"
+          },
+          {
+            "$ref": "#/components/schemas/CompanyMatchOutputLookUp"
+          }
+        ],
+        "discriminator": {
+          "propertyName": "type",
+          "mapping": {
+            "ContactMatchInput": "#/components/schemas/ContactMatchInputLookUp",
+            "ContactMatchOutput": "#/components/schemas/ContactMatchOutputLookUp",
+            "CompanyMatchInput": "#/components/schemas/CompanyMatchInputLookUp",
+            "CompanyMatchOutput": "#/components/schemas/CompanyMatchOutputLookUp"
+          }
+        },
+        "description": "Represents the possible resource types returned in a lookup match input/output response."
+      },
+      "LookupMatchResponse": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LookupMatchInputOutputResponseResourceUnion"
+            },
+            "description": "The primary data of the document"
+          }
+        },
+        "description": "Lookup match input/output response."
       }
     },
     "securitySchemes": {
