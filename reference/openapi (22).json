@@ -113,7 +113,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -123,7 +144,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -133,7 +175,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -143,7 +206,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -231,7 +315,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -241,7 +346,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -251,7 +377,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -261,7 +408,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -320,7 +488,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -330,7 +519,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -340,7 +550,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -350,7 +581,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -449,7 +701,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -459,7 +732,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -469,7 +763,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -479,7 +794,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -578,7 +914,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -588,7 +945,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -598,7 +976,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -608,7 +1007,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -729,7 +1149,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -739,7 +1180,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -749,7 +1211,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -759,7 +1242,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -896,7 +1400,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -906,7 +1431,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -916,7 +1462,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -926,7 +1493,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -1014,7 +1602,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -1024,7 +1633,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -1034,7 +1664,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -1044,7 +1695,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -1183,7 +1855,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -1193,7 +1886,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -1203,7 +1917,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -1213,7 +1948,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -1365,7 +2121,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -1375,7 +2152,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -1385,7 +2183,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -1395,7 +2214,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -1513,7 +2353,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -1523,7 +2384,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -1533,7 +2415,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -1543,7 +2446,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -1631,7 +2555,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -1641,7 +2586,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -1651,7 +2617,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -1661,7 +2648,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -1760,7 +2768,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -1770,7 +2799,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -1780,7 +2830,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -1790,7 +2861,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -1878,7 +2970,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -1888,7 +3001,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -1898,7 +3032,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -1908,7 +3063,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -2149,7 +3325,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -2159,7 +3356,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -2169,7 +3387,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -2179,7 +3418,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -2442,7 +3702,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -2452,7 +3733,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -2462,7 +3764,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -2472,7 +3795,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -2600,7 +3944,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -2610,7 +3975,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -2620,7 +4006,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -2630,7 +4037,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -2718,7 +4146,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -2728,7 +4177,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -2738,7 +4208,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -2748,7 +4239,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -2847,7 +4359,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -2857,7 +4390,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -2867,7 +4421,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -2877,7 +4452,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -2965,7 +4561,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -2975,7 +4592,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -2985,7 +4623,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -2995,7 +4654,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -3094,7 +4774,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -3104,7 +4805,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -3114,7 +4836,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -3124,7 +4867,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -3212,7 +4976,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -3222,7 +5007,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -3232,7 +5038,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -3242,7 +5069,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -3341,7 +5189,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -3351,7 +5220,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -3361,7 +5251,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -3371,7 +5282,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -3459,7 +5391,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -3469,7 +5422,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -3479,7 +5453,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -3489,7 +5484,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -3588,7 +5604,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -3598,7 +5635,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -3608,7 +5666,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -3618,7 +5697,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -3706,7 +5806,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -3716,7 +5837,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -3726,7 +5868,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -3736,7 +5899,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -4003,7 +6187,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -4013,7 +6218,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -4023,7 +6249,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -4033,7 +6280,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
@@ -4043,7 +6311,28 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel"
+                  "type": "object",
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "A high-level detail of the error(s) that occurred during the request"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A high-level summary of the error(s) detected"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel"
+                      },
+                      "description": "The list of errors raised during the request"
+                    }
+                  },
+                  "description": "The standard error response body model for the ZoomInfo API."
                 }
               }
             }
