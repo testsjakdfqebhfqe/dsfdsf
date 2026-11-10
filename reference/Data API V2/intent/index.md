@@ -1,4 +1,0 @@
----
-title: Intent
-hidden: false
----
