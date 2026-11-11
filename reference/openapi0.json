@@ -1,129 +1,42 @@
 {
-  "openapi": "3.0.0",
+  "openapi": "3.0.3",
   "info": {
+    "title": "Required oneOf and anyOf outline",
     "version": "1.0.0",
-    "title": "Swagger Petstore",
-    "license": {
-      "name": "MIT"
-    }
+    "description": "Required body fields for the missing red validation border. plain_string is the control. Every other required field is a oneOf or anyOf shape that stays gray when empty."
   },
   "servers": [
     {
-      "url": "http://petstore.swagger.io/v1"
+      "url": "https://example.com"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Variants"
     }
   ],
   "paths": {
-    "/pets": {
-      "get": {
-        "summary": "List all pets",
-        "operationId": "listPets",
-        "tags": [
-          "pets"
-        ],
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "How many items to return at one time (max 100)",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "A paged array of pets",
-            "headers": {
-              "x-next": {
-                "description": "A link to the next page of responses",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Pets"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      },
+    "/variants": {
       "post": {
-        "summary": "Create a pet",
-        "operationId": "createPets",
         "tags": [
-          "pets"
+          "Variants"
         ],
-        "responses": {
-          "201": {
-            "description": "Null response"
-          },
-          "default": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
+        "summary": "Required oneOf and anyOf outline",
+        "operationId": "requiredFieldVariants",
+        "description": "plain_string is a required string and shows the red border when empty. The other required fields are oneOf or anyOf shapes and do not.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VariantBody"
               }
             }
           }
-        }
-      }
-    },
-    "/pets/{petId}": {
-      "get": {
-        "summary": "Info for a specific pet",
-        "operationId": "showPetById",
-        "tags": [
-          "pets"
-        ],
-        "parameters": [
-          {
-            "name": "petId",
-            "in": "path",
-            "required": true,
-            "description": "The id of the pet to retrieve",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        },
         "responses": {
           "200": {
-            "description": "Expected response to a valid request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Pet"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
+            "description": "OK"
           }
         }
       }
@@ -131,44 +44,133 @@
   },
   "components": {
     "schemas": {
-      "Pet": {
-        "type": "object",
-        "required": [
-          "id",
-          "name"
-        ],
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
+      "AmountOneOf": {
+        "oneOf": [
+          {
+            "type": "number"
           },
-          "name": {
-            "type": "string"
-          },
-          "tag": {
+          {
             "type": "string"
           }
-        }
+        ],
+        "description": "oneOf of number and string, referenced by ref_oneof."
       },
-      "Pets": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/Pet"
-        }
-      },
-      "Error": {
+      "VariantBody": {
         "type": "object",
         "required": [
-          "code",
-          "message"
+          "plain_string",
+          "oneof_number_string",
+          "oneof_single_string",
+          "anyof_number_string",
+          "ref_oneof",
+          "nullable_oneof",
+          "type_plus_oneof",
+          "nested_object",
+          "oneof_string_or_array"
         ],
         "properties": {
-          "code": {
-            "type": "integer",
-            "format": "int32"
+          "plain_string": {
+            "type": "string",
+            "description": "Control. Required type string. An empty value shows the red border."
           },
-          "message": {
-            "type": "string"
+          "oneof_number_string": {
+            "oneOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "description": "Required oneOf of number and string. Same shape as ShaBaas Pay amount. An empty value does not show the red border."
+          },
+          "oneof_single_string": {
+            "oneOf": [
+              {
+                "type": "string"
+              }
+            ],
+            "description": "Required oneOf with a single string branch. An empty value does not show the red border."
+          },
+          "anyof_number_string": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "description": "Required anyOf of number and string. An empty value does not show the red border."
+          },
+          "ref_oneof": {
+            "$ref": "#/components/schemas/AmountOneOf"
+          },
+          "nullable_oneof": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "description": "Required nullable oneOf of number and string. An empty value does not show the red border."
+          },
+          "type_plus_oneof": {
+            "type": "number",
+            "oneOf": [
+              {
+                "type": "object",
+                "required": [
+                  "number"
+                ],
+                "properties": {
+                  "number": {
+                    "type": "number"
+                  }
+                }
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "description": "Required type number next to a oneOf of number and string. An empty value does not show the red border."
+          },
+          "nested_object": {
+            "type": "object",
+            "description": "Required object. Expand it and leave inner_oneof empty. That input does not show the red border.",
+            "required": [
+              "inner_oneof"
+            ],
+            "properties": {
+              "inner_oneof": {
+                "oneOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ],
+                "description": "Required oneOf of number and string nested in nested_object. An empty value does not show the red border."
+              }
+            }
+          },
+          "oneof_string_or_array": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ],
+            "description": "Required oneOf of string and array of strings. An empty value does not show the red border."
           }
         }
       }
