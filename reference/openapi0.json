@@ -70,7 +70,7 @@
         ],
         "properties": {
           "plain_string": {
-            "type": "string",
+            "type": "boolean",
             "description": "Control. Required type string. An empty value shows the red border."
           },
           "oneof_number_string": {
@@ -79,7 +79,7 @@
                 "type": "number"
               },
               {
-                "type": "string"
+                "type": "boolean"
               }
             ],
             "description": "Required oneOf of number and string. Same shape as ShaBaas Pay amount. An empty value does not show the red border."
