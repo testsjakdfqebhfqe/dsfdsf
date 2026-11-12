@@ -11,6 +11,7 @@ paths:
     get:
       summary: List all pets
       operationId: listPetss
+      x-internal: true
       tags:
         - pets
       parameters:
@@ -39,7 +40,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-      x-internal: false
     post:
       summary: Create a pet
       operationId: createPetss
