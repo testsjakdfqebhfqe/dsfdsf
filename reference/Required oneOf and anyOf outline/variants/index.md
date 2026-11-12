@@ -1,4 +1,0 @@
----
-title: Variants
-hidden: false
----
