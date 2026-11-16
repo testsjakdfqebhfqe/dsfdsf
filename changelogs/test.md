@@ -68,33 +68,7 @@ The example card numbers on the [Migrations overview](https://developers.pismo.i
 
 The [Token migration](https://developers.pismo.io/pismo-docs/reference/posttokensv1) endpoint was updated to replace devices_binding with consume_devices for indicating whether a token is bound to a device.
 
-{/* Stacey, https://pismolabs.atlassian.net/browse/PISMO-393177?atlOrigin=eyJpIjoiMDI0MGUwMDY1NTJiNGZkMDg2ODJhZjEzNzY4YTgzYTgiLCJwIjoiaiJ9}
-
-#### **Updated**
-
-Added F as a supported `token_type` value for Mastercard Card on File tokens to [Token migration](https://developers.pismo.io/pismo-docs/reference/posttokensv1) endpoint.
-
-{/* Stacey, https://pismolabs.atlassian.net/browse/PISMO-457864?atlOrigin=eyJpIjoiMDQ3ODBhZTYwY2Q4NDAwMGI0ZmNiYjIzY2I5Njg4ODIiLCJwIjoiaiJ9}
-
-### Payments
-
-#### Update
-
-xxxxxx
-
-### Programs
-
-#### Docs
-
-xxxxxxxx
-
-### Rates and fees
-
-#### Updated
-
-xxxxxxxx
-
-{/* MK, https://pismolabs.atlassian.net/browse/PISMO-XXXXX */}
+&#x20;Stacey, https\://pismolabs.atlassian.net/browse/PISMO-393177?atlOrigin=eyJpIjoiMDI0MGUwMDY1NTJiNGZkMDg2ODJhZjEzNzY4YTgzYTgiLCJwIjoiaiJ9<br /><br />#### \*\*Updated\*\*<br /><br />Added F as a supported \`token_type\` value for Mastercard Card on File tokens to \[Token migration]\(https\://developers.pismo.io/pismo-docs/reference/posttokensv1) endpoint.<br /><br />Stacey, https\://pismolabs.atlassian.net/browse/PISMO-457864?atlOrigin=eyJpIjoiMDQ3ODBhZTYwY2Q4NDAwMGI0ZmNiYjIzY2I5Njg4ODIiLCJwIjoiaiJ9\}<br /><br />### Payments<br /><br />#### Update<br /><br />xxxxxx<br /><br />### Programs<br /><br />#### Docs<br /><br />xxxxxxxx<br /><br />### Rates and fees<br /><br />#### Updated<br /><br />xxxxxxxx<br /><br />MK, https\://pismolabs.atlassian.net/browse/PISMO-XXXXX
 
 ### Setup
 
