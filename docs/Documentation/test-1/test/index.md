@@ -6,6 +6,7 @@ link:
   new_tab: false
 metadata:
   robots: index
+table_of_contents: true
 ---
 This guide highlights the most important documentation for issuing banks and consumer payment service providers (consumer PSPs).
 
