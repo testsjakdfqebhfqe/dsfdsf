@@ -18,7 +18,7 @@ In order to check all benchmark rules, the AWS policy needs to be updated.
 
   For details on how to configure AWS Policy, see [Amazon Web Services (AWS) Adapter](/docs/amazon-web-services-aws).
 
-* The following JSON represents the minimum AWS policy required for Cloud Asset Compliance for AWS, which provides Axonius read-only access to resources required for checking all CIS AWS Foundation Benchmark v1.2 rules.
+* {/*The following JSON represents the minimum AWS policy required for Cloud Asset Compliance for AWS, which provides Axonius read-only access to resources required for checking all CIS AWS Foundation Benchmark v1.2 rules.*/}
   ```
   {
       "Version": "2012-10-17",
