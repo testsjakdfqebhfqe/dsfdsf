@@ -66,7 +66,7 @@ The example card numbers on the [Migrations overview](https://developers.pismo.i
 
 #### **Updated**
 
-The [Token migration](https://developers.pismo.io/pismo-docs/reference/posttokensv1) endpoint was updated to replace devices_binding with consume_devices for indicating whether a token is bound to a device.
+\<!--The [Token migration](https://developers.pismo.io/pismo-docs/reference/posttokensv1) endpoint was updated to replace devices_binding with consume_devices for indicating whether a token is bound to a device.
 
 &#x20;Stacey, https\://pismolabs.atlassian.net/browse/PISMO-393177?atlOrigin=eyJpIjoiMDI0MGUwMDY1NTJiNGZkMDg2ODJhZjEzNzY4YTgzYTgiLCJwIjoiaiJ9<br /><br />#### \*\*Updated\*\*<br /><br />Added F as a supported \`token_type\` value for Mastercard Card on File tokens to \[Token migration]\(https\://developers.pismo.io/pismo-docs/reference/posttokensv1) endpoint.<br /><br />Stacey, https\://pismolabs.atlassian.net/browse/PISMO-457864?atlOrigin=eyJpIjoiMDQ3ODBhZTYwY2Q4NDAwMGI0ZmNiYjIzY2I5Njg4ODIiLCJwIjoiaiJ9\}<br /><br />### Payments<br /><br />#### Update<br /><br />xxxxxx<br /><br />### Programs<br /><br />#### Docs<br /><br />xxxxxxxx<br /><br />### Rates and fees<br /><br />#### Updated<br /><br />xxxxxxxx<br /><br />MK, https\://pismolabs.atlassian.net/browse/PISMO-XXXXX
 
@@ -80,7 +80,7 @@ xxxxxxx
 
 xxxxxxxxx
 
-{/* Kristina, https://pismolabs.atlassian.net/browse/PISMO-XXXXX */}
+{/*Kristina, https://pismolabs.atlassian.net/browse/PISMO-XXXXX*/}
 
 ### Support
 
@@ -96,7 +96,7 @@ xxxxx
 
 </summary>
 
-<summary class="tabContent" id="Data and reporting">
+{/*<summary class="tabContent" id="Data and reporting">*/}
 
 ### Events
 
@@ -118,11 +118,11 @@ xxxxxx
 
 #### Updated
 
-The behavior of the `account_creation_datetime` field in the [Open deposit account](ref:interest-bearing-v1-deposit-account-open) endpoint was clarified. The clarifications include accepted RFC 3339 format, division time zone handling, default behavior when omitted, and the impact of retroactive timestamps on maturity date and interest cycle calculations.
+{/*The behavior of the `account_creation_datetime` field in the [Open deposit account](ref:interest-bearing-v1-deposit-account-open) endpoint was clarified. The clarifications include accepted RFC 3339 format, division time zone handling, default behavior when omitted, and the impact of retroactive timestamps on maturity date and interest cycle calculations.*/}
 
 #### Updated
 
-The behavior of the [Detach deposit from account](ref:interest-bearing-v1-deposit-detach-account) endpoint for `409 Conflict` responses was elaborated. It was clarified that a product cannot be detached if it has already been detached from the account or if the account closure process is in progress. Either of these error codes is generated when `409 Conflict` is returned.
+{/*The behavior of the [Detach deposit from account](ref:interest-bearing-v1-deposit-detach-account) endpoint for `409 Conflict` responses was elaborated. It was clarified that a product cannot be detached if it has already been detached from the account or if the account closure process is in progress. Either of these error codes is generated when `409 Conflict` is returned.*/}
 
 - `EIBACC0114` when the product is already detached  
 - `EIBACC0419` while account closure is underway 
@@ -133,7 +133,7 @@ A new endpoint, [Get cycle snapshot history for deposit account \[beta\]](ref:in
 
 #### Updated
 
-In the [Get cycle snapshot for deposit account](ref:interest-bearing-v1-get-cycle-snapshot) endpoint, the source of the `current_` and `previous_` fields was clarified. The `current_` fields come from the most recent cycle, and the `previous_` fields come from the cycle immediately before it. When the account is in its first cycle, the `previous_*` fields are empty and `previous_calendar_maturity_date` is `null`.&#x20;
+{/*In the [Get cycle snapshot for deposit account](ref:interest-bearing-v1-get-cycle-snapshot) endpoint, the source of the `current_` and `previous_` fields was clarified. The `current_` fields come from the most recent cycle, and the `previous_` fields come from the cycle immediately before it. When the account is in its first cycle, the `previous_*` fields are empty and `previous_calendar_maturity_date` is `null`. */}
 
 #### Updated
 
