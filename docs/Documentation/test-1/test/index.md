@@ -14,7 +14,7 @@ Follow the recommended path to understand the business flows, technical requirem
 
 ***
 
-## Step 1: Understand Wero fundamentals
+## Step 1: Understand Wero fundamentalstest
 
 Start with these pages to understand the main Wero capabilities, consent model, and mobile experience.
 
