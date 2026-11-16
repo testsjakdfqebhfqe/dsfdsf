@@ -133,7 +133,7 @@ A new endpoint, [Get cycle snapshot history for deposit account \[beta\]](ref:in
 
 #### Updated
 
-{/*In the [Get cycle snapshot for deposit account](ref:interest-bearing-v1-get-cycle-snapshot) endpoint, the source of the `current_` and `previous_` fields was clarified. The `current_` fields come from the most recent cycle, and the `previous_` fields come from the cycle immediately before it. When the account is in its first cycle, the `previous_*` fields are empty and `previous_calendar_maturity_date` is `null`. */}
+In the [Get cycle snapshot for deposit account](ref:interest-bearing-v1-get-cycle-snapshot) endpoint, the source of the `current_` and `previous_` fields was clarified. The `current_` fields come from the most recent cycle, and the `previous_` fields come from the cycle immediately before it. When the account is in its first cycle, the `previous_*` fields are empty and `previous_calendar_maturity_date` is `null`.
 
 #### Updated
 
