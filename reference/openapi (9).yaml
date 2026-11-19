@@ -113,7 +113,7 @@ components:
   securitySchemes:
     test:
       type: http
-      scheme: basic
+      scheme: bearer
 x-readme: {}
 security:
   - test: []
