@@ -112,8 +112,13 @@ components:
           type: string
   securitySchemes:
     test:
-      type: http
-      scheme: bearer
+      type: oauth2
+      flows:
+        authorizationCode:
+          scopes:
+            test: test
+          authorizationUrl: https://example.com
+          tokenUrl: https://example.com
 x-readme: {}
 security:
   - test: []
