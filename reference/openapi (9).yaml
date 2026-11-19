@@ -110,3 +110,10 @@ components:
           format: int32
         message:
           type: string
+  securitySchemes:
+    test:
+      type: http
+      scheme: basic
+x-readme: {}
+security:
+  - test: []
