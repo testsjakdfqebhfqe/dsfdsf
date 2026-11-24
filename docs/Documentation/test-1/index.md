@@ -1,5 +1,6 @@
 ---
 title: test
+excerpt: test
 deprecated: false
 hidden: false
 metadata:
