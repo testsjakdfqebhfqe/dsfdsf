@@ -1,0 +1,2357 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "3rd party odds",
+    "description": "A self service API based platform for onboarding an external partner (providing specialized precomputed odds), ingesting the odds and forwarding it to bookmakers via UOF.<p>&copy; Sportradar Copyright.<br/>Only logged-in users are allowed to access it. Do not share it with unauthorized users.</p>",
+    "version": "1.0.0"
+  },
+  "x-readme": {
+    "samples-languages": [
+      "shell",
+      "node",
+      "java",
+      "python",
+      "csharp"
+    ]
+  },
+  "tags": [
+    {
+      "name": "Get Markets"
+    },
+    {
+      "name": "Get Fixtures"
+    },
+    {
+      "name": "Get Players"
+    },
+    {
+      "name": "Send Heartbeat"
+    },
+    {
+      "name": "Send Odds"
+    },
+    {
+      "name": "Settlements"
+    },
+    {
+      "name": "Bet Cancel"
+    },
+    {
+      "name": "Webhook Subscription"
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://api.partner.dev.odds-prod.sportradar.com/v1",
+      "description": "Sandbox environment"
+    }
+  ],
+  "paths": {
+    "/{product}/{partner_id}/{sport_event_id}/odds": {
+      "post": {
+        "summary": "Send Odds",
+        "description": "This endpoint is used to send odds data for a particular sport event, identified by its unique id.\nThe same endpoint is used for **PRE_MATCH**, **LIVE**, and **COMPETITION_ODDS** messages.\n\n## Important Information\n\n### 1) PRE_MATCH vs LIVE vs COMPETITION_ODDS\nYou send PRE_MATCH, LIVE, and COMPETITION_ODDS through this endpoint, but you must select the correct **product** in the URL and the correct **producer** in the message.\n| Phase | `{product}` in URL | `producer` in message |\n|---|---|---|\n| Pre-match odds | `pre` | `PRE_MATCH` |\n| Live odds | `liveodds` | `LIVE` |\n| Competition odds | `codds` | `COMPETITION_ODDS` |\n\n#### PRE_MATCH cut-off rule ~~(15 minutes)~~\n~~We enforce a strict 15-minute window right before the sport event start time that separates PRE_MATCH from LIVE updates:~~  \n~~- `PRE_MATCH` messages are accepted **until 15 minutes before** the sport event start time.~~  \n~~- `LIVE` messages are accepted **15 minutes before** the sport event start time onward.~~  \n| 🚧 DEPRECATED 🚧 |\n| --- |\n| We're in the process of switching to cut-off of 0, i.e. at the scheduled start time.<br/>For more details please see the new pre-match section. |\n\n#### What happens if you send the wrong type at the wrong time?\nMessages outside the allowed window are **not processed** and you will receive a `validation_failure` callback.\n\n#### Sport event state expectations\nYour payload includes `betting_event_state`. This state should reflect the sport event phase:\n- In `PRE_MATCH`, `sport_event_status` is typically `NOT_STARTED`. Period details (e.g. `period` / `periods`) are omitted.\n- In `LIVE`, `sport_event_status` is typically `IN_PROGRESS`. Period and clock details are present.\n\n### 2) Rate limit and batching\nWe expect **maximum 1 message per second per sport event** from you\nIf your system is able to generate more than 1 odds update within 1 second, **then you need to collate those updates and send as 1 single message each second**\n\n### 3) Message payload conventions \n-   We expect to receive  **true odds**  with no margins applied. Our clients have the flexibility to configure their own odds keys (margin) to suit their respective risk profiles.\n-   A message  **without  `markets`**  means that some other information has changed (e.g.  `sport_event_status`), while markets have not.\n-   When market has inactive outcome,  **do not send**  the  `odds`  field for that outcome.\n-   Avoid sending odds with values near to  `1.01`, as for some bookmakers such updates may be ignored. Moreover, some outcomes or markets can be automatically deactivated!\n-   Use  `Sportradar's Market Lifecycle`  section to find the description of each market status. We expect you to align with our market's definition and status.\n\n**You can find examples of such messages in the  `examples`  tab. Please find the corresponding example to your sport and markets and apply mappings similarly.**",
+        "tags": [
+          "Send Odds"
+        ],
+        "responses": {
+          "202": {
+            "$ref": "#/components/responses/AcceptedForProcessing"
+          },
+          "400": {
+            "$ref": "#/components/responses/InvalidRequestBody"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/product"
+          },
+          {
+            "$ref": "#/components/parameters/partner_id"
+          },
+          {
+            "$ref": "#/components/parameters/sportEventId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "Event.Betting.OddsChanges",
+                "description": "Odds changes for a betting event.\nThe odds are then calculated based on the betting event state.\n",
+                "allOf": [
+                  {
+                    "title": "CloudEvent",
+                    "description": "CloudEvents Specification JSON Schema\nSee more at https://github.com/cloudevents/spec/blob/v1.0.2/cloudevents/spec.md\n",
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "Identifies the message. Producers MUST ensure that source + id is unique for each distinct message.\nIf a duplicate message is re-sent (e.g. due to a network error) it MAY have the same id.\nConsumers MAY assume that messages with identical source and id are duplicates.\n",
+                        "minLength": 1,
+                        "maxLength": 255,
+                        "examples": [
+                          "556732b9-ed6c-40dd-81b2-dbd34eaeae0e"
+                        ]
+                      },
+                      "source": {
+                        "type": "string",
+                        "description": "Reference: https://github.com/cloudevents/spec/blob/v1.0.2/cloudevents/spec.md#source-1\n\nProducers MUST ensure that `source` + `id` is unique for each distinct message. In S3P, the `source` property is defined this way:\n\n`/<Producer>/<Integration>[:<Version>]/<Sport>/<CoverageId>/<Instance>`\n\n- Producer - a string assigned by SR to an S3P producer. For internal SR services, the `service-key` must be used, e.g. `compsol`, `ld`, `pet` etc.\n- Integration - a string provided by the producer indicating the name of the integration to S3P. This may be the name of the product etc. It should be short and contain no spaces, e.g. `dc`, `igp`, `clsplus`.\n- Version - an optional string provided by the producer indicating the version of the integration, e.g. `1.0.1`.\n- Sport - a string (defined as part of S3P) giving the name of sport or business domain (betting) for which data is being sent, e.g. `basketball`, `cricket`, `football`, `table-tennis`, `betting`.\n- CoverageId - This is the unique identifier of the coverage being provided. If the producer does not internally have a coverageId to include, this field should be set to `1`. If the producer knows a coverageId IS in use, but doesn't know what it is, then this field should be set to `0`.\n- Instance - a string provided by the producer giving an instance identifier for the producer of the data. For a producer like CV, this could be a particular server or process identifier, for human entered data this could also be an individual scout identifier. Remember to also include this information in the _coverage_ message.\n",
+                        "format": "uri-reference",
+                        "minLength": 1,
+                        "maxLength": 255,
+                        "examples": [
+                          "/compsol/dc:1.05/basketball/12345/1",
+                          "/ittf/int:1.51.0/table-tennis/1/1"
+                        ]
+                      },
+                      "specversion": {
+                        "type": "string",
+                        "description": "The version of the CloudEvents specification which the message uses.\nThis enables the interpretation of the context.\nCompliant message producers MUST use a value of 1.0 when referring to this version of the specification.\n",
+                        "minLength": 1,
+                        "maxLength": 8,
+                        "default": "1.0",
+                        "examples": [
+                          "1.0"
+                        ]
+                      },
+                      "type": {
+                        "type": "string",
+                        "description": "Describes the type of message related to the originating occurrence.\nOften this attribute is used for routing, observability, policy enforcement, etc.\nThe format of this is producer defined and might include information such as the version of the type.\n",
+                        "minLength": 1,
+                        "maxLength": 255
+                      },
+                      "datacontenttype": {
+                        "type": "string",
+                        "description": "Content type of the data value. Must adhere to RFC 2046 format.\n\nCompressed data is ALWAYS sent in the _data_base64_ property. The _data_ property is omitted (https://github.com/cloudevents/spec/blob/v1.0.2/cloudevents/formats/json-format.md).\n\nData sent in compressed format MUST always be a valid json object.\n\nThe _datacontenttype_ header indicates the type of compression being used. The field should be of the form `application/` followed by the type of compression (eg _gzip_). When compressed data is not being sent, the _datacontenttype_ header is optional (defaulting to `application/json`). If you are sending compressed data in the _data_base64_ header then the datacontenttype is REQUIRED.\n\nWhile this may expand in the future, as of now, the only valid value for this is `application/gzip` with the compression being performed with the gzip algorithm.\n",
+                        "minLength": 1,
+                        "maxLength": 255,
+                        "default": "application/json",
+                        "examples": [
+                          "application/json",
+                          "application/gzip"
+                        ]
+                      },
+                      "dataschema": {
+                        "type": "string",
+                        "description": "Identifies the JSON schema that data adheres to.\nThis can be used for JSON Schema validation with tools such as https://ajv.js.org/ or https://github.com/eclipse-vertx/vertx-json-schema.\n",
+                        "format": "uri",
+                        "minLength": 1
+                      },
+                      "subject": {
+                        "type": "string",
+                        "description": "This property represents the ID of the subject of the message.\n\n`entity:identifier`\n\nCurrently, S3P supports these `entities`:\n\n- sport_event\n- season\n- competition\n- competitor\n- person\n\n`identifier` is the identifier as given by the producer, so something like `sport_event:sr:match:123` is also valid.\nFor some scenarios, multiple subjects may need to be given. Eg statistics for a competitor in a competition. In these situations a comma separated list of identifiers should be given.\n",
+                        "minLength": 1,
+                        "maxLength": 255,
+                        "examples": [
+                          "season:854c979b-f30b-4145-87b4-1a2ece8257b7",
+                          "sport_event:5e89b348-4e94-4d6b-b1aa-9a7a64d0c30a",
+                          "competitor:85458597-2f2b-4790-9700-a2f7bdda2553",
+                          "person:1572d7fd-e602-4613-a4ea-c3aef2b35744",
+                          "competition:854c979b-f30b-4145-87b4-1a2ece8257b7,competitor:85458597-2f2b-4790-9700-a2f7bdda2553"
+                        ]
+                      },
+                      "time": {
+                        "type": "string",
+                        "description": "Timestamp of when the message was generated. Must adhere to RFC 3339.\nTimestamps related to the data payload have their own properties, and this property only reflects when the message was generated.\n",
+                        "format": "date-time",
+                        "minLength": 1,
+                        "examples": [
+                          "2023-07-03T14:44:32Z"
+                        ]
+                      },
+                      "data_base64": {
+                        "type": "string",
+                        "description": "Base64 encoded message payload. Must adhere to RFC4648.\n",
+                        "contentEncoding": "base64",
+                        "examples": [
+                          "Zm9vYg=="
+                        ]
+                      },
+                      "sequence": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 10,
+                        "pattern": "^\\d{1,10}$",
+                        "description": "Value expressing the relative order of the message. This enables interpretation of data supersedence.\nSee more at https://github.com/cloudevents/spec/blob/v1.0.2/cloudevents/extensions/sequence.md#sequence-1\nFor Integer sequence types the sequence must be consecutive and begin at 1.\n",
+                        "examples": [
+                          "1"
+                        ]
+                      },
+                      "sequencetype": {
+                        "title": "CloudEvent.SequenceType",
+                        "type": "string",
+                        "description": "Specifies the semantics of the sequence attribute.\nSee more at https://github.com/cloudevents/spec/blob/v1.0.2/cloudevents/extensions/sequence.md#sequencetype\n",
+                        "enum": [
+                          "Integer"
+                        ]
+                      },
+                      "traceparent": {
+                        "type": "string",
+                        "pattern": "^\\d{2}-\\w{32}-\\w{16}-\\d{2}",
+                        "description": "Contains a version, trace ID, span ID, and trace options as defined in [section 3.2](https://w3c.github.io/trace-context/#traceparent-header)\nSee more at https://github.com/cloudevents/spec/blob/v1.0.2/cloudevents/extensions/distributed-tracing.md#traceparent\n"
+                      },
+                      "tracestate": {
+                        "type": "string",
+                        "description": "a comma-delimited list of key-value pairs, defined by [section 3.3](https://w3c.github.io/trace-context/#tracestate-header).\nSee more at https://github.com/cloudevents/spec/blob/v1.0.2/cloudevents/extensions/distributed-tracing.md#tracestate\n"
+                      },
+                      "messagetimeline": {
+                        "type": "array",
+                        "description": "A log of services that have processed the message, including timestamps.\n",
+                        "items": {
+                          "title": "CloudEvent.MessageTimeline.Item",
+                          "type": "object",
+                          "properties": {
+                            "servicename": {
+                              "type": "string",
+                              "description": "The name of components that processed the message. All component names should be prefixed with the service key and underscore (if available). It is possible to just use the service key, if its internals are intended to be hidden from its consumers.\nAll message processors should emit the message with the timeline from the input message (it should be preserved) and append itself to the end of that list.\n",
+                              "minLength": 1,
+                              "examples": [
+                                "clsp_be",
+                                "clsp_fe",
+                                "igp_egress",
+                                "ldi"
+                              ]
+                            },
+                            "registered": {
+                              "type": "string",
+                              "description": "The timestamp when the message was received or registered by the service, with milliseconds precision.",
+                              "format": "date-time",
+                              "examples": [
+                                "2025-02-01T12:34:56.123Z"
+                              ]
+                            },
+                            "emitted": {
+                              "type": "string",
+                              "description": "The timestamp when the message was emitted by the service, with milliseconds precision.",
+                              "format": "date-time",
+                              "examples": [
+                                "2025-02-01T12:34:57.456Z"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "servicename",
+                            "registered"
+                          ]
+                        }
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "source",
+                      "specversion",
+                      "type"
+                    ],
+                    "definitions": {
+                      "id": {
+                        "type": "string",
+                        "description": "Identifies the message. Producers MUST ensure that source + id is unique for each distinct message.\nIf a duplicate message is re-sent (e.g. due to a network error) it MAY have the same id.\nConsumers MAY assume that messages with identical source and id are duplicates.\n",
+                        "minLength": 1,
+                        "maxLength": 255,
+                        "examples": [
+                          "556732b9-ed6c-40dd-81b2-dbd34eaeae0e"
+                        ]
+                      },
+                      "source": {
+                        "type": "string",
+                        "description": "Reference: https://github.com/cloudevents/spec/blob/v1.0.2/cloudevents/spec.md#source-1\n\nProducers MUST ensure that `source` + `id` is unique for each distinct message. In S3P, the `source` property is defined this way:\n\n`/<Producer>/<Integration>[:<Version>]/<Sport>/<CoverageId>/<Instance>`\n\n- Producer - a string assigned by SR to an S3P producer. For internal SR services, the `service-key` must be used, e.g. `compsol`, `ld`, `pet` etc.\n- Integration - a string provided by the producer indicating the name of the integration to S3P. This may be the name of the product etc. It should be short and contain no spaces, e.g. `dc`, `igp`, `clsplus`.\n- Version - an optional string provided by the producer indicating the version of the integration, e.g. `1.0.1`.\n- Sport - a string (defined as part of S3P) giving the name of sport or business domain (betting) for which data is being sent, e.g. `basketball`, `cricket`, `football`, `table-tennis`, `betting`.\n- CoverageId - This is the unique identifier of the coverage being provided. If the producer does not internally have a coverageId to include, this field should be set to `1`. If the producer knows a coverageId IS in use, but doesn't know what it is, then this field should be set to `0`.\n- Instance - a string provided by the producer giving an instance identifier for the producer of the data. For a producer like CV, this could be a particular server or process identifier, for human entered data this could also be an individual scout identifier. Remember to also include this information in the _coverage_ message.\n",
+                        "format": "uri-reference",
+                        "minLength": 1,
+                        "maxLength": 255,
+                        "examples": [
+                          "/compsol/dc:1.05/basketball/12345/1",
+                          "/ittf/int:1.51.0/table-tennis/1/1"
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "title": "S3P.Event.Betting.OddsChanges.Type",
+                        "const": "S3P.v1.Event.Betting.OddsChanges"
+                      },
+                      "data": {
+                        "type": "object",
+                        "allOf": [
+                          {
+                            "title": "Event.Betting.OddsChanges.Data.AddOrUpdate",
+                            "type": "object",
+                            "properties": {
+                              "payload": {
+                                "title": "Event.Betting.OddsChanges.Data.Payload",
+                                "allOf": [
+                                  {
+                                    "title": "Event.Betting",
+                                    "description": "Event for Betting",
+                                    "allOf": [
+                                      {
+                                        "title": "Event.Base",
+                                        "description": "Event Base",
+                                        "type": "object",
+                                        "properties": {
+                                          "event_time": {
+                                            "description": "The time when the event occurred, formatted according to the ISO 8601 standard.\nThis time is the moment the event occurred in real-time.\nIn most cases, this will be close (or the same) as when the operator originally added the event.\nIt is NOT when it was subsequently updated, and is not the sports 'clock' value.\nFor events that are updated after the fact, this is the time the event would have happened.\n",
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "examples": [
+                                              "2023-07-03T14:42:07Z"
+                                            ]
+                                          }
+                                        },
+                                        "required": [
+                                          "event_time"
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "object",
+                                    "required": [
+                                      "type",
+                                      "betting_header",
+                                      "markets"
+                                    ],
+                                    "properties": {
+                                      "betting_event_state": {
+                                        "allOf": [
+                                          {
+                                            "title": "S3P.Message",
+                                            "description": "Common properties for any S3P message.\n",
+                                            "type": "object",
+                                            "properties": {
+                                              "sport": {
+                                                "title": "Entity.Sport",
+                                                "type": "string",
+                                                "description": "The list of sports in this specification is subjective to what the creators of the specification believe is the best representation of all the sports.\nThere are some exceptions because of legacy reasons (e.g. ATHLETICS).\n",
+                                                "enum": [
+                                                  "AMERICAN_FOOTBALL",
+                                                  "ARCHERY",
+                                                  "ARENA_OF_VALOR",
+                                                  "ATHLETICS",
+                                                  "AUSTRALIAN_RULES_FOOTBALL",
+                                                  "BADMINTON",
+                                                  "BANDY",
+                                                  "BASEBALL",
+                                                  "BASKETBALL",
+                                                  "BASKETBALL_3X3",
+                                                  "BEACH_VOLLEYBALL",
+                                                  "BOBSLEIGH",
+                                                  "BOWLS",
+                                                  "BOXING",
+                                                  "CALL_OF_DUTY",
+                                                  "CANOEING",
+                                                  "CHESS",
+                                                  "COUNTER_STRIKE",
+                                                  "CRICKET",
+                                                  "CURLING",
+                                                  "CYCLING_BMX",
+                                                  "CYCLING_MOUNTAIN_BIKE",
+                                                  "CYCLING_ROAD",
+                                                  "CYCLING_TRACK",
+                                                  "DARTS",
+                                                  "DIVING",
+                                                  "DOTA",
+                                                  "EQUESTRIAN",
+                                                  "E_BASKETBALL",
+                                                  "E_FOOTBALL",
+                                                  "FENCING",
+                                                  "FIELD_HOCKEY",
+                                                  "FIGURE_SKATING",
+                                                  "FLOORBALL",
+                                                  "FOOTBALL",
+                                                  "FUTSAL",
+                                                  "GAELIC_FOOTBALL",
+                                                  "GAELIC_HURLING",
+                                                  "GOLF",
+                                                  "GYMNASTICS",
+                                                  "GYMNASTICS_RHYTHMIC",
+                                                  "GYMNASTICS_TRAMPOLINE",
+                                                  "HANDBALL",
+                                                  "ICE_HOCKEY",
+                                                  "JUDO",
+                                                  "KABADDI",
+                                                  "KARATE",
+                                                  "KING_OF_GLORY",
+                                                  "LACROSSE",
+                                                  "LEAGUE_OF_LEGENDS",
+                                                  "LUGE",
+                                                  "MIXED_MARTIAL_ARTS",
+                                                  "MODERN_PENTATHLON",
+                                                  "MOTOR_SPORT_DTM",
+                                                  "MOTOR_SPORT_ENDURANCE_RACING",
+                                                  "MOTOR_SPORT_FORMULA_1",
+                                                  "MOTOR_SPORT_INDY_CAR",
+                                                  "MOTOR_SPORT_MOTO_2",
+                                                  "MOTOR_SPORT_MOTO_3",
+                                                  "MOTOR_SPORT_MOTO_GP",
+                                                  "MOTOR_SPORT_NASCAR_CUP_SERIES",
+                                                  "OVERWATCH",
+                                                  "PADEL",
+                                                  "RAINBOW_SIX",
+                                                  "ROCKET_LEAGUE",
+                                                  "ROWING",
+                                                  "RUGBY_LEAGUE",
+                                                  "RUGBY_UNION",
+                                                  "SAILING",
+                                                  "SHOOTING",
+                                                  "SHORT_TRACK_SKATING",
+                                                  "SKATEBOARDING",
+                                                  "SKELETON",
+                                                  "SKIING_ALPINE",
+                                                  "SKIING_BIATHLON",
+                                                  "SKIING_CROSS_COUNTRY",
+                                                  "SKIING_FREESTYLE",
+                                                  "SKIING_NORDIC_COMBINED",
+                                                  "SKIING_SKI_JUMPING",
+                                                  "SNOOKER",
+                                                  "SNOWBOARD",
+                                                  "SOFTBALL",
+                                                  "SPEED_SKATING",
+                                                  "SPORT_CLIMBING",
+                                                  "SQUASH",
+                                                  "STARCRAFT",
+                                                  "SURFING",
+                                                  "SWIMMING",
+                                                  "TABLE_TENNIS",
+                                                  "TAEKWONDO",
+                                                  "TENNIS",
+                                                  "TRUCK_TRACTOR_PULLING",
+                                                  "VALORANT",
+                                                  "VOLLEYBALL",
+                                                  "WATER_POLO",
+                                                  "WRESTLING"
+                                                ]
+                                              }
+                                            }
+                                          },
+                                          {
+                                            "type": "object",
+                                            "properties": {
+                                              "payload": {
+                                                "title": "State.Betting.OddsChange.State.Data.Payload",
+                                                "oneOf": [
+                                                  {
+                                                    "title": "State.Sport.Tennis.SportEvent.SportEventState.Data.Payload",
+                                                    "allOf": [
+                                                      {
+                                                        "title": "State.Sport.SportEvent.SportEventState",
+                                                        "type": "object",
+                                                        "description": "Reflects the state of the sport event, in a similar manner to what\none would have of information by looking at e.g. a broadcast's\ninfographics at the current moment in time.\n",
+                                                        "properties": {
+                                                          "sport_event": {
+                                                            "title": "EntityReference.SportEvent",
+                                                            "description": "Sport Event Entity Reference from a domain (Event, State, Tracking, etc.) to a Sport Event Entity.\n",
+                                                            "allOf": [
+                                                              {
+                                                                "title": "EntityReference",
+                                                                "type": "object",
+                                                                "description": "Entity Reference from a domain (Event, State, Tracking, etc.) to an Entity.\n",
+                                                                "properties": {
+                                                                  "id": {
+                                                                    "type": "string",
+                                                                    "minLength": 1,
+                                                                    "maxLength": 255,
+                                                                    "pattern": ".*",
+                                                                    "description": "Identifier of the entity. This is the Identifier that the producer uses.\n"
+                                                                  },
+                                                                  "additional_ids": {
+                                                                    "type": "array",
+                                                                    "uniqueItems": true,
+                                                                    "additionalItems": false,
+                                                                    "minItems": 1,
+                                                                    "maxItems": 100,
+                                                                    "items": {
+                                                                      "title": "Entity.AdditionalId",
+                                                                      "description": "This allows you to create an additional identifier for an entity from another source.\n",
+                                                                      "type": "object",
+                                                                      "properties": {
+                                                                        "source": {
+                                                                          "type": "string",
+                                                                          "minLength": 1,
+                                                                          "maxLength": 200,
+                                                                          "pattern": "^urn:s2p:id_sources:[a-z0-9./-]+(?:$|:[a-z0-9.-]+)$",
+                                                                          "examples": [
+                                                                            "urn:s2p:id_sources:sportradar.com",
+                                                                            "urn:s2p:id_sources:sportradar.us:nba",
+                                                                            "urn:s2p:id_sources:sportradar.us:mlb",
+                                                                            "urn:s2p:id_sources:nba.com",
+                                                                            "urn:s2p:id_sources:fifa.com"
+                                                                          ],
+                                                                          "description": "This is the source URN that follows the \"urn:s2p:id_sources:{part}:{part}\" pattern.\nThe last part is optional in case the source has multiple sets of Identifiers.\n"
+                                                                        },
+                                                                        "id": {
+                                                                          "type": "string",
+                                                                          "minLength": 1,
+                                                                          "maxLength": 255,
+                                                                          "pattern": ".*",
+                                                                          "description": "This is the Identifier from the source.\n"
+                                                                        }
+                                                                      },
+                                                                      "required": [
+                                                                        "source",
+                                                                        "id"
+                                                                      ]
+                                                                    },
+                                                                    "description": "A list of additional identifiers for the entity. This can be useful when an entity has other IDs associated with it.\n"
+                                                                  }
+                                                                },
+                                                                "required": [
+                                                                  "id"
+                                                                ]
+                                                              }
+                                                            ],
+                                                            "examples": [
+                                                              {
+                                                                "id": "sr:match:1"
+                                                              }
+                                                            ]
+                                                          },
+                                                          "valid_at": {
+                                                            "description": "An ISO-8601 timestamp giving the time that this data is valid at.\nThis may be different from when the data was sent.\n",
+                                                            "type": "string",
+                                                            "format": "date-time"
+                                                          },
+                                                          "additional_ids": {
+                                                            "type": "array",
+                                                            "uniqueItems": true,
+                                                            "additionalItems": false,
+                                                            "minItems": 1,
+                                                            "maxItems": 100,
+                                                            "items": {
+                                                              "title": "Entity.AdditionalId",
+                                                              "description": "This allows you to create an additional identifier for an entity from another source.\n",
+                                                              "type": "object",
+                                                              "properties": {
+                                                                "source": {
+                                                                  "type": "string",
+                                                                  "minLength": 1,
+                                                                  "maxLength": 200,
+                                                                  "pattern": "^urn:s2p:id_sources:[a-z0-9./-]+(?:$|:[a-z0-9.-]+)$",
+                                                                  "examples": [
+                                                                    "urn:s2p:id_sources:sportradar.com",
+                                                                    "urn:s2p:id_sources:sportradar.us:nba",
+                                                                    "urn:s2p:id_sources:sportradar.us:mlb",
+                                                                    "urn:s2p:id_sources:nba.com",
+                                                                    "urn:s2p:id_sources:fifa.com"
+                                                                  ],
+                                                                  "description": "This is the source URN that follows the \"urn:s2p:id_sources:{part}:{part}\" pattern.\nThe last part is optional in case the source has multiple sets of Identifiers.\n"
+                                                                },
+                                                                "id": {
+                                                                  "type": "string",
+                                                                  "minLength": 1,
+                                                                  "maxLength": 255,
+                                                                  "pattern": ".*",
+                                                                  "description": "This is the Identifier from the source.\n"
+                                                                }
+                                                              },
+                                                              "required": [
+                                                                "source",
+                                                                "id"
+                                                              ]
+                                                            },
+                                                            "description": "A list of additional identifiers for the SportEventState.\nThis can be useful when using SportEventState with legacy systems that have other Identifiers associated with it.\n"
+                                                          },
+                                                          "frames": {
+                                                            "title": "Frames",
+                                                            "description": "If the data has been generated by some kind of automated process from a video stream\nthen these fields allow a reference to where in the video stream the event takes place.\nOnly a starting frame is required.\nIf the event goes longer than one frame, then the ending frame is required.\n",
+                                                            "type": "object",
+                                                            "properties": {
+                                                              "start": {
+                                                                "title": "Frame",
+                                                                "description": "A frame in a video stream.",
+                                                                "type": "object",
+                                                                "properties": {
+                                                                  "reference": {
+                                                                    "type": "string",
+                                                                    "description": "The frame reference when the event occurred."
+                                                                  },
+                                                                  "time": {
+                                                                    "type": "string",
+                                                                    "description": "The timestamp relating to this frame number",
+                                                                    "format": "date-time",
+                                                                    "examples": [
+                                                                      "2023-07-03T14:42:07.001Z"
+                                                                    ]
+                                                                  },
+                                                                  "video_timestamp": {
+                                                                    "type": "integer",
+                                                                    "description": "An integer timestamp of the frame inside the stream.",
+                                                                    "examples": [
+                                                                      95000
+                                                                    ]
+                                                                  },
+                                                                  "index": {
+                                                                    "type": "integer",
+                                                                    "description": "A relative integer index of the frame inside the stream.",
+                                                                    "examples": [
+                                                                      2300
+                                                                    ]
+                                                                  },
+                                                                  "projection_matrix": {
+                                                                    "type": "array",
+                                                                    "additionalItems": false,
+                                                                    "minItems": 12,
+                                                                    "maxItems": 12,
+                                                                    "description": "If generated by some kind of computer vision process, the projection matrix needed\nto map positional coordinates for this message can be provided.\n",
+                                                                    "items": {
+                                                                      "type": "number",
+                                                                      "examples": [
+                                                                        1617.02201,
+                                                                        -899.261269
+                                                                      ]
+                                                                    }
+                                                                  }
+                                                                }
+                                                              },
+                                                              "end": {
+                                                                "title": "Frame",
+                                                                "description": "A frame in a video stream.",
+                                                                "type": "object",
+                                                                "properties": {
+                                                                  "reference": {
+                                                                    "type": "string",
+                                                                    "description": "The frame reference when the event occurred."
+                                                                  },
+                                                                  "time": {
+                                                                    "type": "string",
+                                                                    "description": "The timestamp relating to this frame number",
+                                                                    "format": "date-time",
+                                                                    "examples": [
+                                                                      "2023-07-03T14:42:07.001Z"
+                                                                    ]
+                                                                  },
+                                                                  "video_timestamp": {
+                                                                    "type": "integer",
+                                                                    "description": "An integer timestamp of the frame inside the stream.",
+                                                                    "examples": [
+                                                                      95000
+                                                                    ]
+                                                                  },
+                                                                  "index": {
+                                                                    "type": "integer",
+                                                                    "description": "A relative integer index of the frame inside the stream.",
+                                                                    "examples": [
+                                                                      2300
+                                                                    ]
+                                                                  },
+                                                                  "projection_matrix": {
+                                                                    "type": "array",
+                                                                    "additionalItems": false,
+                                                                    "minItems": 12,
+                                                                    "maxItems": 12,
+                                                                    "description": "If generated by some kind of computer vision process, the projection matrix needed\nto map positional coordinates for this message can be provided.\n",
+                                                                    "items": {
+                                                                      "type": "number",
+                                                                      "examples": [
+                                                                        1617.02201,
+                                                                        -899.261269
+                                                                      ]
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            },
+                                                            "required": [
+                                                              "start"
+                                                            ]
+                                                          },
+                                                          "coverage": {
+                                                            "title": "Coverage.SportEvent",
+                                                            "description": "Additional information about the coverage of this sport event.\n",
+                                                            "type": "object",
+                                                            "properties": {
+                                                              "id": {
+                                                                "type": "string",
+                                                                "minLength": 1,
+                                                                "maxLength": 255,
+                                                                "description": "If a sport event has more than one coverage, then a coverage ID is required.\n",
+                                                                "examples": [
+                                                                  "smp:coverage:1234567",
+                                                                  "synergy:coverage:ad8f5343-bb1d-451a-b1a0-6aaebd5fdc4a"
+                                                                ]
+                                                              },
+                                                              "source_role": {
+                                                                "type": "string",
+                                                                "minLength": 1,
+                                                                "maxLength": 255,
+                                                                "description": "The Source Role property is the role of the source.\nTypically either a role name (e.g. DEFAULT, MAIN, BETTING, SECONDARY) or an identifier (e.g. an auto-increment ID or UUID).\n"
+                                                              }
+                                                            }
+                                                          }
+                                                        },
+                                                        "required": [
+                                                          "sport_event"
+                                                        ]
+                                                      },
+                                                      {
+                                                        "title": "State.Sport.Tennis.SportEvent.SportEventState.AdditionalInformation",
+                                                        "description": "Additional information about the coverage of this sport event.\n",
+                                                        "type": "object",
+                                                        "definitions": {
+                                                          "serving": {
+                                                            "title": "State.Sport.Tennis.SportEvent.SportEventState.Serving",
+                                                            "type": "object",
+                                                            "description": "Information about which competitor who is currently serving.\nWhen a game is finished, this property should be undefined. When the first serve is made in a new game, this property should be defined.\nIf the match is played in doubles, the person property should be defined.\n",
+                                                            "properties": {
+                                                              "competitor": {
+                                                                "title": "EntityReference.Competitor",
+                                                                "description": "Competitor Entity Reference from a domain (Event, State, Tracking, etc.) to a Competitor Entity.\n",
+                                                                "allOf": [
+                                                                  {
+                                                                    "title": "EntityReference",
+                                                                    "type": "object",
+                                                                    "description": "Entity Reference from a domain (Event, State, Tracking, etc.) to an Entity.\n",
+                                                                    "properties": {
+                                                                      "id": {
+                                                                        "type": "string",
+                                                                        "minLength": 1,
+                                                                        "maxLength": 255,
+                                                                        "pattern": ".*",
+                                                                        "description": "Identifier of the entity. This is the Identifier that the producer uses.\n"
+                                                                      },
+                                                                      "additional_ids": {
+                                                                        "type": "array",
+                                                                        "uniqueItems": true,
+                                                                        "additionalItems": false,
+                                                                        "minItems": 1,
+                                                                        "maxItems": 100,
+                                                                        "items": {
+                                                                          "title": "Entity.AdditionalId",
+                                                                          "description": "This allows you to create an additional identifier for an entity from another source.\n",
+                                                                          "type": "object",
+                                                                          "properties": {
+                                                                            "source": {
+                                                                              "type": "string",
+                                                                              "minLength": 1,
+                                                                              "maxLength": 200,
+                                                                              "pattern": "^urn:s2p:id_sources:[a-z0-9./-]+(?:$|:[a-z0-9.-]+)$",
+                                                                              "examples": [
+                                                                                "urn:s2p:id_sources:sportradar.com",
+                                                                                "urn:s2p:id_sources:sportradar.us:nba",
+                                                                                "urn:s2p:id_sources:sportradar.us:mlb",
+                                                                                "urn:s2p:id_sources:nba.com",
+                                                                                "urn:s2p:id_sources:fifa.com"
+                                                                              ],
+                                                                              "description": "This is the source URN that follows the \"urn:s2p:id_sources:{part}:{part}\" pattern.\nThe last part is optional in case the source has multiple sets of Identifiers.\n"
+                                                                            },
+                                                                            "id": {
+                                                                              "type": "string",
+                                                                              "minLength": 1,
+                                                                              "maxLength": 255,
+                                                                              "pattern": ".*",
+                                                                              "description": "This is the Identifier from the source.\n"
+                                                                            }
+                                                                          },
+                                                                          "required": [
+                                                                            "source",
+                                                                            "id"
+                                                                          ]
+                                                                        },
+                                                                        "description": "A list of additional identifiers for the entity. This can be useful when an entity has other IDs associated with it.\n"
+                                                                      }
+                                                                    },
+                                                                    "required": [
+                                                                      "id"
+                                                                    ]
+                                                                  }
+                                                                ],
+                                                                "examples": [
+                                                                  {
+                                                                    "id": "sr:competitor:1121"
+                                                                  }
+                                                                ]
+                                                              },
+                                                              "player": {
+                                                                "title": "EntityReference.Person",
+                                                                "description": "Person Entity Reference from a domain (Event, State, Tracking, etc.) to a Person Entity.\n",
+                                                                "allOf": [
+                                                                  {
+                                                                    "title": "EntityReference",
+                                                                    "type": "object",
+                                                                    "description": "Entity Reference from a domain (Event, State, Tracking, etc.) to an Entity.\n",
+                                                                    "properties": {
+                                                                      "id": {
+                                                                        "type": "string",
+                                                                        "minLength": 1,
+                                                                        "maxLength": 255,
+                                                                        "pattern": ".*",
+                                                                        "description": "Identifier of the entity. This is the Identifier that the producer uses.\n"
+                                                                      },
+                                                                      "additional_ids": {
+                                                                        "type": "array",
+                                                                        "uniqueItems": true,
+                                                                        "additionalItems": false,
+                                                                        "minItems": 1,
+                                                                        "maxItems": 100,
+                                                                        "items": {
+                                                                          "title": "Entity.AdditionalId",
+                                                                          "description": "This allows you to create an additional identifier for an entity from another source.\n",
+                                                                          "type": "object",
+                                                                          "properties": {
+                                                                            "source": {
+                                                                              "type": "string",
+                                                                              "minLength": 1,
+                                                                              "maxLength": 200,
+                                                                              "pattern": "^urn:s2p:id_sources:[a-z0-9./-]+(?:$|:[a-z0-9.-]+)$",
+                                                                              "examples": [
+                                                                                "urn:s2p:id_sources:sportradar.com",
+                                                                                "urn:s2p:id_sources:sportradar.us:nba",
+                                                                                "urn:s2p:id_sources:sportradar.us:mlb",
+                                                                                "urn:s2p:id_sources:nba.com",
+                                                                                "urn:s2p:id_sources:fifa.com"
+                                                                              ],
+                                                                              "description": "This is the source URN that follows the \"urn:s2p:id_sources:{part}:{part}\" pattern.\nThe last part is optional in case the source has multiple sets of Identifiers.\n"
+                                                                            },
+                                                                            "id": {
+                                                                              "type": "string",
+                                                                              "minLength": 1,
+                                                                              "maxLength": 255,
+                                                                              "pattern": ".*",
+                                                                              "description": "This is the Identifier from the source.\n"
+                                                                            }
+                                                                          },
+                                                                          "required": [
+                                                                            "source",
+                                                                            "id"
+                                                                          ]
+                                                                        },
+                                                                        "description": "A list of additional identifiers for the entity. This can be useful when an entity has other IDs associated with it.\n"
+                                                                      }
+                                                                    },
+                                                                    "required": [
+                                                                      "id"
+                                                                    ]
+                                                                  }
+                                                                ],
+                                                                "examples": [
+                                                                  {
+                                                                    "id": "sr:player:1011771"
+                                                                  }
+                                                                ]
+                                                              }
+                                                            },
+                                                            "required": [
+                                                              "competitor"
+                                                            ]
+                                                          }
+                                                        }
+                                                      },
+                                                      {
+                                                        "type": "object",
+                                                        "properties": {
+                                                          "type": {
+                                                            "type": "string",
+                                                            "title": "State.Sport.Tennis.SportEvent.SportEventState.Type",
+                                                            "const": "State.Sport.Tennis.SportEvent.SportEventState"
+                                                          }
+                                                        },
+                                                        "required": [
+                                                          "type"
+                                                        ]
+                                                      }
+                                                    ]
+                                                  },
+                                                  {
+                                                    "title": "State.Sport.Golf.SportEvent.SportEventState.Data.Payload",
+                                                    "allOf": [
+                                                      {
+                                                        "title": "State.Sport.SportEvent.SportEventState",
+                                                        "type": "object",
+                                                        "description": "Reflects the state of the sport event, in a similar manner to what\none would have of information by looking at e.g. a broadcast's\ninfographics at the current moment in time.\n",
+                                                        "properties": {
+                                                          "sport_event": {
+                                                            "title": "EntityReference.SportEvent",
+                                                            "description": "Sport Event Entity Reference from a domain (Event, State, Tracking, etc.) to a Sport Event Entity.\n",
+                                                            "allOf": [
+                                                              {
+                                                                "title": "EntityReference",
+                                                                "type": "object",
+                                                                "description": "Entity Reference from a domain (Event, State, Tracking, etc.) to an Entity.\n",
+                                                                "properties": {
+                                                                  "id": {
+                                                                    "type": "string",
+                                                                    "minLength": 1,
+                                                                    "maxLength": 255,
+                                                                    "pattern": ".*",
+                                                                    "description": "Identifier of the entity. This is the Identifier that the producer uses.\n"
+                                                                  },
+                                                                  "additional_ids": {
+                                                                    "type": "array",
+                                                                    "uniqueItems": true,
+                                                                    "additionalItems": false,
+                                                                    "minItems": 1,
+                                                                    "maxItems": 100,
+                                                                    "items": {
+                                                                      "title": "Entity.AdditionalId",
+                                                                      "description": "This allows you to create an additional identifier for an entity from another source.\n",
+                                                                      "type": "object",
+                                                                      "properties": {
+                                                                        "source": {
+                                                                          "type": "string",
+                                                                          "minLength": 1,
+                                                                          "maxLength": 200,
+                                                                          "pattern": "^urn:s2p:id_sources:[a-z0-9./-]+(?:$|:[a-z0-9.-]+)$",
+                                                                          "examples": [
+                                                                            "urn:s2p:id_sources:sportradar.com",
+                                                                            "urn:s2p:id_sources:sportradar.us:nba",
+                                                                            "urn:s2p:id_sources:sportradar.us:mlb",
+                                                                            "urn:s2p:id_sources:nba.com",
+                                                                            "urn:s2p:id_sources:fifa.com"
+                                                                          ],
+                                                                          "description": "This is the source URN that follows the \"urn:s2p:id_sources:{part}:{part}\" pattern.\nThe last part is optional in case the source has multiple sets of Identifiers.\n"
+                                                                        },
+                                                                        "id": {
+                                                                          "type": "string",
+                                                                          "minLength": 1,
+                                                                          "maxLength": 255,
+                                                                          "pattern": ".*",
+                                                                          "description": "This is the Identifier from the source.\n"
+                                                                        }
+                                                                      },
+                                                                      "required": [
+                                                                        "source",
+                                                                        "id"
+                                                                      ]
+                                                                    },
+                                                                    "description": "A list of additional identifiers for the entity. This can be useful when an entity has other IDs associated with it.\n"
+                                                                  }
+                                                                },
+                                                                "required": [
+                                                                  "id"
+                                                                ]
+                                                              }
+                                                            ],
+                                                            "examples": [
+                                                              {
+                                                                "id": "sr:match:1"
+                                                              }
+                                                            ]
+                                                          },
+                                                          "valid_at": {
+                                                            "description": "An ISO-8601 timestamp giving the time that this data is valid at.\nThis may be different from when the data was sent.\n",
+                                                            "type": "string",
+                                                            "format": "date-time"
+                                                          },
+                                                          "additional_ids": {
+                                                            "type": "array",
+                                                            "uniqueItems": true,
+                                                            "additionalItems": false,
+                                                            "minItems": 1,
+                                                            "maxItems": 100,
+                                                            "items": {
+                                                              "title": "Entity.AdditionalId",
+                                                              "description": "This allows you to create an additional identifier for an entity from another source.\n",
+                                                              "type": "object",
+                                                              "properties": {
+                                                                "source": {
+                                                                  "type": "string",
+                                                                  "minLength": 1,
+                                                                  "maxLength": 200,
+                                                                  "pattern": "^urn:s2p:id_sources:[a-z0-9./-]+(?:$|:[a-z0-9.-]+)$",
+                                                                  "examples": [
+                                                                    "urn:s2p:id_sources:sportradar.com",
+                                                                    "urn:s2p:id_sources:sportradar.us:nba",
+                                                                    "urn:s2p:id_sources:sportradar.us:mlb",
+                                                                    "urn:s2p:id_sources:nba.com",
+                                                                    "urn:s2p:id_sources:fifa.com"
+                                                                  ],
+                                                                  "description": "This is the source URN that follows the \"urn:s2p:id_sources:{part}:{part}\" pattern.\nThe last part is optional in case the source has multiple sets of Identifiers.\n"
+                                                                },
+                                                                "id": {
+                                                                  "type": "string",
+                                                                  "minLength": 1,
+                                                                  "maxLength": 255,
+                                                                  "pattern": ".*",
+                                                                  "description": "This is the Identifier from the source.\n"
+                                                                }
+                                                              },
+                                                              "required": [
+                                                                "source",
+                                                                "id"
+                                                              ]
+                                                            },
+                                                            "description": "A list of additional identifiers for the SportEventState.\nThis can be useful when using SportEventState with legacy systems that have other Identifiers associated with it.\n"
+                                                          },
+                                                          "frames": {
+                                                            "title": "Frames",
+                                                            "description": "If the data has been generated by some kind of automated process from a video stream\nthen these fields allow a reference to where in the video stream the event takes place.\nOnly a starting frame is required.\nIf the event goes longer than one frame, then the ending frame is required.\n",
+                                                            "type": "object",
+                                                            "properties": {
+                                                              "start": {
+                                                                "title": "Frame",
+                                                                "description": "A frame in a video stream.",
+                                                                "type": "object",
+                                                                "properties": {
+                                                                  "reference": {
+                                                                    "type": "string",
+                                                                    "description": "The frame reference when the event occurred."
+                                                                  },
+                                                                  "time": {
+                                                                    "type": "string",
+                                                                    "description": "The timestamp relating to this frame number",
+                                                                    "format": "date-time",
+                                                                    "examples": [
+                                                                      "2023-07-03T14:42:07.001Z"
+                                                                    ]
+                                                                  },
+                                                                  "video_timestamp": {
+                                                                    "type": "integer",
+                                                                    "description": "An integer timestamp of the frame inside the stream.",
+                                                                    "examples": [
+                                                                      95000
+                                                                    ]
+                                                                  },
+                                                                  "index": {
+                                                                    "type": "integer",
+                                                                    "description": "A relative integer index of the frame inside the stream.",
+                                                                    "examples": [
+                                                                      2300
+                                                                    ]
+                                                                  },
+                                                                  "projection_matrix": {
+                                                                    "type": "array",
+                                                                    "additionalItems": false,
+                                                                    "minItems": 12,
+                                                                    "maxItems": 12,
+                                                                    "description": "If generated by some kind of computer vision process, the projection matrix needed\nto map positional coordinates for this message can be provided.\n",
+                                                                    "items": {
+                                                                      "type": "number",
+                                                                      "examples": [
+                                                                        1617.02201,
+                                                                        -899.261269
+                                                                      ]
+                                                                    }
+                                                                  }
+                                                                }
+                                                              },
+                                                              "end": {
+                                                                "title": "Frame",
+                                                                "description": "A frame in a video stream.",
+                                                                "type": "object",
+                                                                "properties": {
+                                                                  "reference": {
+                                                                    "type": "string",
+                                                                    "description": "The frame reference when the event occurred."
+                                                                  },
+                                                                  "time": {
+                                                                    "type": "string",
+                                                                    "description": "The timestamp relating to this frame number",
+                                                                    "format": "date-time",
+                                                                    "examples": [
+                                                                      "2023-07-03T14:42:07.001Z"
+                                                                    ]
+                                                                  },
+                                                                  "video_timestamp": {
+                                                                    "type": "integer",
+                                                                    "description": "An integer timestamp of the frame inside the stream.",
+                                                                    "examples": [
+                                                                      95000
+                                                                    ]
+                                                                  },
+                                                                  "index": {
+                                                                    "type": "integer",
+                                                                    "description": "A relative integer index of the frame inside the stream.",
+                                                                    "examples": [
+                                                                      2300
+                                                                    ]
+                                                                  },
+                                                                  "projection_matrix": {
+                                                                    "type": "array",
+                                                                    "additionalItems": false,
+                                                                    "minItems": 12,
+                                                                    "maxItems": 12,
+                                                                    "description": "If generated by some kind of computer vision process, the projection matrix needed\nto map positional coordinates for this message can be provided.\n",
+                                                                    "items": {
+                                                                      "type": "number",
+                                                                      "examples": [
+                                                                        1617.02201,
+                                                                        -899.261269
+                                                                      ]
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            },
+                                                            "required": [
+                                                              "start"
+                                                            ]
+                                                          },
+                                                          "coverage": {
+                                                            "title": "Coverage.SportEvent",
+                                                            "description": "Additional information about the coverage of this sport event.\n",
+                                                            "type": "object",
+                                                            "properties": {
+                                                              "id": {
+                                                                "type": "string",
+                                                                "minLength": 1,
+                                                                "maxLength": 255,
+                                                                "description": "If a sport event has more than one coverage, then a coverage ID is required.\n",
+                                                                "examples": [
+                                                                  "smp:coverage:1234567",
+                                                                  "synergy:coverage:ad8f5343-bb1d-451a-b1a0-6aaebd5fdc4a"
+                                                                ]
+                                                              },
+                                                              "source_role": {
+                                                                "type": "string",
+                                                                "minLength": 1,
+                                                                "maxLength": 255,
+                                                                "description": "The Source Role property is the role of the source.\nTypically either a role name (e.g. DEFAULT, MAIN, BETTING, SECONDARY) or an identifier (e.g. an auto-increment ID or UUID).\n"
+                                                              }
+                                                            }
+                                                          }
+                                                        },
+                                                        "required": [
+                                                          "sport_event"
+                                                        ]
+                                                      },
+                                                      {
+                                                        "title": "State.Sport.Golf.SportEvent.SportEventState.AdditionalInformation",
+                                                        "description": "Additional information about the coverage of this sport event.\n",
+                                                        "type": "object"
+                                                      },
+                                                      {
+                                                        "type": "object",
+                                                        "properties": {
+                                                          "type": {
+                                                            "type": "string",
+                                                            "title": "State.Sport.Golf.SportEvent.SportEventState.Type",
+                                                            "const": "State.Sport.Golf.SportEvent.SportEventState"
+                                                          }
+                                                        },
+                                                        "required": [
+                                                          "type"
+                                                        ]
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            },
+                                            "required": [
+                                              "payload"
+                                            ]
+                                          }
+                                        ],
+                                        "title": "State.Betting.OddsChange.State.Data",
+                                        "description": "The message payload. It is encoded into a media format which is specified by the datacontenttype attribute (e.g. application/json), and adheres to the dataschema format when those respective attributes are present."
+                                      },
+                                      "key_skew": {
+                                        "title": "Event.Betting.OddsChange.KeySkew",
+                                        "type": "object",
+                                        "properties": {
+                                          "markets": {
+                                            "description": "A collection of markets for allocating key skew across outcomes within a market.",
+                                            "type": "array",
+                                            "uniqueItems": true,
+                                            "items": {
+                                              "title": "Event.Betting.TradingActions.MarketOutcomesKeySkew",
+                                              "description": "A market with key skew which represents a relative adjustment signal for allocating key skew across outcomes.\n",
+                                              "type": "object",
+                                              "properties": {
+                                                "market": {
+                                                  "title": "Betting.Market.Identifier",
+                                                  "description": "A uniquely identifiable market.\n",
+                                                  "allOf": [
+                                                    {
+                                                      "title": "EntityReference.BettingMarket",
+                                                      "description": "Betting Market Entity Reference from a domain (Event, State, Tracking, etc.) to a Betting Market Entity.\n",
+                                                      "allOf": [
+                                                        {
+                                                          "title": "EntityReference",
+                                                          "type": "object",
+                                                          "description": "Entity Reference from a domain (Event, State, Tracking, etc.) to an Entity.\n",
+                                                          "properties": {
+                                                            "id": {
+                                                              "type": "string",
+                                                              "minLength": 1,
+                                                              "maxLength": 255,
+                                                              "pattern": ".*",
+                                                              "description": "Identifier of the entity. This is the Identifier that the producer uses.\n"
+                                                            },
+                                                            "additional_ids": {
+                                                              "type": "array",
+                                                              "uniqueItems": true,
+                                                              "additionalItems": false,
+                                                              "minItems": 1,
+                                                              "maxItems": 100,
+                                                              "items": {
+                                                                "title": "Entity.AdditionalId",
+                                                                "description": "This allows you to create an additional identifier for an entity from another source.\n",
+                                                                "type": "object",
+                                                                "properties": {
+                                                                  "source": {
+                                                                    "type": "string",
+                                                                    "minLength": 1,
+                                                                    "maxLength": 200,
+                                                                    "pattern": "^urn:s2p:id_sources:[a-z0-9./-]+(?:$|:[a-z0-9.-]+)$",
+                                                                    "examples": [
+                                                                      "urn:s2p:id_sources:sportradar.com",
+                                                                      "urn:s2p:id_sources:sportradar.us:nba",
+                                                                      "urn:s2p:id_sources:sportradar.us:mlb",
+                                                                      "urn:s2p:id_sources:nba.com",
+                                                                      "urn:s2p:id_sources:fifa.com"
+                                                                    ],
+                                                                    "description": "This is the source URN that follows the \"urn:s2p:id_sources:{part}:{part}\" pattern.\nThe last part is optional in case the source has multiple sets of Identifiers.\n"
+                                                                  },
+                                                                  "id": {
+                                                                    "type": "string",
+                                                                    "minLength": 1,
+                                                                    "maxLength": 255,
+                                                                    "pattern": ".*",
+                                                                    "description": "This is the Identifier from the source.\n"
+                                                                  }
+                                                                },
+                                                                "required": [
+                                                                  "source",
+                                                                  "id"
+                                                                ]
+                                                              },
+                                                              "description": "A list of additional identifiers for the entity. This can be useful when an entity has other IDs associated with it.\n"
+                                                            }
+                                                          },
+                                                          "required": [
+                                                            "id"
+                                                          ]
+                                                        }
+                                                      ],
+                                                      "examples": [
+                                                        {
+                                                          "id": "sr:market:1234"
+                                                        }
+                                                      ]
+                                                    },
+                                                    {
+                                                      "type": "object",
+                                                      "properties": {
+                                                        "specifiers": {
+                                                          "title": "Betting.Market.Specifiers",
+                                                          "description": "The specifier values for the market instance.",
+                                                          "type": "object",
+                                                          "properties": {
+                                                            "score": {
+                                                              "type": "string",
+                                                              "description": "The score of the sport event.",
+                                                              "examples": [
+                                                                "2:2"
+                                                              ]
+                                                            },
+                                                            "set": {
+                                                              "type": "integer",
+                                                              "description": "The set of the sport event.\nTypically used in racket sports.\n",
+                                                              "minimum": 1,
+                                                              "examples": [
+                                                                2
+                                                              ]
+                                                            },
+                                                            "game": {
+                                                              "type": "integer",
+                                                              "description": "The game of the sport event.\nTypically used in racket sports.\n",
+                                                              "minimum": 1,
+                                                              "examples": [
+                                                                2
+                                                              ]
+                                                            },
+                                                            "ace": {
+                                                              "type": "integer",
+                                                              "description": "The ace number of the sport event, within a defined period(e.g. set).\nTypically used in racket sports.\n",
+                                                              "minimum": 1,
+                                                              "examples": [
+                                                                3
+                                                              ]
+                                                            },
+                                                            "total": {
+                                                              "type": "number",
+                                                              "description": "The total for which bet's can be placed on over or under.\nE.g. total goals in a sport event, over/under 5.5 goals. Used across all sports.\n",
+                                                              "minimum": 0,
+                                                              "examples": [
+                                                                5.5
+                                                              ]
+                                                            },
+                                                            "handicap": {
+                                                              "type": "number",
+                                                              "description": "Adding or reducing points/goals for a team or a player over another in order to remove advantage\n",
+                                                              "examples": [
+                                                                1.5
+                                                              ]
+                                                            },
+                                                            "point": {
+                                                              "type": "integer",
+                                                              "description": "Target point for a market\n",
+                                                              "minimum": 0,
+                                                              "examples": [
+                                                                30
+                                                              ]
+                                                            },
+                                                            "break": {
+                                                              "type": "integer",
+                                                              "description": "The number of games broken in the current set\n",
+                                                              "minimum": 1,
+                                                              "examples": [
+                                                                3
+                                                              ]
+                                                            },
+                                                            "player": {
+                                                              "type": "string",
+                                                              "description": "The player in a sport event.",
+                                                              "examples": [
+                                                                "sr:player:1234"
+                                                              ]
+                                                            },
+                                                            "appearance": {
+                                                              "type": "integer",
+                                                              "description": "An appearance refers to a player's turn in the game. This is commonly used in baseball\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "away_points": {
+                                                              "type": "integer",
+                                                              "description": "The value of points scored by away team.\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "balls": {
+                                                              "type": "integer",
+                                                              "description": "The value of balls bowled/delivered in an over. Generally used in context of cricket.\n",
+                                                              "examples": [
+                                                                3
+                                                              ]
+                                                            },
+                                                            "booking": {
+                                                              "type": "integer",
+                                                              "description": "The instance of booking in a match. Commonly used in soccer.\n",
+                                                              "examples": [
+                                                                3
+                                                              ]
+                                                            },
+                                                            "boundary": {
+                                                              "type": "integer",
+                                                              "description": "The value of boundaries scored. Generally used in context of cricket.\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "competitor1_goals": {
+                                                              "type": "integer",
+                                                              "description": "The number of goals scored by competitor 1\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "competitor1_score": {
+                                                              "type": "integer",
+                                                              "description": "The score of competitor 1\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "competitor2_goals": {
+                                                              "type": "integer",
+                                                              "description": "The number of goals scored by competitor 2\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "competitor2_score": {
+                                                              "type": "integer",
+                                                              "description": "The score of competitor 2\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "challenge": {
+                                                              "type": "integer",
+                                                              "description": "The number of challenges in a game. A challenge is an instance where a team is asking for a review of a referee's decision. Generally used in American football\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "competitor": {
+                                                              "type": "string",
+                                                              "description": "The name of the competitor\n",
+                                                              "examples": [
+                                                                "sr:competitor:12345"
+                                                              ]
+                                                            },
+                                                            "competitor1": {
+                                                              "type": "string",
+                                                              "description": "The name of the competitor 1\n",
+                                                              "examples": [
+                                                                "sr:competitor:12345"
+                                                              ]
+                                                            },
+                                                            "competitor2": {
+                                                              "type": "string",
+                                                              "description": "The name of the competitor 2\n",
+                                                              "examples": [
+                                                                "sr:competitor:12345"
+                                                              ]
+                                                            },
+                                                            "corner": {
+                                                              "type": "integer",
+                                                              "description": "The number or instance of a corner in a game\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "day": {
+                                                              "type": "integer",
+                                                              "description": "The number of the day used in sports which span over multiple days like test cricket\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "delivery": {
+                                                              "type": "integer",
+                                                              "description": "The instance of the ball delivered or bowled. Generally used in the context of cricket\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "from_delivery": {
+                                                              "type": "integer",
+                                                              "description": "The instance of the ball delivered or bowled. Used in conjunction with specifier \"to_delivery\" to refer to two different deliveries in a market\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "to_delivery": {
+                                                              "type": "integer",
+                                                              "description": "The instance of the ball delivered or bowled. Used in conjunction with specifier \"from_delivery\" to refer to two different deliveries in a market\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "dismissal": {
+                                                              "type": "integer",
+                                                              "description": "The number of the dismissal. A dismissal occurs when a batter's innings is brought to an end by the opposing team. Commonly used in the context of Cricket.\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "drive": {
+                                                              "type": "integer",
+                                                              "description": "The number or instance of a drive. Used in context of American football it refers to the series of plays when the offense has the football, until it punts or scores and the other team gets possession of the ball.\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "field_goal": {
+                                                              "type": "integer",
+                                                              "description": "The number or instance of a field goal in a game. Used in american football.\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "frame": {
+                                                              "type": "integer",
+                                                              "description": "The number or instance of a frame. A frame refers to a single game in the match. Used in context of cue sports like snooker\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "free_throw": {
+                                                              "type": "integer",
+                                                              "description": "The number or instance of a free throw.\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "from": {
+                                                              "type": "integer",
+                                                              "description": "This indicates the starting point of a specified range on a scale. Used in the context of defining two different points in the game. Example: event happening from \"from\" to \"to\". This specifier expresses time as a number, unlike \"from_time\" specifier.\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "to": {
+                                                              "type": "integer",
+                                                              "description": "This indicates the end point of a specified range on a scale. Used in the context of defining two different points in the game. Example: event happening from \"from\" to \"to\". This specifier expresses time as a number, unlike \"to_time\" specifier.\"\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "from_frame": {
+                                                              "type": "integer",
+                                                              "description": "The instance of a frame. Used in conjunction with specifier \"to_frame\" to refer to two different frames in a market\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "from_game": {
+                                                              "type": "integer",
+                                                              "description": "The instance of a game. Used in conjunction with specifier \"to_game\" to refer to two different games in a market\n",
+                                                              "examples": [
+                                                                3
+                                                              ]
+                                                            },
+                                                            "to_game": {
+                                                              "type": "integer",
+                                                              "description": "The instance of a game. Used in conjunction with specifier \"from_game\" to refer to two different games in a market\n",
+                                                              "examples": [
+                                                                4
+                                                              ]
+                                                            },
+                                                            "from_time": {
+                                                              "type": "string",
+                                                              "description": "This indicates the starting point of a specified range on a scale. Used in the context of defining two different points in the game. Example: event happening from \"from_time\" to \"to_time\". This specifier expresses time in a ISO8601 duration format, unlike \"from\" specifier.\n",
+                                                              "examples": [
+                                                                "PT11:00"
+                                                              ]
+                                                            },
+                                                            "to_time": {
+                                                              "type": "string",
+                                                              "description": "This indicates the end point of a specified range on a scale. Used in the context of defining two different points in the game. Example: event happening from \"from_time\" to \"to_time\". This specifier expresses time in a ISO8601 duration format, unlike \"to\" specifier.\n",
+                                                              "examples": [
+                                                                "PT12:00"
+                                                              ]
+                                                            },
+                                                            "goal": {
+                                                              "type": "integer",
+                                                              "description": "The number or instance of goals in a match\n",
+                                                              "examples": [
+                                                                2
+                                                              ]
+                                                            },
+                                                            "hit": {
+                                                              "type": "integer",
+                                                              "description": "The number or instance of a hit in a match. Used in context of baseball\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "hole": {
+                                                              "type": "integer",
+                                                              "description": "The number or instance of a hole in a match. Used in context of golf\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "home_points": {
+                                                              "type": "integer",
+                                                              "description": "The number of points scored by home team.\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "inning": {
+                                                              "type": "integer",
+                                                              "description": "The number or the instance of the inning. Used in bat & ball sports like cricket, baseball\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "kill": {
+                                                              "type": "integer",
+                                                              "description": "The number or the instance of a kill inning. Used in E-sports.\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "lap": {
+                                                              "type": "integer",
+                                                              "description": "The number or the instance of a lap. Used in athletic or motor sports.\n",
+                                                              "examples": [
+                                                                0
+                                                              ]
+                                                            },
+                                                            "leg": {
+                                                              "type": "integer",
+                                                              "description": "The number or the instance of a leg. A leg is a single game in the sport of darts.\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "map": {
+                                                              "type": "integer",
+                                                              "description": "The instance of a map. Used in E-sports\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "max_overs": {
+                                                              "type": "integer",
+                                                              "description": "The maximum number of overs in a match. Used in sports in cricket.\n",
+                                                              "examples": [
+                                                                50
+                                                              ]
+                                                            },
+                                                            "minute": {
+                                                              "type": "integer",
+                                                              "description": "The number of elapsed minutes in a match\n",
+                                                              "examples": [
+                                                                10
+                                                              ]
+                                                            },
+                                                            "over": {
+                                                              "type": "integer",
+                                                              "description": "The number or instance of a over. Used in cricket.\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "from_over": {
+                                                              "type": "integer",
+                                                              "description": "The instance of a over. Used in conjunction with specifier \"to_over\" to refer to two different overs in a market\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "to_over": {
+                                                              "type": "integer",
+                                                              "description": "The instance of a over. Used in conjunction with specifier \"from_over\" to refer to two different overs in a market\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "penalty": {
+                                                              "type": "integer",
+                                                              "description": "The number or instance of penalty\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "period": {
+                                                              "type": "integer",
+                                                              "description": "Refers to the number of or an instance of a period in a match. A period is a division of time in a match, in which play occurs.\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "pitch": {
+                                                              "type": "integer",
+                                                              "description": "The number or instance of pitch. Used in bat & ball sports.\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "player1": {
+                                                              "type": "string",
+                                                              "description": "The name of a player in the match. Used in conjunction with \"player2\", \"player3\" in markets where multiple players are being identified.\n",
+                                                              "examples": [
+                                                                "sr:player:1234"
+                                                              ]
+                                                            },
+                                                            "player2": {
+                                                              "type": "string",
+                                                              "description": "The name of a player in the match. Used in conjunction with \"player1\", \"player3\" in markets where multiple players are being identified.\n",
+                                                              "examples": [
+                                                                "sr:player:1234"
+                                                              ]
+                                                            },
+                                                            "player3": {
+                                                              "type": "string",
+                                                              "description": "The name of a player in the match. Used in conjunction with \"player2\", \"player1\" in markets where multiple players are being identified.\n",
+                                                              "examples": [
+                                                                "sr:player:1234"
+                                                              ]
+                                                            },
+                                                            "play": {
+                                                              "type": "integer",
+                                                              "description": "The number or instance of play. Used in sports like American Football\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "possession": {
+                                                              "type": "integer",
+                                                              "description": "Refers to an instance of possession. A possession refers to a period where a certain team has control over the ball. Used in sports like Basketball or soccer\n",
+                                                              "examples": [
+                                                                3
+                                                              ]
+                                                            },
+                                                            "qualifying_period": {
+                                                              "type": "integer",
+                                                              "description": "Refers to an instance of a qualifying period in a sport. Used in motor sports, a qualifying period refers to various rounds of qualifying which are used to establish the starting grid.\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "quarter": {
+                                                              "type": "integer",
+                                                              "description": "Refers to a period in a match.\n",
+                                                              "examples": [
+                                                                2
+                                                              ]
+                                                            },
+                                                            "retirement": {
+                                                              "type": "integer",
+                                                              "description": "Refers to an instance of number of retirement. Used in motor sports, it refers to when a player has to withdraw due to accident or mechanical failure\n",
+                                                              "examples": [
+                                                                0
+                                                              ]
+                                                            },
+                                                            "round": {
+                                                              "type": "integer",
+                                                              "description": "Refers to the number of or an instance of a round. A round is a stage in a competition\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "server": {
+                                                              "type": "string",
+                                                              "description": "Refers to the player serving for the game. Used in racquet sports.\n",
+                                                              "examples": [
+                                                                "sr:player:1234"
+                                                              ]
+                                                            },
+                                                            "session": {
+                                                              "type": "integer",
+                                                              "description": "Refers to the number of or an instance of a session. A session is a period of play. Used in sports like cricket\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "stop": {
+                                                              "type": "integer",
+                                                              "description": "The number or instance of a stop. Used in motor sports\n",
+                                                              "examples": [
+                                                                0
+                                                              ]
+                                                            },
+                                                            "timeout": {
+                                                              "type": "integer",
+                                                              "description": "The number or instance of a timeout.\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "to_frame": {
+                                                              "type": "integer",
+                                                              "description": "The instance of a frame. Used in conjunction with specifier \"from_frame\" to refer to two different frames in a market\n",
+                                                              "examples": [
+                                                                3
+                                                              ]
+                                                            },
+                                                            "touchdown": {
+                                                              "type": "integer",
+                                                              "description": "The number or instance of a touchdown. Used in sports like American Football & Rugby.\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "turnover": {
+                                                              "type": "integer",
+                                                              "description": "The number or instance of a turnover. Used in sports like Basketball, American Football & Rugby.\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "visit": {
+                                                              "type": "integer",
+                                                              "description": "The number or instance of a visit. A single visit or turn to the board gives the player the chance to throw three darts. Used in sports like darts.\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "variant": {
+                                                              "type": "string",
+                                                              "description": "The variant of the event. Used in markets where set of outcomes is defined by specific variant.\n",
+                                                              "examples": [
+                                                                "sr:exact_games:bestof:5",
+                                                                "sr:exact_goals:2+",
+                                                                "sr:run_range:0-9+"
+                                                              ]
+                                                            },
+                                                            "end": {
+                                                              "type": "integer",
+                                                              "description": "Refers to the number of or an instance of an end. An end is a stage in a competition in Bowls\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "frames": {
+                                                              "type": "integer",
+                                                              "description": "The number of frames. A frame refers to a single game in the match. Used in context of cue sports like snooker\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "games": {
+                                                              "type": "integer",
+                                                              "description": "This specifier refers to a number of games. Like x games in Tennis\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "goals": {
+                                                              "type": "integer",
+                                                              "description": "The number of goals in a match\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "group": {
+                                                              "type": "string",
+                                                              "description": "Refers to a group in a tournament.\n",
+                                                              "examples": [
+                                                                "A"
+                                                              ]
+                                                            },
+                                                            "handicap_including_draw": {
+                                                              "type": "string",
+                                                              "description": "This is handicap used in European handicap markets. The handicap is represented as a score (Ex: 0:1) as opposed to a number.\n",
+                                                              "examples": [
+                                                                "0:1"
+                                                              ]
+                                                            },
+                                                            "match_reference": {
+                                                              "type": "string",
+                                                              "description": "This specifier is used to pass the match reference. It is used lo link head-to-head markets (which are setup as separate matches) with the actual event.\n",
+                                                              "examples": [
+                                                                "sr:match:123"
+                                                              ]
+                                                            },
+                                                            "innings": {
+                                                              "type": "integer",
+                                                              "description": "The number of innings. Used in bat & ball sports like cricket, baseball\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "matchday": {
+                                                              "type": "integer",
+                                                              "description": "Refers to the day in an event.\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "milestone": {
+                                                              "type": "integer",
+                                                              "description": "It represents a significant score in a match. Currently being used in cricket to indicate scores like centuries (100 runs) or half-century (50 runs)\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "milestone1": {
+                                                              "type": "integer",
+                                                              "description": "The specifier represents a significant score in a match. It is used in conjunction with specifier \"milestone2\" to indicate a pair of scores to be achieved\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "milestone2": {
+                                                              "type": "integer",
+                                                              "description": "The specifier represents a significant score in a match. It is used in conjunction with specifier \"milestone1\" to indicate a pair of scores to be achieved\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "points": {
+                                                              "type": "integer",
+                                                              "description": "Refers to the number of points in the match.\n",
+                                                              "examples": [
+                                                                3
+                                                              ]
+                                                            },
+                                                            "position": {
+                                                              "type": "integer",
+                                                              "description": "Represents the position in a league. A position shows where each team ranks in their conference or division.\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "run_instance": {
+                                                              "type": "integer",
+                                                              "description": "Refers to a specific run in a sport. A run is a passage of play in certain sports like Skiing\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "runs": {
+                                                              "type": "integer",
+                                                              "description": "The number of goals in a match. Runs here refer to the score & is used in games like cricket\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "score_number": {
+                                                              "type": "integer",
+                                                              "description": "The number or instance of a score. This is represented numerically. Used in sports like darts, ice hockey\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "selected_number": {
+                                                              "type": "integer",
+                                                              "description": "This indicates the number that has been selected. Used in context of betting games like lottery.\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "team": {
+                                                              "type": "string",
+                                                              "description": "Refers to a particular team who are part of a match/event. Currently used in \"Formula 1\"\n",
+                                                              "examples": [
+                                                                "Team A"
+                                                              ]
+                                                            },
+                                                            "odds_type": {
+                                                              "type": "string",
+                                                              "description": "This indicates the type of odds being generated by the market. It is used independent of the state of the match, and it helps distinguish versions of the market based on the info about line-up when the market was initiated (pre-match, less info on line-up & live - higher confidence about the line-up)\n",
+                                                              "examples": [
+                                                                "pre-match",
+                                                                "live"
+                                                              ]
+                                                            },
+                                                            "ups": {
+                                                              "type": "integer",
+                                                              "description": "Used in spread betting. This specifier is used to represent the score beyond (ups) a certain threshold\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "version": {
+                                                              "type": "string",
+                                                              "description": "Refers to a version.\n",
+                                                              "examples": [
+                                                                "v1.0"
+                                                              ]
+                                                            },
+                                                            "winners": {
+                                                              "type": "integer",
+                                                              "description": "Represents the number of winners in a game. Used in sports where multiple teams or individuals are participating in the game.\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "xth": {
+                                                              "type": "integer",
+                                                              "description": "The specifier is being used as a variable to refer to a certain incident in a match. Its currently being used in E-sports, Snooker & Darts.\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "rally": {
+                                                              "type": "integer",
+                                                              "description": "Refers to a specific rally in a sport. A rally is the period during which the ball is in play in sports like Table Tennis.\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "count": {
+                                                              "type": "integer",
+                                                              "description": "Refers to the number of a certain event in a match. For example, the number of assists, shots, etc. in a soccer match.\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "xup": {
+                                                              "type": "integer",
+                                                              "description": "Refers to the number of a certain event in a match. For example, the goal advantage in soccer match.\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            },
+                                                            "try": {
+                                                              "type": "integer",
+                                                              "description": "The number or instance of a try. This is represented numerically. Used in rugby\n",
+                                                              "examples": [
+                                                                1
+                                                              ]
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  ]
+                                                },
+                                                "outcomes": {
+                                                  "type": "array",
+                                                  "description": "A set of outcomes with key skew present.",
+                                                  "uniqueItems": true,
+                                                  "minItems": 2,
+                                                  "items": {
+                                                    "title": "Event.Betting.TradingActions.MarketOutcomesKeySkew.OutcomesKeySkew",
+                                                    "type": "object",
+                                                    "properties": {
+                                                      "outcome": {
+                                                        "title": "EntityReference.BettingMarketOutcome",
+                                                        "description": "Betting Market Outcome Entity Reference from a domain (Event, State, Tracking, etc.) to a Betting Market Outcome Entity.\nSportradar Unified Odds Feed outcome definitions are typically utilized: https://docs.betradar.com/pages/viewpage.action?pageId=2163297\n",
+                                                        "allOf": [
+                                                          {
+                                                            "title": "EntityReference",
+                                                            "type": "object",
+                                                            "description": "Entity Reference from a domain (Event, State, Tracking, etc.) to an Entity.\n",
+                                                            "properties": {
+                                                              "id": {
+                                                                "type": "string",
+                                                                "minLength": 1,
+                                                                "maxLength": 255,
+                                                                "pattern": ".*",
+                                                                "description": "Identifier of the entity. This is the Identifier that the producer uses.\n"
+                                                              },
+                                                              "additional_ids": {
+                                                                "type": "array",
+                                                                "uniqueItems": true,
+                                                                "additionalItems": false,
+                                                                "minItems": 1,
+                                                                "maxItems": 100,
+                                                                "items": {
+                                                                  "title": "Entity.AdditionalId",
+                                                                  "description": "This allows you to create an additional identifier for an entity from another source.\n",
+                                                                  "type": "object",
+                                                                  "properties": {
+                                                                    "source": {
+                                                                      "type": "string",
+                                                                      "minLength": 1,
+                                                                      "maxLength": 200,
+                                                                      "pattern": "^urn:s2p:id_sources:[a-z0-9./-]+(?:$|:[a-z0-9.-]+)$",
+                                                                      "examples": [
+                                                                        "urn:s2p:id_sources:sportradar.com",
+                                                                        "urn:s2p:id_sources:sportradar.us:nba",
+                                                                        "urn:s2p:id_sources:sportradar.us:mlb",
+                                                                        "urn:s2p:id_sources:nba.com",
+                                                                        "urn:s2p:id_sources:fifa.com"
+                                                                      ],
+                                                                      "description": "This is the source URN that follows the \"urn:s2p:id_sources:{part}:{part}\" pattern.\nThe last part is optional in case the source has multiple sets of Identifiers.\n"
+                                                                    },
+                                                                    "id": {
+                                                                      "type": "string",
+                                                                      "minLength": 1,
+                                                                      "maxLength": 255,
+                                                                      "pattern": ".*",
+                                                                      "description": "This is the Identifier from the source.\n"
+                                                                    }
+                                                                  },
+                                                                  "required": [
+                                                                    "source",
+                                                                    "id"
+                                                                  ]
+                                                                },
+                                                                "description": "A list of additional identifiers for the entity. This can be useful when an entity has other IDs associated with it.\n"
+                                                              }
+                                                            },
+                                                            "required": [
+                                                              "id"
+                                                            ]
+                                                          }
+                                                        ],
+                                                        "examples": [
+                                                          {
+                                                            "id": "sr:outcome:1357911"
+                                                          },
+                                                          {
+                                                            "id": "sr:player:23456789"
+                                                          },
+                                                          {
+                                                            "id": "sr:correct_score:bestof:7:14"
+                                                          }
+                                                        ]
+                                                      },
+                                                      "key_skew": {
+                                                        "type": "number",
+                                                        "description": "Key skew adjusts the margin applied to individual outcomes within a market.\nIt is a relative signal—not a probability—so it does not need to sum to 1,\nand its magnitude is typically kept below 1.\n",
+                                                        "format": "double",
+                                                        "minimum": 0,
+                                                        "examples": [
+                                                          0.41295,
+                                                          0.00026761452
+                                                        ]
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              },
+                                              "required": [
+                                                "market",
+                                                "outcomes"
+                                              ]
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            "required": [
+                              "payload"
+                            ]
+                          }
+                        ],
+                        "title": "Event.Betting.OddsChanges.Data",
+                        "description": "The message payload. It is encoded into a media format which is specified by the datacontenttype attribute (e.g. application/json), and adheres to the dataschema format when those respective attributes are present."
+                      },
+                      "dataschema": {
+                        "default": "https://s3pv2.pages.sportradar.ag/s3p-betting/schemas/v1/asyncapi/Event.Betting.OddsChanges.Data.json"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "parameters": {
+      "language": {
+        "name": "language",
+        "description": "Language code for translation.",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "default": "en"
+        }
+      },
+      "sportId": {
+        "name": "id",
+        "description": "The ID for the sport.",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "integer",
+          "default": "2"
+        }
+      },
+      "sportEventId": {
+        "name": "sport_event_id",
+        "description": "The sport event identifier. Supported formats: sr:match:123, sr:stage:123",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "product": {
+        "name": "product",
+        "description": "Product type: liveodds for inplay, pre for prematch, codds for competition odds.",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "enum": [
+            "pre",
+            "liveodds",
+            "codds"
+          ],
+          "default": "liveodds"
+        }
+      },
+      "partner_id": {
+        "name": "partner_id",
+        "description": "ID of the partner providing specialized odds.",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "default": "sportradar"
+        }
+      },
+      "partnerIdInQuery": {
+        "name": "partner_id",
+        "description": "If you create fixtures in Sportradar, use this parameter with your partner ID to get external fixtures IDs. This will make the mapping process on your side easier. ",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "default": "sportradar"
+        }
+      },
+      "partnerId": {
+        "name": "partner_id",
+        "description": "ID of the partner.",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "default": "sportradar"
+        }
+      },
+      "marketType": {
+        "name": "type",
+        "description": "Type of the market",
+        "in": "query",
+        "required": false,
+        "style": "form",
+        "schema": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "player_props",
+              "micro_market"
+            ]
+          }
+        }
+      },
+      "competitorId": {
+        "name": "competitor_id",
+        "description": "The ID for the competitor to get player data from.",
+        "in": "query",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "default": "sr:competitor:5"
+        }
+      },
+      "fromDate": {
+        "name": "from_date",
+        "description": "From date, in ISO format (YYYY-MM-DD). If not provided, the default value will be today's date.",
+        "in": "query",
+        "schema": {
+          "type": "string",
+          "default": "2024-09-25"
+        }
+      },
+      "toDate": {
+        "name": "to_date",
+        "description": "To date, in ISO format (YYYY-MM-DD). If not provided, the default value will be 7 days from today's date.",
+        "in": "query",
+        "schema": {
+          "type": "string",
+          "default": "2024-10-25"
+        }
+      },
+      "tournament": {
+        "name": "tournament",
+        "description": "Name of the tournament.",
+        "in": "query",
+        "schema": {
+          "type": "string",
+          "default": ""
+        }
+      }
+    },
+    "responses": {
+      "AcceptedForProcessing": {
+        "description": "Accepted for processing",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "integer",
+                  "example": 202
+                },
+                "status": {
+                  "type": "string",
+                  "example": "Accepted"
+                },
+                "requestTimestamp": {
+                  "type": "integer",
+                  "example": 1747215946606
+                }
+              }
+            }
+          }
+        }
+      },
+      "InvalidRequestBody": {
+        "description": "Invalid request body",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Invalid request body"
+                }
+              }
+            }
+          }
+        }
+      },
+      "BadRequest": {
+        "description": "Bad Request - Validation error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "message"
+              ],
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "description": "Error message describing the validation issue"
+                }
+              }
+            },
+            "examples": {
+              "validationError": {
+                "summary": "Validation error",
+                "value": {
+                  "message": "Invalid sportId"
+                }
+              }
+            }
+          }
+        }
+      },
+      "BadRequestFixture": {
+        "description": "Bad request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "message"
+              ],
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "description": "Error message describing the validation issue with the sport ID format",
+                  "example": "'sr:sport:' is invalid. Make sure sport id matches 'sr:sport:{id}' format"
+                }
+              }
+            },
+            "example": {
+              "message": "'sr:sport:' is invalid. Make sure sport id matches 'sr:sport:{id}' format"
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "Not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "message"
+              ],
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "description": "Error message describing that the requested resource was not found"
+                }
+              }
+            },
+            "example": {
+              "message": "Resource not found."
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "token": {
+        "type": "oauth2",
+        "flows": {
+          "clientCredentials": {
+            "tokenUrl": "https://auth.sportradar.com/oauth/token",
+            "scopes": {}
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "token": []
+    }
+  ]
+}
